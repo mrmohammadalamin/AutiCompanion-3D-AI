@@ -1923,7 +1923,7 @@ function buildPlushSkeletalAnimationClips(): THREE.AnimationClip[] {
   // 24. CARTWHEEL / SOMMERSAULT FLIP (CartwheelFlip)
   const tCart = [0, 0.3, 0.6, 0.9, 1.2];
   const clipCartwheel = new THREE.AnimationClip('CartwheelFlip', 1.2, [
-    vTrack('PlushHip', tCart, [
+    vTrack('PlushRoot', tCart, [
       [0, -0.38, 0],
       [0, 0.25, 0],
       [0, 0.45, 0],
@@ -1963,7 +1963,7 @@ function buildPlushSkeletalAnimationClips(): THREE.AnimationClip[] {
   // 25. BALANCE & HOP ON ONE FOOT (HopOneFoot)
   const tHop1 = [0, 0.25, 0.5, 0.75, 1.0];
   const clipHopOneFoot = new THREE.AnimationClip('HopOneFoot', 1.0, [
-    vTrack('PlushHip', tHop1, [
+    vTrack('PlushRoot', tHop1, [
       [0, -0.36, 0],
       [0, -0.1, 0],
       [0, -0.38, 0],
@@ -2029,7 +2029,7 @@ function buildPlushSkeletalAnimationClips(): THREE.AnimationClip[] {
   // 27. TOY SOLDIER PARADE MARCH WITH HIGH KNEES (MarchParade)
   const tMarch = [0, 0.25, 0.5, 0.75, 1.0];
   const clipMarch = new THREE.AnimationClip('MarchParade', 1.0, [
-    vTrack('PlushHip', tMarch, [
+    vTrack('PlushRoot', tMarch, [
       [0, -0.36, 0],
       [0, -0.26, 0],
       [0, -0.36, 0],
@@ -2069,7 +2069,7 @@ function buildPlushSkeletalAnimationClips(): THREE.AnimationClip[] {
   // 28. HULA HOOP HIP WIGGLE (HulaWiggle)
   const tHula = [0, 0.25, 0.5, 0.75, 1.0];
   const clipHula = new THREE.AnimationClip('HulaWiggle', 1.0, [
-    vTrack('PlushHip', tHula, [
+    vTrack('PlushRoot', tHula, [
       [-0.12, -0.38, 0],
       [0, -0.38, 0.1],
       [0.12, -0.38, 0],
@@ -2128,7 +2128,7 @@ function buildPlushSkeletalAnimationClips(): THREE.AnimationClip[] {
   // 30. BELLY LAUGH & GIGGLE (LaughGiggle)
   const tLaugh = [0, 0.18, 0.36, 0.54, 0.72, 0.9];
   const clipLaugh = new THREE.AnimationClip('LaughGiggle', 0.9, [
-    vTrack('PlushHip', tLaugh, [
+    vTrack('PlushRoot', tLaugh, [
       [0, -0.38, 0],
       [0, -0.32, 0],
       [0, -0.38, 0],
@@ -2184,7 +2184,7 @@ function buildPlushSkeletalAnimationClips(): THREE.AnimationClip[] {
   // 32. JUMP HIGH-FIVE (HighFive)
   const tH5 = [0, 0.3, 0.6, 0.9, 1.2];
   const clipHighFive = new THREE.AnimationClip('HighFive', 1.2, [
-    vTrack('PlushHip', tH5, [
+    vTrack('PlushRoot', tH5, [
       [0, -0.38, 0],
       [0, 0.18, 0.18],
       [0, 0.24, 0.22],
