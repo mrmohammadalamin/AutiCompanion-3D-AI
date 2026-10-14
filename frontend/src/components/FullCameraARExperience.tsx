@@ -2,10 +2,15 @@ import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';
 import {
+  getToyVoiceSettings,
   playGentleSuccessChime,
   playPentatonicNote,
+  SMALL_GIRL_VOICE_PRESETS,
+  SmallGirlVoicePreset,
   speakAsAdultAppGuide,
   speakAsSweetChildGirlToy,
+  ToyVoiceSettings,
+  updateToyVoiceSettings,
 } from '../services/soundAndSpeech';
 import {
   AnimatedToyRig,
@@ -343,6 +348,16 @@ export const FullCameraARExperience: React.FC = () => {
     'all' | 'sports_move' | 'play_fun' | 'emotion_calm'
   >('all');
 
+  // Sweet Small Girl Voice Settings State (Ana Neural / Maisie Neural + Sweetness Pitch & Speed)
+  const [voiceSettings, setVoiceSettings] = useState<ToyVoiceSettings>(() =>
+    getToyVoiceSettings()
+  );
+  const handleUpdateVoiceSettings = (partial: Partial<ToyVoiceSettings>) => {
+    const updated = updateToyVoiceSettings(partial);
+    setVoiceSettings(updated);
+    return updated;
+  };
+
   // Right-Sidebar Webcam Visibility, Drag-Move & Drag-Resize State (Simple & Uncluttered)
   const [webcamVisible, setWebcamVisible] = useState<boolean>(true);
   const [webcamHeightPx, setWebcamHeightPx] = useState<number>(170);
@@ -369,7 +384,7 @@ export const FullCameraARExperience: React.FC = () => {
   );
   const [childSpeechInput, setChildSpeechInput] = useState<string>('');
   const [lastHeardText, setLastHeardText] = useState<string>('Waiting for your voice or wave...');
-  const [trackingStatusText, setTrackingStatusText] = useState<string>(
+  const [_trackingStatusText, setTrackingStatusText] = useState<string>(
     '👀 Toy looking at you & ready to play'
   );
 
@@ -413,7 +428,7 @@ export const FullCameraARExperience: React.FC = () => {
   const autonomousDecisionIdxRef = useRef<number>(0);
   const lastAutonomousActionTimeRef = useRef<number>(0);
   const [toyIsTalking, setToyIsTalking] = useState<boolean>(false);
-  const [adultGuideStatus, setAdultGuideStatus] = useState<string>(
+  const [_adultGuideStatus, setAdultGuideStatus] = useState<string>(
     '👧 Toy: Sweet Girl Voice (Turn-Taking) · 👩‍🏫 Settings: Adult Voice'
   );
   const [toySpeechBubble, setToySpeechBubble] = useState<string>(
@@ -4172,32 +4187,31 @@ export const FullCameraARExperience: React.FC = () => {
         <header className="studio-top-bar">
           <div className="studio-brand-block">
             <span className="studio-logo-badge">🧸🌈</span>
-            <div>
+            <div style={{ minWidth: 0 }}>
               <h1 className="studio-main-title">
-                AutiCompanion 3D Cartoon Toy Co-Play Studio — Playing With{' '}
+                AutiCompanion 3D Studio — Playing With{' '}
                 <span style={{ color: '#ea580c', textDecoration: 'underline' }}>{childName}</span>
               </h1>
               <div className="studio-mode-sub">
                 <span>
-                  👶 <strong>{childName}</strong> ({childAge}y · {childInterest})
+                  👶 <strong>{childName}</strong> ({childAge}y)
                 </span>
                 <span>·</span>
                 <span style={{ color: '#be185d', fontWeight: 800 }}>
-                  {waitingForChildReply && !toyIsTalking
-                    ? `👂 Waiting for ${childName}'s Turn`
-                    : adultGuideStatus}
+                  👧{' '}
+                  {SMALL_GIRL_VOICE_PRESETS.find((v) => v.id === voiceSettings.preset)?.label ||
+                    'Sweet 5y Small Girl'}{' '}
+                  ({voiceSettings.sweetnessPitch.toFixed(2)}x)
                 </span>
                 <span>·</span>
-                <span>{trackingStatusText}</span>
-                <span>·</span>
                 <span>
-                  🗣️ Heard: <strong>{lastHeardText}</strong>
+                  🗣️ <strong>{lastHeardText}</strong>
                 </span>
               </div>
             </div>
           </div>
 
-          {/* Talk to 3D Toy Bar + Adult Settings Guide Button */}
+          {/* Talk to 3D Toy Bar + Sweet Girl Voice Test + Adult Guide Button */}
           <div className="toy-talk-bar">
             <button
               type="button"
@@ -4211,14 +4225,34 @@ export const FullCameraARExperience: React.FC = () => {
                 );
               }}
               className={`toy-mic-btn ${alwaysListenEnabled || micListening ? 'listening' : ''}`}
+              title="Toggle continuous microphone listening"
             >
-              {alwaysListenEnabled ? '🎙️ Voice On' : '🎤 Voice Off'}
+              {alwaysListenEnabled ? '🎙️ Mic On' : '🎤 Mic Off'}
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setLeftSidebarExpanded(true);
+                speakAsToy(
+                  `Hi ${childName}! I'm speaking in my sweet small girl voice! Wanna play a game or jump together?`,
+                  voiceSettings.sweetnessPitch
+                );
+              }}
+              className="toy-mic-btn"
+              style={{
+                background: 'linear-gradient(135deg, #fdf2f8, #fce7f3)',
+                borderColor: '#f472b6',
+                color: '#be185d',
+              }}
+              title="Test Sweet Small Girl Voice & Open Voice Settings in Left Sidebar"
+            >
+              👧 Sweet Girl Voice
             </button>
             <button
               type="button"
               onClick={() =>
                 speakAdultDirection(
-                  `Adult App Guide: ${childName}'s profile is active. The 3D toy speaks one short turn in a sweet child-girl voice and waits for ${childName}'s response.`,
+                  `Adult App Guide: ${childName}'s profile is active. The 3D toy speaks in a sweet small girl voice and waits for ${childName}'s response.`,
                   `Hi ${childName}! Tell me what game or action you want me to do!`
                 )
               }
@@ -4243,13 +4277,13 @@ export const FullCameraARExperience: React.FC = () => {
             >
               <input
                 type="text"
-                placeholder={`Ask toy: "Cartwheel", "Airplane", "High five", "Kick ball", "What is 8 + 7"...`}
+                placeholder={`Ask toy: "Cartwheel", "Kick ball", "What is 8 + 7"...`}
                 value={childSpeechInput}
                 onChange={(e) => setChildSpeechInput(e.target.value)}
                 className="toy-talk-input"
               />
               <button type="submit" className="toy-talk-send">
-                Ask Toy 💬
+                Ask 💬
               </button>
             </form>
           </div>
@@ -4293,9 +4327,17 @@ export const FullCameraARExperience: React.FC = () => {
               type="button"
               onClick={() => setLeftSidebarExpanded((v) => !v)}
               className="expr-pill"
-              title="Hide or Expand Left Sidebar to enlarge the Central 3D Canvas"
+              title="Hide or Expand Left Sidebar"
             >
-              {leftSidebarExpanded ? '◀ Hide Left' : '▶ Show Left'}
+              {leftSidebarExpanded ? '◀ Left' : '▶ Left'}
+            </button>
+            <button
+              type="button"
+              onClick={() => setRightSidebarExpanded((v) => !v)}
+              className="expr-pill"
+              title="Hide or Expand Right Sidebar"
+            >
+              {rightSidebarExpanded ? 'Right ▶' : '◀ Right'}
             </button>
             <button
               type="button"
@@ -4303,7 +4345,7 @@ export const FullCameraARExperience: React.FC = () => {
               className="expr-pill"
               title="Hide Top Bar to enlarge the Central 3D Canvas"
             >
-              🔼 Hide Top
+              🔼 Top
             </button>
             <button
               type="button"
@@ -4329,35 +4371,152 @@ export const FullCameraARExperience: React.FC = () => {
           2. MIDDLE WORKSPACE: HIDEABLE LEFT SIDEBAR + EXPANDABLE CENTRAL 3D CANVAS + HIDEABLE RIGHT SIDEBAR
          ===================================================================== */}
       <div className="studio-middle-row">
-        {/* LEFT SIDEBAR: CHILD PROFILE CONFIGURATOR + UPLOAD TOY + 19 3D TOYS (HIDEABLE & EXPANDABLE) */}
+        {/* LEFT SIDEBAR: CHILD PROFILE + SWEET SMALL GIRL VOICE SETTINGS + WORLDS + 19 3D TOYS */}
         {leftSidebarExpanded && (
           <aside className="studio-left-sidebar">
-            {/* Collapse Left Sidebar Bar */}
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                gap: 6,
-                padding: '2px 4px',
-              }}
-            >
-              <span style={{ fontSize: 11, fontWeight: 900, color: '#9a3412' }}>
-                🧸 Profile, World &amp; 3D Toys
-              </span>
+            {/* Sticky Non-Overlapping Left Sidebar Header Row */}
+            <div className="sidebar-header-row">
+              <span className="sidebar-header-title">🧸 Profile, Girl Voice &amp; 3D Toys</span>
               <button
                 type="button"
                 onClick={() => setLeftSidebarExpanded(false)}
                 className="preset-mini-btn"
                 title="Hide Left Sidebar to expand the Center 3D Canvas"
               >
-                ◀ Hide Left Bar
+                ◀ Hide
               </button>
             </div>
 
-            {/* 1. CHILD PROFILE CONFIGURATOR (SO TOY CALLS CHILD BY NAME!) */}
+            {/* 1. SWEET SMALL GIRL VOICE SETTINGS TOOLBOX (NEW & PROMINENT!) */}
+            <div className="sidebar-card voice-settings-box">
+              <div className="sidebar-card-top-row">
+                <span className="sidebar-tag">👧✨ Sweet Small Girl Voice</span>
+                <button
+                  type="button"
+                  onClick={() =>
+                    speakAsToy(
+                      `Hi ${childName}! Hehe, I am your sweet little girl toy friend! Let's play and have fun together!`,
+                      voiceSettings.sweetnessPitch
+                    )
+                  }
+                  className="preset-mini-btn active-cat"
+                  title="Hear the current Sweet Small Girl Voice"
+                >
+                  🔊 Test Voice
+                </button>
+              </div>
+              <h2 className="sidebar-heading">Small Girl Voice Settings</h2>
+
+              {/* 4 Selectable Small Girl Voice Personas */}
+              <div className="voice-preset-grid">
+                {SMALL_GIRL_VOICE_PRESETS.map((vp) => {
+                  const isSelected = voiceSettings.preset === vp.id;
+                  return (
+                    <button
+                      key={vp.id}
+                      type="button"
+                      onClick={() => {
+                        const next = handleUpdateVoiceSettings({
+                          preset: vp.id as SmallGirlVoicePreset,
+                          sweetnessPitch: vp.defaultPitch,
+                          speechSpeed: vp.defaultSpeed,
+                        });
+                        speakAsToy(
+                          `Hi ${childName}! This is my ${vp.label.toLowerCase()} voice! Wanna play with me?`,
+                          next.sweetnessPitch
+                        );
+                      }}
+                      className={`voice-preset-btn ${isSelected ? 'active' : ''}`}
+                      title={`${vp.label} (${vp.sub})`}
+                    >
+                      <span className="vp-top">
+                        <span>{vp.emoji}</span>
+                        <span className="vp-title">{vp.label}</span>
+                      </span>
+                      <span className="vp-sub">{vp.sub}</span>
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* Sweetness & Child Pitch Slider */}
+              <div className="voice-slider-row">
+                <div className="voice-slider-label">
+                  <span>🎀 Girl Voice Sweetness / Pitch</span>
+                  <strong>{voiceSettings.sweetnessPitch.toFixed(2)}x</strong>
+                </div>
+                <input
+                  type="range"
+                  min={1.25}
+                  max={1.75}
+                  step={0.02}
+                  value={voiceSettings.sweetnessPitch}
+                  onChange={(e) =>
+                    handleUpdateVoiceSettings({ sweetnessPitch: Number(e.target.value) })
+                  }
+                  className="voice-range-input"
+                  title="Adjust how high and sweet the small girl voice sounds"
+                />
+              </div>
+
+              {/* Speech Speed Slider */}
+              <div className="voice-slider-row">
+                <div className="voice-slider-label">
+                  <span>🎵 Talking Speed (Calm ↔ Playful)</span>
+                  <strong>{voiceSettings.speechSpeed.toFixed(2)}x</strong>
+                </div>
+                <input
+                  type="range"
+                  min={0.84}
+                  max={1.14}
+                  step={0.02}
+                  value={voiceSettings.speechSpeed}
+                  onChange={(e) =>
+                    handleUpdateVoiceSettings({ speechSpeed: Number(e.target.value) })
+                  }
+                  className="voice-range-input"
+                  title="Adjust speaking speed for the small girl voice"
+                />
+              </div>
+
+              {/* Sparkle Giggle Chime Toggle + Speak Greeting Button */}
+              <div style={{ display: 'flex', gap: 5, alignItems: 'center' }}>
+                <button
+                  type="button"
+                  onClick={() =>
+                    handleUpdateVoiceSettings({
+                      giggleChimeEnabled: !voiceSettings.giggleChimeEnabled,
+                    })
+                  }
+                  className={`preset-mini-btn ${
+                    voiceSettings.giggleChimeEnabled ? 'active-cat' : ''
+                  }`}
+                  style={{ flex: 1 }}
+                  title="Toggle cute music-box sparkle chime before the toy speaks"
+                >
+                  {voiceSettings.giggleChimeEnabled ? '✨ Giggle Chime: ON' : '🔕 Chime: OFF'}
+                </button>
+                <button
+                  type="button"
+                  onClick={() =>
+                    speakAsToy(
+                      `Hehe, hi ${childName}! My sweet small girl voice is ready! What game should we play?`,
+                      voiceSettings.sweetnessPitch
+                    )
+                  }
+                  className="preset-mini-btn active-cat"
+                  style={{ flex: 1 }}
+                >
+                  👧 Speak Now
+                </button>
+              </div>
+            </div>
+
+            {/* 2. CHILD PROFILE CONFIGURATOR (SO TOY CALLS CHILD BY NAME!) */}
             <div className="sidebar-card profile-config-box">
-              <span className="sidebar-tag">👶 Child Profile &amp; Name</span>
+              <div className="sidebar-card-top-row">
+                <span className="sidebar-tag">👶 Child Profile &amp; Name</span>
+              </div>
               <h2 className="sidebar-heading">Configure Child Profile</h2>
               <div style={{ display: 'flex', gap: 6 }}>
                 <input
@@ -4366,13 +4525,13 @@ export const FullCameraARExperience: React.FC = () => {
                   value={childName}
                   onChange={(e) => setChildName(e.target.value || 'Mia')}
                   className="sidebar-text-input"
-                  style={{ flex: 1, fontWeight: 800 }}
+                  style={{ flex: 1, fontWeight: 800, minWidth: 0 }}
                 />
                 <select
                   value={childAge}
                   onChange={(e) => setChildAge(Number(e.target.value))}
                   className="sidebar-text-input"
-                  style={{ width: 68 }}
+                  style={{ width: 72, flexShrink: 0 }}
                   title="Child Age"
                 >
                   {[2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((age) => (
@@ -4400,7 +4559,7 @@ export const FullCameraARExperience: React.FC = () => {
                       triggerToyTemporaryMotion('wave', 2800);
                       speakAsToy(
                         `Hi ${p.name}! I love ${p.interest.replace(/^[^\s]+\s/, '')} too—what should we play together?`,
-                        activeToyItem.voicePitch
+                        voiceSettings.sweetnessPitch
                       );
                     }}
                     className={`preset-mini-btn ${childName === p.name ? 'active-cat' : ''}`}
@@ -4428,21 +4587,22 @@ export const FullCameraARExperience: React.FC = () => {
                   triggerToyTemporaryMotion('wave', 2800);
                   speakAsToy(
                     `Hi ${childName}! I'm so happy to play with you today—what would you like to do?`,
-                    activeToyItem.voicePitch
+                    voiceSettings.sweetnessPitch
                   );
                 }}
                 className="upload-3d-btn"
-                style={{ padding: '7px 10px' }}
               >
-                👋 Toy Greet {childName} by Name
+                👋 Greet {childName} in Sweet Girl Voice
               </button>
             </div>
 
-            {/* 2. CHANGEABLE 3D CARTOON ARTWORK STAGE WORLD (MOVED FROM CANVAS TO LEFT SIDEBAR) */}
+            {/* 3. CHANGEABLE 3D CARTOON ARTWORK STAGE WORLD */}
             <div className="sidebar-card">
-              <span className="sidebar-tag">🎨 3D Cartoon Artwork Stage</span>
-              <h3 className="sidebar-subheading">Change Cartoon World</h3>
-              <div className="character-list" style={{ maxHeight: 165 }}>
+              <div className="sidebar-card-top-row">
+                <span className="sidebar-tag">🎨 3D Cartoon Stage World</span>
+              </div>
+              <h3 className="sidebar-subheading">Change 3D Cartoon World</h3>
+              <div className="character-list" style={{ maxHeight: 160 }}>
                 {CARTOON_STAGE_ENVIRONMENTS.map((env) => {
                   const isSelected = stageEnv === env.id;
                   return (
@@ -4454,7 +4614,7 @@ export const FullCameraARExperience: React.FC = () => {
                         triggerToyCartoonJump();
                         speakAsToy(
                           `Yay ${childName}, look at our ${env.name} cartoon world!`,
-                          activeToyItem.voicePitch
+                          voiceSettings.sweetnessPitch
                         );
                       }}
                       className={`character-item-btn ${isSelected ? 'selected' : ''}`}
@@ -4470,9 +4630,11 @@ export const FullCameraARExperience: React.FC = () => {
               </div>
             </div>
 
-            {/* 3. UPLOAD FAVOURITE TOY PHOTO -> 3D MODEL */}
+            {/* 4. UPLOAD FAVOURITE TOY PHOTO -> 3D MODEL */}
             <div className="sidebar-card upload-toy-box">
-              <span className="sidebar-tag">✨ Photo ➔ Live 3D Toy</span>
+              <div className="sidebar-card-top-row">
+                <span className="sidebar-tag">✨ Photo ➔ Live 3D Toy</span>
+              </div>
               <h2 className="sidebar-heading">Upload Favourite Toy</h2>
               <input
                 type="text"
@@ -4519,7 +4681,7 @@ export const FullCameraARExperience: React.FC = () => {
                           ct.secondaryColor,
                           ct.texture
                         );
-                        speakAsToy(ct.greeting, ct.voicePitch);
+                        speakAsToy(ct.greeting, voiceSettings.sweetnessPitch);
                       }}
                       className={`character-item-btn ${
                         activeCustomToy?.id === ct.id ? 'selected' : ''
@@ -4536,10 +4698,13 @@ export const FullCameraARExperience: React.FC = () => {
               )}
             </div>
 
-            {/* 4. PRE-BUILT 3D TOY FRIENDS */}
+            {/* 5. PRE-BUILT 3D TOY FRIENDS */}
             <div className="sidebar-card">
+              <div className="sidebar-card-top-row">
+                <span className="sidebar-tag">🧸 19 Pre-Built 3D Toys</span>
+              </div>
               <h3 className="sidebar-subheading">
-                🧸 Choose 3D Toy Friend ({PREBUILT_3D_TOY_CATALOG.length})
+                Choose 3D Toy Friend ({PREBUILT_3D_TOY_CATALOG.length})
               </h3>
               <div className="preset-mini-row">
                 {(
@@ -4562,7 +4727,7 @@ export const FullCameraARExperience: React.FC = () => {
                 ))}
               </div>
 
-              <div className="character-list" style={{ marginTop: 6 }}>
+              <div className="character-list" style={{ marginTop: 4 }}>
                 {filteredCatalog.map((item) => {
                   const isSelected = !activeCustomToy && activeToyItem.id === item.id;
                   return (
@@ -4680,26 +4845,16 @@ export const FullCameraARExperience: React.FC = () => {
            ================================================================= */}
         {rightSidebarExpanded && (
           <aside className="studio-right-sidebar">
-            {/* Collapse Right Sidebar Bar */}
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                gap: 6,
-                padding: '2px 4px',
-              }}
-            >
-              <span style={{ fontSize: 11, fontWeight: 900, color: '#9a3412' }}>
-                🎬 Camera, 30 Actions &amp; 20 Games
-              </span>
+            {/* Sticky Non-Overlapping Right Sidebar Header Row */}
+            <div className="sidebar-header-row">
+              <span className="sidebar-header-title">🎬 Camera, 30 Actions &amp; 20 Games</span>
               <button
                 type="button"
                 onClick={() => setRightSidebarExpanded(false)}
                 className="preset-mini-btn"
                 title="Hide Right Sidebar for maximum 3D Stage width"
               >
-                ▶ Hide Right Bar
+                Hide ▶
               </button>
             </div>
 
@@ -4719,11 +4874,8 @@ export const FullCameraARExperience: React.FC = () => {
                 onPointerDown={() => {
                   isDraggingWebcamRef.current = true;
                 }}
+                className="sidebar-card-top-row"
                 style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  gap: 6,
                   cursor: 'grab',
                   userSelect: 'none',
                 }}
@@ -4733,7 +4885,7 @@ export const FullCameraARExperience: React.FC = () => {
                   <span className="ar-pulse-dot" style={{ display: 'inline-block', marginRight: 4 }} />
                   🎥 {childName}&apos;s Camera (✋ Drag)
                 </span>
-                <div style={{ display: 'flex', gap: 4 }}>
+                <div style={{ display: 'flex', gap: 4, flexShrink: 0 }}>
                   {(webcamDragOffset.x !== 0 || webcamDragOffset.y !== 0) && (
                     <button
                       type="button"
@@ -4830,12 +4982,12 @@ export const FullCameraARExperience: React.FC = () => {
               )}
             </div>
 
-            {/* 2. TOY LIVE TURN-TAKING SPEECH & CO-PLAY RESPONSE (MOVED FROM CANVAS TO SIDEBAR) */}
+            {/* 2. TOY LIVE TURN-TAKING SPEECH & CO-PLAY RESPONSE */}
             <div className="sidebar-card">
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 6 }}>
+              <div className="sidebar-card-top-row">
                 <span className="sidebar-tag">
                   {toyIsTalking
-                    ? `👧✨ Talking to ${childName}`
+                    ? `👧✨ Talking (${voiceSettings.sweetnessPitch.toFixed(2)}x Girl Voice)`
                     : waitingForChildReply
                     ? `👂 Waiting for ${childName}`
                     : `👧 ${activeToyItem.emoji} ${
@@ -4844,9 +4996,9 @@ export const FullCameraARExperience: React.FC = () => {
                 </span>
                 <button
                   type="button"
-                  onClick={() => speakAsToy(toySpeechBubble, activeToyItem.voicePitch)}
+                  onClick={() => speakAsToy(toySpeechBubble, voiceSettings.sweetnessPitch)}
                   className="preset-mini-btn"
-                  title="Replay Toy Voice"
+                  title="Replay Toy Voice in Sweet Small Girl Voice"
                 >
                   👧 Repeat
                 </button>
@@ -4854,7 +5006,7 @@ export const FullCameraARExperience: React.FC = () => {
 
               <div
                 style={{
-                  fontSize: 12.5,
+                  fontSize: 12,
                   fontWeight: 800,
                   color: '#451a03',
                   background: '#fffbeb',
@@ -4862,22 +5014,18 @@ export const FullCameraARExperience: React.FC = () => {
                   borderRadius: 10,
                   padding: '8px 10px',
                   lineHeight: 1.35,
+                  wordBreak: 'break-word',
                 }}
               >
                 &ldquo;{toySpeechBubble}&rdquo;
               </div>
 
-              <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+              <div className="tool-btn-grid">
                 <button
                   type="button"
                   onClick={() => acceptActiveToyProposal()}
-                  className="upload-3d-btn"
-                  style={{
-                    flex: 1,
-                    padding: '7px 8px',
-                    fontSize: 11,
-                    background: 'linear-gradient(135deg, #10b981, #059669)',
-                  }}
+                  className="sidebar-tool-btn active"
+                  title="Accept the toy's activity suggestion"
                 >
                   👍 Yes, Let&apos;s Play!
                 </button>
@@ -4887,19 +5035,13 @@ export const FullCameraARExperience: React.FC = () => {
                     triggerToyKickFootballNow();
                     speakAsToy(
                       `Goal time, ${childName}! Watch me run across the 3D field and kick the football into the net!`,
-                      activeToyItem.voicePitch
+                      voiceSettings.sweetnessPitch
                     );
                   }}
-                  className="upload-3d-btn"
-                  style={{
-                    flex: 1,
-                    padding: '7px 8px',
-                    fontSize: 11,
-                    background: 'linear-gradient(135deg, #2563eb, #1d4ed8)',
-                  }}
+                  className="sidebar-tool-btn"
                   title="Make the 3D Toy run across the field and kick the 3D Soccer Ball into the 3D Goal!"
                 >
-                  ⚽ Kick 3D Football!
+                  ⚽ Kick 3D Football
                 </button>
                 {bubblesRef.current.length > 0 && (
                   <button
@@ -4908,18 +5050,14 @@ export const FullCameraARExperience: React.FC = () => {
                       triggerToyHandPopNow();
                       speakAsToy(
                         `Wheee! Watch me run and jump high in 3D to catch a bubble with you, ${childName}!`,
-                        activeToyItem.voicePitch
+                        voiceSettings.sweetnessPitch
                       );
                     }}
-                    className="upload-3d-btn"
-                    style={{
-                      flex: 1,
-                      padding: '7px 8px',
-                      fontSize: 11,
-                    }}
+                    className="sidebar-tool-btn"
+                    style={{ gridColumn: '1 / -1' }}
                     title="Make the 3D Toy physically run and jump up in 3D space to catch and pop a 3D bubble!"
                   >
-                    🦘 Jump &amp; Catch 3D!
+                    🦘 Toy Run, Jump &amp; Catch 3D Bubble!
                   </button>
                 )}
               </div>
@@ -4927,15 +5065,17 @@ export const FullCameraARExperience: React.FC = () => {
 
             {/* 3. ACTIVE CO-PLAY SCOREBOARD & 20 SKILL GAMES / MATH / PHYSICAL / SONG / DRAW CONTROLS */}
             <div className="sidebar-card">
-              <span className="sidebar-tag">🤝 Two-Sided 3D Co-Play &amp; Game Controls</span>
+              <div className="sidebar-card-top-row">
+                <span className="sidebar-tag">🤝 Two-Sided 3D Co-Play &amp; Game</span>
+                <span className="math-stars-pill" style={{ fontSize: 10.5, padding: '2px 7px' }}>
+                  ⭐ {mathScore}
+                </span>
+              </div>
 
               {/* Two-Sided Hand Pop Scoreboard */}
               <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap' }}>
                 <span className="math-stars-pill" style={{ fontSize: 10.5, padding: '3px 8px' }}>
-                  👧 {childName}: {childPopCount} 🤝 🦘 Toy 3D Catch: {toyPopCount}
-                </span>
-                <span className="math-stars-pill" style={{ fontSize: 10.5, padding: '3px 8px' }}>
-                  ⭐ Stars: {mathScore}
+                  👧 {childName}: {childPopCount} 🤝 🦘 Toy Catch: {toyPopCount}
                 </span>
               </div>
 
@@ -5253,7 +5393,9 @@ export const FullCameraARExperience: React.FC = () => {
 
             {/* 3B. 20 INTELLIGENT PERSONAL, SOCIAL & DEVELOPMENTAL GAMES CATALOG BROWSER */}
             <div className="sidebar-card">
-              <span className="sidebar-tag">🎓 20 Intelligent Skill Games</span>
+              <div className="sidebar-card-top-row">
+                <span className="sidebar-tag">🎓 20 Intelligent Skill Games</span>
+              </div>
               <h3 className="sidebar-subheading">
                 Personal, Social &amp; Skill Games ({INTELLIGENT_20_GAMES_CATALOG.length})
               </h3>
@@ -5299,15 +5441,8 @@ export const FullCameraARExperience: React.FC = () => {
 
             {/* 4. AUTONOMOUS CHILD BRAIN & 30 HUMAN-CHILD 3D ACTIVITIES (THINKS & DECIDES BASED ON CHILD BEHAVIOR!) */}
             <div className="sidebar-card">
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  gap: 6,
-                }}
-              >
-                <span className="sidebar-tag">🧠 Toy&apos;s Mind &amp; 30 Child Actions</span>
+              <div className="sidebar-card-top-row">
+                <span className="sidebar-tag">🧠 Toy&apos;s Mind &amp; 30 Actions</span>
                 <button
                   type="button"
                   onClick={() => {
@@ -5340,18 +5475,29 @@ export const FullCameraARExperience: React.FC = () => {
               >
                 <div
                   style={{
-                    fontSize: 11.5,
+                    fontSize: 11,
                     fontWeight: 900,
                     color: '#9a3412',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'space-between',
+                    gap: 6,
                   }}
                 >
-                  <span>
+                  <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                     {toyThoughtDecision.emoji} {toyThoughtDecision.decisionLabel}
                   </span>
-                  <span style={{ fontSize: 9.5, color: '#b45309', fontWeight: 700 }}>
+                  <span
+                    style={{
+                      fontSize: 9.5,
+                      color: '#b45309',
+                      fontWeight: 700,
+                      whiteSpace: 'nowrap',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      maxWidth: '45%',
+                    }}
+                  >
                     {activeClipLabel}
                   </span>
                 </div>
@@ -5582,7 +5728,9 @@ export const FullCameraARExperience: React.FC = () => {
 
             {/* 5. ASK TOY TO DRAW FOR THE CHILD + SIMPLE COLOUR PICKER */}
             <div className="sidebar-card">
-              <span className="sidebar-tag">🎨 Toy Draws For {childName}</span>
+              <div className="sidebar-card-top-row">
+                <span className="sidebar-tag">🎨 Toy Draws For {childName}</span>
+              </div>
               <h3 className="sidebar-subheading">Ask Toy to Draw</h3>
               <div className="tool-btn-grid">
                 {[

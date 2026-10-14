@@ -110,12 +110,86 @@ export function stopAllAudioAndSpeech(): void {
   activeOscillators = [];
 }
 
+export type SmallGirlVoicePreset =
+  | 'sweet_small_girl_5y'
+  | 'cute_little_girl_4y'
+  | 'cartoon_girl_6y'
+  | 'gentle_sister_8y';
+
+export interface ToyVoiceSettings {
+  preset: SmallGirlVoicePreset;
+  /** 1.15 (gentle sister) to 1.75 (tiny fairy girl). Default: 1.48 */
+  sweetnessPitch: number;
+  /** 0.80 (slow & calm) to 1.15 (upbeat). Default: 0.98 */
+  speechSpeed: number;
+  /** Play cute sparkle music-box chime before toy speaks */
+  giggleChimeEnabled: boolean;
+}
+
+const currentVoiceSettings: ToyVoiceSettings = {
+  preset: 'sweet_small_girl_5y',
+  sweetnessPitch: 1.48,
+  speechSpeed: 0.98,
+  giggleChimeEnabled: true,
+};
+
+export function getToyVoiceSettings(): ToyVoiceSettings {
+  return { ...currentVoiceSettings };
+}
+
+export function updateToyVoiceSettings(partial: Partial<ToyVoiceSettings>): ToyVoiceSettings {
+  Object.assign(currentVoiceSettings, partial);
+  return { ...currentVoiceSettings };
+}
+
+export const SMALL_GIRL_VOICE_PRESETS: Array<{
+  id: SmallGirlVoicePreset;
+  label: string;
+  sub: string;
+  emoji: string;
+  defaultPitch: number;
+  defaultSpeed: number;
+}> = [
+  {
+    id: 'sweet_small_girl_5y',
+    label: 'Sweet 5y Small Girl',
+    sub: 'Ana Neural · Warm & Cute Peer',
+    emoji: '👧',
+    defaultPitch: 1.48,
+    defaultSpeed: 0.98,
+  },
+  {
+    id: 'cute_little_girl_4y',
+    label: 'Tiny 4y Little Girl',
+    sub: 'Maisie Neural · Ultra-Sweet',
+    emoji: '🧚‍♀️',
+    defaultPitch: 1.58,
+    defaultSpeed: 0.96,
+  },
+  {
+    id: 'cartoon_girl_6y',
+    label: 'Playful 6y Cartoon Girl',
+    sub: 'Animated Movie Child Voice',
+    emoji: '🎀',
+    defaultPitch: 1.64,
+    defaultSpeed: 1.02,
+  },
+  {
+    id: 'gentle_sister_8y',
+    label: 'Gentle 8y Sister Voice',
+    sub: 'Softer & Slower Child Friend',
+    emoji: '🌸',
+    defaultPitch: 1.34,
+    defaultSpeed: 0.92,
+  },
+];
+
 /**
  * Plays a cute, gentle cartoon sparkle-giggle chime right before the 3D toy speaks,
  * giving the 3D character a sweet, animated cartoon-movie personality.
  */
 export function playCuteChildGiggleChime(sensory: SensoryProfile): void {
-  if (sensory.quiet_mode) return;
+  if (sensory.quiet_mode || !currentVoiceSettings.giggleChimeEnabled) return;
   // High, sweet music-box notes: G5 (783.99 Hz) -> A5 (880 Hz) -> C6 (1046.5 Hz)
   playPentatonicNote(783.99, sensory, 'kalimba', 0.16);
   setTimeout(() => {
@@ -127,9 +201,10 @@ export function playCuteChildGiggleChime(sensory: SensoryProfile): void {
 }
 
 /**
- * Speaks as the 3D Toy Character using a Natural Sweet Child-Girl Cartoon Voice!
- * Primary: Streams Microsoft 'en-US-AnaNeural' (sweet young child girl voice) from FastAPI `/api/tts/speak`.
- * Fallback: Uses a female/girl browser voice (never male David/Mark) at sweet child pitch (1.44).
+ * Speaks as the 3D Toy Character using a Natural Sweet Small Girl Cartoon Voice!
+ * Primary: Streams Microsoft 'en-US-AnaNeural' or 'en-GB-MaisieNeural' (genuine young child girl voices)
+ * from FastAPI `/api/tts/speak` with customizable sweetness pitch & speed.
+ * Fallback: Uses a female/girl browser voice (never male David/Mark) at sweet small girl pitch.
  */
 export async function speakAsSweetChildGirlToy(
   text: string,
@@ -152,39 +227,64 @@ export async function speakAsSweetChildGirlToy(
   playCuteChildGiggleChime(sensory);
   options?.onStart?.();
 
-  const cacheKey = `toy_child_girl::${text.trim()}`;
+  const vs = currentVoiceSettings;
+  // Map sweetnessPitch (1.15..1.75) to neural pitch_hz (+2Hz..+24Hz)
+  const pitchHz = Math.round((vs.sweetnessPitch - 1.15) * 36) + 2;
+  const ratePct = Math.round((vs.speechSpeed - 1.0) * 100);
+
+  const cacheKey = `toy_child_girl::${vs.preset}::${pitchHz}::${ratePct}::${text.trim()}`;
   try {
-    let blobUrl = neuralAudioBlobCache.get(cacheKey);
-    if (!blobUrl) {
+    let cachedEntry = neuralAudioBlobCache.get(cacheKey);
+    let isEdgeNeural = true;
+    if (!cachedEntry) {
       const res = await fetch('http://localhost:8085/api/tts/speak', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           text: text.trim(),
           persona: 'toy_child_girl',
+          voice_preset: vs.preset,
+          pitch_hz: pitchHz,
+          rate_pct: ratePct,
         }),
       });
       if (res.ok) {
+        const engineHeader = res.headers.get('X-Voice-Engine') || '';
+        isEdgeNeural = engineHeader.startsWith('edge-tts');
         const blob = await res.blob();
-        blobUrl = URL.createObjectURL(blob);
-        neuralAudioBlobCache.set(cacheKey, blobUrl);
+        const blobUrl = URL.createObjectURL(blob);
+        cachedEntry = `${isEdgeNeural ? 'edge' : 'fallback'}|${blobUrl}`;
+        neuralAudioBlobCache.set(cacheKey, cachedEntry);
       }
     }
 
     if (reqId !== currentSpeechRequestId) return;
 
-    if (blobUrl) {
+    if (cachedEntry) {
+      const [engineType, blobUrl] = cachedEntry.includes('|')
+        ? cachedEntry.split('|', 2)
+        : ['edge', cachedEntry];
       const audio = new Audio(blobUrl) as HTMLAudioElement & {
         preservesPitch?: boolean;
         webkitPreservesPitch?: boolean;
         mozPreservesPitch?: boolean;
       };
-      // Shift both fundamental pitch (F0) and vocal-tract formants (F1/F2/F3) up by +24%
-      // so the neural female voice becomes a natural, sweet 6-year-old cartoon little girl voice!
-      audio.preservesPitch = false;
-      audio.webkitPreservesPitch = false;
-      audio.mozPreservesPitch = false;
-      audio.playbackRate = 1.24;
+
+      if (engineType === 'edge') {
+        // Genuine Microsoft AnaNeural / MaisieNeural small girl voice already has child vocal tract & pitch!
+        // Apply gentle fine-tuned playback rate while keeping natural child cadence.
+        const gentleShift = 1.0 + Math.max(-0.06, Math.min(0.14, (vs.sweetnessPitch - 1.45) * 0.25));
+        audio.preservesPitch = false;
+        audio.webkitPreservesPitch = false;
+        audio.mozPreservesPitch = false;
+        audio.playbackRate = Number((gentleShift * vs.speechSpeed).toFixed(2));
+      } else {
+        // Fallback adult stream -> shift formants & pitch up into a sweet small girl voice
+        audio.preservesPitch = false;
+        audio.webkitPreservesPitch = false;
+        audio.mozPreservesPitch = false;
+        audio.playbackRate = Math.min(1.38, Math.max(1.18, vs.sweetnessPitch * 0.85));
+      }
 
       const normalizedVol = Math.min(1.0, Math.max(0.2, (sensory.max_volume_db || 72) / 85));
       audio.volume = sensory.quiet_mode ? 0.25 : normalizedVol;
@@ -210,7 +310,7 @@ export async function speakAsSweetChildGirlToy(
 
 /**
  * Speaks App Settings, Camera Controls, and Activity Directions using a Calm, Warm Adult Voice!
- * Primary: Streams natural adult neural audio (en-GB) from FastAPI `/api/tts/speak` at calm adult pitch (1.0x).
+ * Primary: Streams natural adult neural audio (en-GB-SoniaNeural) from FastAPI `/api/tts/speak`.
  * Fallback: Uses a natural adult voice (`pitch = 1.0`, `rate = 0.95`) in the browser.
  */
 export async function speakAsAdultAppGuide(
@@ -309,9 +409,10 @@ function speakBrowserFallback(
   }
 
   if (persona === 'toy_child_girl') {
-    // Sweet, high-pitched little girl cartoon voice
-    u.pitch = Math.min(1.65, Math.max(1.36, options?.pitchBoost || 1.45));
-    u.rate = 1.02;
+    const vs = currentVoiceSettings;
+    // Sweet, high-pitched small girl cartoon voice
+    u.pitch = Math.min(1.8, Math.max(1.25, vs.sweetnessPitch || options?.pitchBoost || 1.48));
+    u.rate = Math.min(1.18, Math.max(0.82, vs.speechSpeed || 0.98));
   } else {
     // Calm, warm adult voice for App Settings & Directions
     u.pitch = 1.0;

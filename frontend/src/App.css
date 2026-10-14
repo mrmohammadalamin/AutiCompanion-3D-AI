@@ -2488,55 +2488,70 @@ body, html {
   color: #451a03;
   overflow: hidden;
   user-select: none;
+  box-sizing: border-box;
 }
 
-/* 1. TOP BAR: WARM SUNNY CREAM & HONEY GOLD */
+/* 1. TOP BAR: WARM SUNNY CREAM & HONEY GOLD (NON-OVERLAPPING FLEX WRAP) */
 .studio-top-bar {
-  height: 64px;
+  min-height: 60px;
+  height: auto;
   background: linear-gradient(90deg, #fffbeb 0%, #fef3c7 50%, #ffedd5 100%);
   border-bottom: 2.5px solid #fbbf24;
-  padding: 0 16px;
+  padding: 7px 14px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 14px;
+  gap: 8px 12px;
+  flex-wrap: wrap;
   flex-shrink: 0;
-  z-index: 20;
+  z-index: 25;
   box-shadow: 0 4px 14px rgba(217, 119, 6, 0.12);
+  box-sizing: border-box;
 }
 
 .studio-brand-block {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 9px;
+  min-width: 0;
+  flex: 0 1 auto;
 }
 
 .studio-logo-badge {
-  width: 40px;
-  height: 40px;
-  border-radius: 13px;
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
   background: linear-gradient(135deg, #f97316, #ec4899);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 21px;
+  font-size: 19px;
+  flex-shrink: 0;
   box-shadow: 0 3px 10px rgba(249, 115, 22, 0.35);
 }
 
 .studio-main-title {
   margin: 0;
-  font-size: 15.5px;
+  font-size: 14px;
   font-weight: 900;
   color: #451a03;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .studio-mode-sub {
-  font-size: 11.5px;
+  font-size: 11px;
   color: #78350f;
   display: flex;
-  gap: 6px;
+  gap: 5px;
   align-items: center;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 2px;
 }
 
 .studio-mode-sub strong {
@@ -2546,21 +2561,24 @@ body, html {
 .toy-talk-bar {
   display: flex;
   align-items: center;
-  gap: 7px;
-  flex: 1;
-  max-width: 570px;
+  gap: 6px;
+  flex: 1 1 320px;
+  min-width: 260px;
+  max-width: 500px;
 }
 
 .toy-mic-btn {
   background: #ffe4e6;
   border: 2px solid #fb7185;
   color: #9f1239;
-  border-radius: 11px;
-  padding: 7px 11px;
-  font-size: 12px;
+  border-radius: 10px;
+  padding: 6px 10px;
+  font-size: 11.5px;
   font-weight: 800;
   cursor: pointer;
   white-space: nowrap;
+  flex-shrink: 0;
+  line-height: 1.2;
 }
 
 .toy-mic-btn.listening {
@@ -2579,51 +2597,69 @@ body, html {
 .toy-talk-form {
   display: flex;
   flex: 1;
-  gap: 6px;
+  min-width: 0;
+  gap: 5px;
 }
 
 .toy-talk-input {
   flex: 1;
+  min-width: 110px;
   background: #ffffff;
   color: #451a03;
   border: 2px solid #fcd34d;
-  border-radius: 11px;
-  padding: 7px 11px;
-  font-size: 12.5px;
+  border-radius: 10px;
+  padding: 6px 10px;
+  font-size: 12px;
   font-weight: 600;
 }
 
 .toy-talk-input::placeholder {
   color: #b45309;
-  opacity: 0.7;
+  opacity: 0.72;
 }
 
 .toy-talk-send {
   background: linear-gradient(135deg, #f97316, #ea580c);
   color: #ffffff;
   border: none;
-  border-radius: 11px;
-  padding: 7px 13px;
-  font-size: 12px;
+  border-radius: 10px;
+  padding: 6px 11px;
+  font-size: 11.5px;
   font-weight: 800;
   cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
   box-shadow: 0 3px 8px rgba(234, 88, 12, 0.3);
 }
 
 .top-expression-pills {
   display: flex;
-  gap: 6px;
+  align-items: center;
+  gap: 5px;
+  flex-wrap: wrap;
+  flex-shrink: 0;
 }
 
 .expr-pill {
   background: #ffffff;
   color: #78350f;
   border: 2px solid #fde68a;
-  border-radius: 11px;
-  padding: 6px 10px;
-  font-size: 12px;
+  border-radius: 10px;
+  padding: 5px 9px;
+  font-size: 11.5px;
   font-weight: 800;
   cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  line-height: 1.2;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.expr-pill:hover {
+  border-color: #fb923c;
+  background: #fff7ed;
 }
 
 .expr-pill.active-smile {
@@ -2660,15 +2696,19 @@ body, html {
 
 .studio-left-sidebar,
 .studio-right-sidebar {
-  width: 274px;
+  width: 306px;
   background: linear-gradient(180deg, #fffbeb 0%, #fff7ed 100%);
   padding: 10px;
   display: flex;
   flex-direction: column;
   gap: 10px;
   overflow-y: auto;
+  overflow-x: hidden;
   flex-shrink: 0;
   z-index: 15;
+  box-sizing: border-box;
+  scrollbar-width: thin;
+  scrollbar-color: #fbbf24 #fffbeb;
 }
 
 .studio-left-sidebar {
@@ -2679,14 +2719,41 @@ body, html {
   border-left: 2.5px solid #fde68a;
 }
 
+/* Sticky Non-Overlapping Sidebar Top Header Bar */
+.sidebar-panel-header {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  background: linear-gradient(90deg, #fef3c7, #ffedd5);
+  border: 1.5px solid #fbbf24;
+  border-radius: 12px;
+  padding: 6px 10px;
+  box-shadow: 0 2px 6px rgba(217, 119, 6, 0.08);
+}
+
+.sidebar-panel-title {
+  font-size: 11.5px;
+  font-weight: 900;
+  color: #9a3412;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Toolbox Card — CRITICAL: flex-shrink: 0 prevents Flexbox from squashing cards and overlapping children! */
 .sidebar-card {
+  flex-shrink: 0;
+  width: 100%;
+  box-sizing: border-box;
   background: #ffffff;
   border: 2px solid #fde68a;
-  border-radius: 16px;
+  border-radius: 15px;
   padding: 11px;
   display: flex;
   flex-direction: column;
-  gap: 7px;
+  gap: 8px;
   box-shadow: 0 4px 12px rgba(217, 119, 6, 0.08);
 }
 
@@ -2695,9 +2762,22 @@ body, html {
   border-color: #fbbf24;
 }
 
+.sidebar-card.voice-settings-box {
+  background: linear-gradient(160deg, #fff1f2, #fce7f3);
+  border-color: #f472b6;
+}
+
 .sidebar-card.upload-toy-box {
-  background: linear-gradient(160deg, #fff1f2, #ffedd5);
-  border-color: #fda4af;
+  background: linear-gradient(160deg, #fff7ed, #ffedd5);
+  border-color: #fdba74;
+}
+
+.toolbox-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  flex-wrap: wrap;
 }
 
 .sidebar-tag {
@@ -2706,30 +2786,38 @@ body, html {
   text-transform: uppercase;
   color: #ea580c;
   letter-spacing: 0.04em;
+  line-height: 1.2;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
 }
 
 .sidebar-heading {
   margin: 0;
-  font-size: 14px;
+  font-size: 13.5px;
   font-weight: 900;
   color: #451a03;
+  line-height: 1.25;
 }
 
 .sidebar-subheading {
   margin: 0;
-  font-size: 13px;
+  font-size: 12.5px;
   font-weight: 900;
   color: #78350f;
+  line-height: 1.25;
 }
 
 .sidebar-desc {
   margin: 0;
-  font-size: 11.5px;
+  font-size: 11px;
   color: #92400e;
   line-height: 1.35;
 }
 
 .sidebar-text-input {
+  width: 100%;
+  box-sizing: border-box;
   background: #fffbeb;
   color: #451a03;
   border: 1.5px solid #fcd34d;
@@ -2737,24 +2825,34 @@ body, html {
   padding: 6px 9px;
   font-size: 12px;
   font-weight: 700;
+  line-height: 1.25;
 }
 
 .upload-3d-btn {
+  width: 100%;
+  box-sizing: border-box;
   background: linear-gradient(135deg, #f97316, #ec4899);
   color: #ffffff;
   border: none;
-  border-radius: 11px;
+  border-radius: 10px;
   padding: 8px 10px;
-  font-size: 12.5px;
+  font-size: 12px;
   font-weight: 800;
   cursor: pointer;
-  box-shadow: 0 4px 12px rgba(249, 115, 22, 0.3);
+  line-height: 1.25;
+  text-align: center;
+  box-shadow: 0 3px 10px rgba(249, 115, 22, 0.25);
+}
+
+.upload-3d-btn:hover {
+  filter: brightness(1.04);
 }
 
 .preset-mini-row {
   display: flex;
   flex-wrap: wrap;
-  gap: 4px;
+  gap: 5px;
+  align-items: center;
 }
 
 .preset-mini-btn {
@@ -2766,6 +2864,17 @@ body, html {
   font-size: 11px;
   font-weight: 800;
   cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  line-height: 1.2;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.preset-mini-btn:hover {
+  border-color: #fb923c;
+  background: #ffedd5;
 }
 
 .preset-mini-btn.active-cat {
@@ -2778,20 +2887,28 @@ body, html {
   display: flex;
   flex-direction: column;
   gap: 6px;
+  overflow-y: auto;
+  padding-right: 3px;
+  flex-shrink: 0;
+  scrollbar-width: thin;
 }
 
 .character-item-btn {
+  flex-shrink: 0;
+  width: 100%;
+  box-sizing: border-box;
+  min-width: 0;
   background: #fffbeb;
   color: #451a03;
   border: 2px solid #fde68a;
-  border-radius: 12px;
-  padding: 7px 10px;
+  border-radius: 11px;
+  padding: 7px 9px;
   display: flex;
   align-items: center;
-  gap: 9px;
+  gap: 8px;
   cursor: pointer;
   text-align: left;
-  transition: transform 0.12s ease;
+  transition: transform 0.12s ease, border-color 0.12s ease;
 }
 
 .character-item-btn:hover {
@@ -2802,33 +2919,75 @@ body, html {
 .character-item-btn.selected {
   border-color: #f97316;
   background: linear-gradient(135deg, #ffedd5, #fef3c7);
-  box-shadow: 0 3px 10px rgba(249, 115, 22, 0.18);
+  box-shadow: 0 3px 10px rgba(249, 115, 22, 0.16);
 }
 
 .char-icon {
-  font-size: 24px;
+  font-size: 21px;
+  flex-shrink: 0;
+  width: 26px;
+  text-align: center;
 }
 
 .char-info {
   display: flex;
   flex-direction: column;
+  min-width: 0;
+  flex: 1;
+  overflow: hidden;
 }
 
 .char-name {
-  font-size: 12.5px;
+  font-size: 12px;
   font-weight: 900;
   color: #451a03;
+  line-height: 1.25;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .char-sub {
-  font-size: 10.5px;
+  font-size: 10px;
   color: #b45309;
-  font-weight: 600;
+  font-weight: 700;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Voice Slider Row inside Sweet Girl Voice Settings Toolbox */
+.voice-slider-group {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  background: rgba(255, 255, 255, 0.85);
+  border: 1.5px solid #fbcfe8;
+  border-radius: 10px;
+  padding: 6px 9px;
+}
+
+.voice-slider-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 11px;
+  font-weight: 800;
+  color: #831843;
+}
+
+.voice-range-input {
+  width: 100%;
+  accent-color: #ec4899;
+  cursor: pointer;
+  margin: 0;
 }
 
 /* CENTRAL MAIN CARTOON ARTWORK STAGE */
 .studio-center-stage {
   flex: 1;
+  min-width: 0;
   position: relative;
   background: linear-gradient(180deg, #38bdf8 0%, #bae6fd 52%, #fef08a 74%, #86efac 100%);
   display: flex;
@@ -2846,149 +3005,15 @@ body, html {
   z-index: 3;
 }
 
-/* Live Turn-Taking Speech Bubble from the Child's 3D Toy */
-.toy-live-speech-banner {
-  position: absolute;
-  top: 10px;
-  left: 14px;
-  right: 14px;
-  z-index: 8;
-  background: rgba(255, 251, 235, 0.94);
-  backdrop-filter: blur(10px);
-  border: 2.5px solid #fbbf24;
-  border-radius: 16px;
-  padding: 8px 14px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  box-shadow: 0 6px 20px rgba(180, 83, 9, 0.18);
-}
-
-.toy-talking-indicator {
-  background: #fef3c7;
-  border: 1.5px solid #f59e0b;
-  color: #92400e;
-  padding: 4px 11px;
-  border-radius: 99px;
-  font-size: 11.5px;
-  font-weight: 900;
-  white-space: nowrap;
-}
-
-.toy-talking-indicator.speaking {
-  background: linear-gradient(135deg, #ec4899, #f97316);
-  border-color: #db2777;
-  color: #ffffff;
-}
-
-.toy-speech-text {
-  font-size: 14.5px;
-  font-weight: 800;
-  color: #451a03;
-  flex: 1;
-}
-
-.toy-replay-voice-btn {
-  background: #ffedd5;
-  color: #9a3412;
-  border: 1.5px solid #fdba74;
-  border-radius: 10px;
-  padding: 5px 11px;
-  font-size: 11.5px;
-  font-weight: 800;
-  cursor: pointer;
-  white-space: nowrap;
-}
-
-.canvas-math-floating-banner,
-.canvas-video-overlay-bar {
-  position: absolute;
-  top: 62px;
-  left: 14px;
-  right: 14px;
-  z-index: 8;
-  background: rgba(255, 255, 255, 0.93);
-  border: 2.5px solid #fb923c;
-  border-radius: 14px;
-  padding: 7px 14px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  flex-wrap: wrap;
-  font-size: 13px;
-  color: #451a03;
-  box-shadow: 0 6px 18px rgba(234, 88, 12, 0.16);
-}
-
 .math-stars-pill {
   background: #fef3c7;
   border: 1.5px solid #f59e0b;
   color: #92400e;
-  padding: 4px 11px;
+  padding: 4px 9px;
   border-radius: 99px;
   font-weight: 900;
-  font-size: 12px;
-}
-
-/* Changeable Cartoon Artwork Stage World Bar */
-.cartoon-world-switcher-bar {
-  position: absolute;
-  bottom: 10px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 9;
-  background: rgba(255, 251, 235, 0.92);
-  border: 2px solid #fbbf24;
-  border-radius: 99px;
-  padding: 5px 12px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  flex-wrap: wrap;
-  box-shadow: 0 6px 18px rgba(120, 53, 15, 0.2);
-}
-
-.cw-label {
   font-size: 11px;
-  font-weight: 900;
-  color: #92400e;
-  margin-right: 2px;
-}
-
-.cw-world-pill {
-  background: #ffffff;
-  color: #78350f;
-  border: 1.5px solid #fde68a;
-  border-radius: 99px;
-  padding: 4px 10px;
-  font-size: 11.5px;
-  font-weight: 800;
-  cursor: pointer;
   white-space: nowrap;
-}
-
-.cw-world-pill.active {
-  background: linear-gradient(135deg, #f97316, #ec4899);
-  border-color: #ea580c;
-  color: #ffffff;
-}
-
-.video-theme-btns {
-  display: flex;
-  gap: 6px;
-}
-
-.vid-btn {
-  background: #fff7ed;
-  color: #78350f;
-  border: 1.5px solid #fdba74;
-  border-radius: 9px;
-  padding: 5px 10px;
-  font-size: 11.5px;
-  font-weight: 800;
-  cursor: pointer;
 }
 
 .center-uploaded-video-layer {
@@ -3019,7 +3044,7 @@ body, html {
 }
 
 .wc-emoji {
-  font-size: 46px;
+  font-size: 42px;
 }
 
 .wc-sub {
@@ -3042,23 +3067,39 @@ body, html {
   user-select: none;
 }
 
-/* RIGHT SIDEBAR TOOLS */
+/* RIGHT SIDEBAR TOOLS & NON-OVERLAPPING 2-COLUMN GRID */
 .tool-btn-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 6px;
+  width: 100%;
+  box-sizing: border-box;
+  flex-shrink: 0;
 }
 
 .sidebar-tool-btn {
+  width: 100%;
+  min-width: 0;
+  min-height: 35px;
+  box-sizing: border-box;
   background: #fffbeb;
   color: #451a03;
-  border: 2px solid #fde68a;
-  border-radius: 10px;
-  padding: 7px 8px;
-  font-size: 11.5px;
+  border: 1.5px solid #fde68a;
+  border-radius: 9px;
+  padding: 6px 8px;
+  font-size: 11px;
   font-weight: 800;
+  line-height: 1.2;
   cursor: pointer;
-  transition: transform 0.1s ease;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 5px;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: transform 0.1s ease, background 0.1s ease;
 }
 
 .sidebar-tool-btn:hover {
@@ -3081,29 +3122,33 @@ body, html {
 
 /* 3. BOTTOM BAR: WARM STORYBOOK ACTIVITY SWITCHER */
 .studio-bottom-bar {
-  height: 74px;
+  min-height: 68px;
+  height: auto;
   background: linear-gradient(90deg, #fffbeb 0%, #fef3c7 50%, #ffedd5 100%);
   border-top: 2.5px solid #fbbf24;
-  padding: 0 14px;
+  padding: 6px 12px;
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: repeat(6, minmax(0, 1fr));
   gap: 8px;
   align-items: center;
   flex-shrink: 0;
   z-index: 20;
+  box-sizing: border-box;
 }
 
 .bottom-mode-btn {
+  min-width: 0;
   background: #ffffff;
   color: #451a03;
   border: 2px solid #fde68a;
-  border-radius: 14px;
-  padding: 7px 10px;
+  border-radius: 12px;
+  padding: 6px 9px;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 7px;
   cursor: pointer;
   text-align: left;
+  overflow: hidden;
   box-shadow: 0 3px 8px rgba(217, 119, 6, 0.08);
 }
 
@@ -3114,19 +3159,26 @@ body, html {
 }
 
 .bm-icon {
-  font-size: 22px;
+  font-size: 20px;
+  flex-shrink: 0;
 }
 
 .bm-title {
-  font-size: 12px;
+  font-size: 11.5px;
   font-weight: 900;
   color: #451a03;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .bm-sub {
-  font-size: 10px;
+  font-size: 9.5px;
   color: #92400e;
   font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* Three.js WebGL 3D Toy Layer inside Central Stage */
@@ -3151,7 +3203,7 @@ body, html {
 .edge-expand-tab {
   position: absolute;
   z-index: 30;
-  background: rgba(255, 251, 235, 0.94);
+  background: rgba(255, 251, 235, 0.95);
   backdrop-filter: blur(8px);
   color: #78350f;
   border: 2px solid #f59e0b;
@@ -3161,6 +3213,7 @@ body, html {
   display: flex;
   align-items: center;
   gap: 6px;
+  white-space: nowrap;
   box-shadow: 0 4px 14px rgba(180, 83, 9, 0.22);
   transition: transform 0.15s ease, background 0.15s ease;
 }
@@ -3203,5 +3256,6 @@ body, html {
   padding: 6px 13px;
   background: linear-gradient(135deg, #fffbeb, #fef3c7);
 }
+
 
 

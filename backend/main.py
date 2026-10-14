@@ -60,11 +60,15 @@ TTS_AUDIO_CACHE: Dict[str, bytes] = {}
 
 class NeuralTTSRequest(BaseModel):
     text: str
-    persona: str = "toy_child_girl"  # "toy_child_girl" (en-US-AnaNeural) or "adult_guide" (en-US-AriaNeural)
+    persona: str = "toy_child_girl"  # "toy_child_girl" or "adult_guide"
+    voice_preset: str = "sweet_small_girl_5y"  # "sweet_small_girl_5y" | "cute_little_girl_4y" | "cartoon_girl_6y" | "gentle_sister_8y"
+    pitch_hz: int = 10
+    rate_pct: int = -2
 
 
 import re
 import httpx
+import edge_tts
 
 
 def _split_tts_chunks(text: str, max_len: int = 175) -> List[str]:
@@ -82,7 +86,6 @@ def _split_tts_chunks(text: str, max_len: int = 175) -> List[str]:
             if len(sent) <= max_len:
                 current = sent
             else:
-                # Split on commas or spaces if a single sentence is very long
                 words = sent.split(" ")
                 temp = ""
                 for w in words:
@@ -101,19 +104,63 @@ def _split_tts_chunks(text: str, max_len: int = 175) -> List[str]:
 @app.post("/api/tts/speak")
 async def synthesize_neural_voice(req: NeuralTTSRequest) -> Response:
     """
-    Dual-Persona Neural TTS Engine:
-    - 'toy_child_girl': Synthesizes natural expressive neural audio (en-US) which is formant- & pitch-shifted
-      into a sweet young cartoon child-girl voice on playback.
-    - 'adult_guide': Synthesizes calm, warm adult neural audio (en-GB) for App Settings & Directions.
+    Dual-Persona Neural TTS Engine powered by Microsoft Edge Neural Voices (edge_tts):
+    - 'toy_child_girl': Uses genuine child-girl neural voices ('en-US-AnaNeural' / 'en-GB-MaisieNeural')
+      with sweet child pitch/rate shaping so the 3D toy sounds like a sweet small girl peer.
+    - 'adult_guide': Uses warm adult neural voice ('en-GB-SoniaNeural') for App Settings & Directions.
     """
     clean_text = (req.text or "").strip()
     if not clean_text:
         raise HTTPException(status_code=400, detail="Empty text")
 
-    cache_key = f"{req.persona}::{clean_text}"
+    cache_key = f"{req.persona}::{req.voice_preset}::{req.pitch_hz}::{req.rate_pct}::{clean_text}"
     if cache_key in TTS_AUDIO_CACHE:
         return Response(content=TTS_AUDIO_CACHE[cache_key], media_type="audio/mpeg")
 
+    # 1. Primary: Genuine Microsoft Neural Child Girl Voice via edge_tts
+    try:
+        if req.persona == "adult_guide":
+            voice_name = "en-GB-SoniaNeural"
+            pitch_str = "+0Hz"
+            rate_str = "-4%"
+        else:
+            preset_map = {
+                "sweet_small_girl_5y": ("en-US-AnaNeural", max(0, req.pitch_hz or 10), req.rate_pct if req.rate_pct is not None else -2),
+                "cute_little_girl_4y": ("en-GB-MaisieNeural", max(6, req.pitch_hz or 15), req.rate_pct if req.rate_pct is not None else -4),
+                "cartoon_girl_6y": ("en-US-AnaNeural", max(10, req.pitch_hz or 18), req.rate_pct if req.rate_pct is not None else 2),
+                "gentle_sister_8y": ("en-US-AnaNeural", max(0, req.pitch_hz or 4), req.rate_pct if req.rate_pct is not None else -8),
+            }
+            voice_name, p_hz, r_pct = preset_map.get(
+                req.voice_preset, ("en-US-AnaNeural", max(0, req.pitch_hz or 10), -2)
+            )
+            pitch_str = f"+{p_hz}Hz" if p_hz >= 0 else f"{p_hz}Hz"
+            rate_str = f"+{r_pct}%" if r_pct >= 0 else f"{r_pct}%"
+
+        communicate = edge_tts.Communicate(
+            clean_text,
+            voice_name,
+            pitch=pitch_str,
+            rate=rate_str,
+        )
+        audio_chunks: List[bytes] = []
+        async for chunk in communicate.stream():
+            if chunk["type"] == "audio" and chunk.get("data"):
+                audio_chunks.append(chunk["data"])
+
+        mp3_bytes = b"".join(audio_chunks)
+        if mp3_bytes:
+            if len(TTS_AUDIO_CACHE) > 250:
+                TTS_AUDIO_CACHE.clear()
+            TTS_AUDIO_CACHE[cache_key] = mp3_bytes
+            return Response(
+                content=mp3_bytes,
+                media_type="audio/mpeg",
+                headers={"X-Voice-Engine": f"edge-tts:{voice_name}"},
+            )
+    except Exception:
+        pass
+
+    # 2. Fallback: Google Translate TTS stream
     tl_lang = "en-gb" if req.persona == "adult_guide" else "en"
     chunks = _split_tts_chunks(clean_text)
 
@@ -136,10 +183,14 @@ async def synthesize_neural_voice(req: NeuralTTSRequest) -> Response:
 
         mp3_bytes = b"".join(audio_parts)
         if mp3_bytes:
-            if len(TTS_AUDIO_CACHE) > 200:
+            if len(TTS_AUDIO_CACHE) > 250:
                 TTS_AUDIO_CACHE.clear()
             TTS_AUDIO_CACHE[cache_key] = mp3_bytes
-            return Response(content=mp3_bytes, media_type="audio/mpeg")
+            return Response(
+                content=mp3_bytes,
+                media_type="audio/mpeg",
+                headers={"X-Voice-Engine": "fallback-translate-tts"},
+            )
     except Exception as exc:
         raise HTTPException(status_code=503, detail=f"Neural TTS unavailable: {exc}")
 
