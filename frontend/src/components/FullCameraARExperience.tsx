@@ -308,8 +308,10 @@ export const FullCameraARExperience: React.FC = () => {
     lastPopMs: 0,
   });
   const lastSpeechEndTimeRef = useRef<number>(0);
+  const speechRecRef = useRef<any>(null);
+  const interimSpeechTimerRef = useRef<number | null>(null);
 
-  // Real-Time Webcam Child Movement Tracking Refs (Normalized -1..+1)
+  // Real-Time Webcam Child Movement & Expression Tracking Refs (Normalized -1..+1)
   const childTrackRef = useRef<{
     x: number;
     y: number;
@@ -318,6 +320,7 @@ export const FullCameraARExperience: React.FC = () => {
     motionLevel: number;
     gestureLabel: string;
     waveAccumulator: number;
+    nodJumpAccumulator: number;
     lastGestureTime: number;
     lastRepTime: number;
   }>({
@@ -328,9 +331,11 @@ export const FullCameraARExperience: React.FC = () => {
     motionLevel: 0,
     gestureLabel: '👀 Toy Tracking Your Face & Movement',
     waveAccumulator: 0,
+    nodJumpAccumulator: 0,
     lastGestureTime: 0,
     lastRepTime: 0,
   });
+
 
   // Child Profile Configuration State (So Toy Addresses Child by Name & Matches Their Level!)
   const [childName, setChildName] = useState<string>('Mia');
@@ -870,34 +875,19 @@ export const FullCameraARExperience: React.FC = () => {
             : 1.0;
         rig.mixer.update(delta * mixerSpeed);
 
-        // 2. Proactive Two-Sided 3D Co-Play: Toy runs & jumps in 3D space to catch bubbles!
+        // 2. Cooperative Two-Sided 3D Co-Play: Toy only runs & jumps to catch a bubble when triggered
+        // by the child's turn (popping a bubble, speaking, waving) or during active webcam Bubble Party play!
         if (
           loco.state === 'idle' &&
           st.activeMotionClip === 'idle' &&
           bubblesRef.current.length > 0 &&
-          nowMs - handPlay.lastPopMs > 5800
+          st.canvasMode === 'ar_interactive_fun_bubbles' &&
+          track.motionLevel > 5.2 &&
+          !st.toyIsTalking &&
+          nowMs - handPlay.lastPopMs > 9500
         ) {
-          let chosenBubble = bubblesRef.current[0];
-          if (st.canvasMode === 'ar_cartoon_math_match') {
-            const distractors = bubblesRef.current.filter(
-              (b) =>
-                typeof b.value === 'number' &&
-                b.value !== computeMathAnswer(st.mathNumA, st.mathNumB, st.mathOp)
-            );
-            chosenBubble =
-              distractors.length > 1
-                ? distractors[Math.floor(Math.random() * distractors.length)]
-                : bubblesRef.current[Math.floor(Math.random() * bubblesRef.current.length)];
-          } else if (st.canvasMode === 'ar_intelligent_20_games') {
-            const distractors = bubblesRef.current.filter((b) => !b.isCorrectSkillChoice);
-            chosenBubble =
-              distractors.length > 0
-                ? distractors[Math.floor(Math.random() * distractors.length)]
-                : bubblesRef.current[0];
-          } else {
-            chosenBubble =
-              bubblesRef.current[Math.floor(Math.random() * bubblesRef.current.length)];
-          }
+          const chosenBubble =
+            bubblesRef.current[Math.floor(Math.random() * bubblesRef.current.length)];
           if (chosenBubble) {
             loco.state = 'run_to_catch_bubble';
             loco.targetBubbleId = chosenBubble.id;
@@ -911,6 +901,7 @@ export const FullCameraARExperience: React.FC = () => {
             playToyMotionClip(rig, 'walk');
           }
         }
+
 
         // 3. Execute Active 3D Locomotion State Machine
         let isRunning3D = false;
@@ -2083,7 +2074,7 @@ export const FullCameraARExperience: React.FC = () => {
     }
   };
 
-  // 3. REAL-TIME WEBCAM CHILD POSITION, MOVEMENT & PHYSICAL GAME REP TRACKER (12 FPS)
+  // 3. REAL-TIME WEBCAM CHILD POSITION, EXPRESSION, GESTURE & PHYSICAL GAME REP TRACKER (12 FPS)
   useEffect(() => {
     const timer = window.setInterval(() => {
       const video = videoRef.current;
@@ -2128,17 +2119,26 @@ export const FullCameraARExperience: React.FC = () => {
         const track = childTrackRef.current;
         track.motionLevel = avgMotion;
 
-        if (activePixels > 120) {
+        if (activePixels > 110) {
           const newX = Math.max(-0.95, Math.min(0.95, weightedX / activePixels));
           const newY = Math.max(-0.85, Math.min(0.85, weightedY / activePixels));
           const dx = Math.abs(newX - track.x);
+          const dy = Math.abs(newY - track.y);
           track.x = newX;
           track.y = newY;
 
-          if (dx > 0.18) {
-            track.waveAccumulator = Math.min(10, track.waveAccumulator + 2.2);
+          // Detect horizontal hand wave on webcam
+          if (dx > 0.16) {
+            track.waveAccumulator = Math.min(10, track.waveAccumulator + 2.3);
           } else {
-            track.waveAccumulator = Math.max(0, track.waveAccumulator - 0.5);
+            track.waveAccumulator = Math.max(0, track.waveAccumulator - 0.45);
+          }
+
+          // Detect vertical head nod / body jump on webcam
+          if (dy > 0.14 && dx < 0.22) {
+            track.nodJumpAccumulator = Math.min(10, track.nodJumpAccumulator + 2.3);
+          } else {
+            track.nodJumpAccumulator = Math.max(0, track.nodJumpAccumulator - 0.45);
           }
 
           const now = Date.now();
@@ -2147,7 +2147,7 @@ export const FullCameraARExperience: React.FC = () => {
           // Physical Action & Counting Game: Count child's physical jumps/waves on webcam!
           if (
             st.canvasMode === 'ar_physical_and_math_game' &&
-            avgMotion > 4.2 &&
+            avgMotion > 4.0 &&
             now - track.lastRepTime > 1600 &&
             !st.toyIsTalking
           ) {
@@ -2163,38 +2163,60 @@ export const FullCameraARExperience: React.FC = () => {
                 playGentleSuccessChime(DEFAULT_SENSORY);
                 setMathScore((s) => s + 1);
                 speakAsToy(
-                  `Yay ${st.childName}, we did all ${st.physicalRepTarget} ${st.physicalActionType}s together! Wanna do another round?`,
+                  `Yay ${st.childName}, we did all ${st.physicalRepTarget} ${st.physicalActionType}s together on camera! Wanna do another round?`,
                   activeToyItem.voicePitch
                 );
                 return 0;
               } else {
                 speakAsToy(
-                  `${nextRep}! Great ${st.physicalActionType}, ${st.childName}!`,
+                  `${nextRep}! Great ${st.physicalActionType}, ${st.childName}! Keep going with me!`,
                   activeToyItem.voicePitch
                 );
                 return nextRep;
               }
             });
           } else if (
-            track.waveAccumulator > 5.2 &&
-            now - track.lastGestureTime > 9500 &&
+            track.waveAccumulator > 4.8 &&
+            now - track.lastGestureTime > 11000 &&
             !st.toyIsTalking &&
-            now - lastSpeechEndTimeRef.current > 2800
+            now - lastSpeechEndTimeRef.current > 2400
           ) {
             track.lastGestureTime = now;
             track.waveAccumulator = 0;
             setTrackingStatusText(`👋 ${st.childName} Waved on Camera!`);
+            setLastHeardText(`👋 [Webcam Gesture: ${st.childName} Waved Hello]`);
             handleChildCooperationGesture();
+          } else if (
+            track.nodJumpAccumulator > 4.8 &&
+            now - track.lastGestureTime > 11000 &&
+            !st.toyIsTalking &&
+            now - lastSpeechEndTimeRef.current > 2400
+          ) {
+            track.lastGestureTime = now;
+            track.nodJumpAccumulator = 0;
+            setTrackingStatusText(`🦘 ${st.childName} Nodded / Jumped on Camera!`);
+            setLastHeardText(`🦘 [Webcam Gesture: ${st.childName} Jumped / Nodded Yes]`);
+            triggerToyCartoonJump();
+            updateToyThoughtCloud(
+              '🦘',
+              `I saw ${st.childName} jump or nod on the webcam—jumping together in 3D!`,
+              'Jumping Together!'
+            );
+            speakAsToy(
+              `Yay ${st.childName}, I see you jumping and nodding on the camera! Look at me jumping right back with you!`,
+              activeToyItem.voicePitch
+            );
           } else {
             const dirLabel =
               newX < -0.25 ? 'Left' : newX > 0.25 ? 'Right' : newY > 0.2 ? 'Up' : 'Center';
-            setTrackingStatusText(`👀 Tracking ${st.childName} (${dirLabel})`);
+            setTrackingStatusText(`👀 Watching ${st.childName} (${dirLabel})`);
           }
         } else {
           track.waveAccumulator = Math.max(0, track.waveAccumulator - 0.4);
+          track.nodJumpAccumulator = Math.max(0, track.nodJumpAccumulator - 0.4);
         }
 
-        // Draw live tracking reticle on the Right-Sidebar Webcam Overlay
+        // Draw live tracking reticle & expression/co-play badge on the Right-Sidebar Webcam Overlay
         if (tOverlay) {
           tOverlay.width = tOverlay.clientWidth || 240;
           tOverlay.height = tOverlay.clientHeight || 160;
@@ -2207,21 +2229,27 @@ export const FullCameraARExperience: React.FC = () => {
             oCtx.save();
             oCtx.beginPath();
             oCtx.arc(rx, ry, 24 + Math.min(14, avgMotion * 1.5), 0, Math.PI * 2);
-            oCtx.strokeStyle = avgMotion > 3.5 ? '#10b981' : '#f97316';
+            oCtx.strokeStyle = avgMotion > 3.2 ? '#10b981' : '#f97316';
             oCtx.lineWidth = 2.5;
             oCtx.setLineDash([5, 4]);
             oCtx.stroke();
 
-            oCtx.fillStyle = 'rgba(69, 26, 3, 0.78)';
+            oCtx.fillStyle = 'rgba(69, 26, 3, 0.82)';
             oCtx.fillRect(6, tOverlay.height - 24, tOverlay.width - 12, 18);
             oCtx.fillStyle = '#fef3c7';
             oCtx.font = '700 10px Inter, sans-serif';
+            const exprEmoji =
+              stateRef.current.facialExpression === 'smiling_happy'
+                ? '😊'
+                : stateRef.current.facialExpression === 'crying_distressed'
+                ? '😢'
+                : '😣';
             oCtx.fillText(
-              avgMotion > 3.5
-                ? `✨ ${stateRef.current.childName}'s Movement Synced!`
-                : `👀 Toy Watching ${stateRef.current.childName}`,
-              12,
-              tOverlay.height - 12
+              avgMotion > 3.2
+                ? `✨ ${exprEmoji} ${stateRef.current.childName} Moving — Toy Synced!`
+                : `👀 ${exprEmoji} Watching & Listening to ${stateRef.current.childName}`,
+              10,
+              tOverlay.height - 11
             );
             oCtx.restore();
           }
@@ -2233,9 +2261,12 @@ export const FullCameraARExperience: React.FC = () => {
     return () => window.clearInterval(timer);
   }, [activeToyItem.voicePitch]);
 
-  // 4. NATURAL TURN-TAKING VOICE RECOGNITION (PAUSES WHILE TOY SPEAKS SO TOY NEVER TALKS TO ITSELF!)
+  // 4. BULLETPROOF TWO-WAY VOICE RECOGNITION (LISTENS CONTINUOUSLY, SHOWS LIVE WORDS & RESUMES AFTER TOY SPEAKS!)
   useEffect(() => {
-    if (!alwaysListenEnabled) return;
+    if (!alwaysListenEnabled) {
+      setMicListening(false);
+      return;
+    }
     const SpeechRec =
       (window as unknown as { SpeechRecognition?: any; webkitSpeechRecognition?: any })
         .SpeechRecognition ||
@@ -2243,52 +2274,111 @@ export const FullCameraARExperience: React.FC = () => {
     if (!SpeechRec) return;
 
     let active = true;
+    let lastDispatchedText = '';
+    let lastDispatchedAt = 0;
+
+    const dispatchRecognizedSpeech = (cleanText: string) => {
+      const now = Date.now();
+      if (!cleanText || cleanText.length < 2) return;
+      if (cleanText === lastDispatchedText && now - lastDispatchedAt < 2200) return;
+      lastDispatchedText = cleanText;
+      lastDispatchedAt = now;
+      setWaitingForChildReply(false);
+      void triggerChildExpressionOrVoice(
+        stateRef.current.facialExpression,
+        'clear_speech',
+        cleanText
+      );
+    };
+
     let rec: any = null;
     try {
       rec = new SpeechRec();
+      speechRecRef.current = rec;
       rec.lang = 'en-US';
       rec.continuous = true;
-      rec.interimResults = false;
+      rec.interimResults = true;
+      rec.maxAlternatives = 1;
+
+      rec.onstart = () => {
+        if (active) setMicListening(true);
+      };
+
       rec.onresult = (ev: any) => {
-        // Echo Guard: Ignore microphone input while the toy is speaking or within 1.1s after finishing!
+        // Echo Guard: Ignore speaker output while the toy is actively speaking or 450ms after finishing
         if (
           stateRef.current.toyIsTalking ||
-          Date.now() - lastSpeechEndTimeRef.current < 1100
+          Date.now() - lastSpeechEndTimeRef.current < 450
         ) {
           return;
         }
         const lastIdx = ev.results.length - 1;
-        const transcript = ev.results[lastIdx]?.[0]?.transcript?.trim();
-        if (transcript && transcript.length > 1) {
-          setWaitingForChildReply(false);
-          triggerChildExpressionOrVoice(
-            stateRef.current.facialExpression,
-            'clear_speech',
-            transcript
-          );
+        const resultItem = ev.results[lastIdx];
+        const transcript = resultItem?.[0]?.transcript?.trim();
+        if (!transcript) return;
+
+        if (interimSpeechTimerRef.current) {
+          window.clearTimeout(interimSpeechTimerRef.current);
+          interimSpeechTimerRef.current = null;
+        }
+
+        if (resultItem.isFinal) {
+          dispatchRecognizedSpeech(transcript);
+        } else {
+          // Show live interim speech immediately so user sees the toy is hearing them!
+          setLastHeardText(`🎙️ "${transcript}..."`);
+          // Fallback timer if browser continuous mode delays isFinal on short words like "hello" or "jump"
+          interimSpeechTimerRef.current = window.setTimeout(() => {
+            if (!stateRef.current.toyIsTalking && transcript.length >= 2) {
+              dispatchRecognizedSpeech(transcript);
+            }
+          }, 950);
         }
       };
+
+      rec.onerror = () => {
+        // Keep active; watchdog below will cleanly restart recognition when ready
+      };
+
       rec.onend = () => {
-        if (active && alwaysListenEnabled) {
+        if (active && alwaysListenEnabled && !stateRef.current.toyIsTalking) {
           window.setTimeout(() => {
             if (active && alwaysListenEnabled && !stateRef.current.toyIsTalking) {
               try {
                 rec.start();
+                setMicListening(true);
               } catch {
-                // ignore restart race
+                // Already started
               }
             }
-          }, 350);
+          }, 250);
         }
       };
+
       rec.start();
       setMicListening(true);
     } catch {
       setMicListening(false);
     }
 
+    // Watchdog: Ensure SpeechRecognition always resumes after the toy finishes speaking!
+    const watchdog = window.setInterval(() => {
+      if (active && alwaysListenEnabled && !stateRef.current.toyIsTalking && rec) {
+        try {
+          rec.start();
+          setMicListening(true);
+        } catch {
+          // Already running
+        }
+      }
+    }, 1200);
+
     return () => {
       active = false;
+      window.clearInterval(watchdog);
+      if (interimSpeechTimerRef.current) {
+        window.clearTimeout(interimSpeechTimerRef.current);
+      }
       setMicListening(false);
       if (rec) {
         try {
@@ -2344,7 +2434,7 @@ export const FullCameraARExperience: React.FC = () => {
 
   /**
    * 3D Toy speaks ONE short, natural turn in a Sweet Child-Girl Cartoon Voice,
-   * then stops and waits for the child's response (`waitingForChildReply = true`).
+   * then stops, resumes microphone listening, and waits for the child's response (`waitingForChildReply = true`).
    */
   const speakAsToy = (text: string, pitch = 1.44) => {
     setToySpeechBubble(text);
@@ -2363,9 +2453,21 @@ export const FullCameraARExperience: React.FC = () => {
         setAdultGuideStatus(
           `👂 Waiting for ${stateRef.current.childName}'s Response · 👧 Sweet Girl Voice`
         );
+        // Immediately ensure microphone recognition is active for the child's reply turn!
+        window.setTimeout(() => {
+          if (speechRecRef.current && !stateRef.current.toyIsTalking) {
+            try {
+              speechRecRef.current.start();
+              setMicListening(true);
+            } catch {
+              // Already listening
+            }
+          }
+        }, 420);
       },
     });
   };
+
 
   /**
    * App Settings, Camera Controls & Activity Directions speak in a Calm, Warm Adult Voice.
@@ -2806,10 +2908,12 @@ export const FullCameraARExperience: React.FC = () => {
 
     window.setTimeout(() => {
       // Step 2: Decide the best human-child 3D action based on the autistic child's behavior!
+      // IMPORTANT: Only speak out loud when explicitly requested (`forceSpeak === true`), so the toy NEVER talks to herself unprompted!
       const expr = stateRef.current.facialExpression;
       const motion = childTrackRef.current.motionLevel;
       const idx = autonomousDecisionIdxRef.current++;
-      const shouldSpeak = forceSpeak || (!stateRef.current.toyIsTalking && idx % 2 === 0);
+      const shouldSpeak = forceSpeak;
+
 
       if (expr === 'crying_distressed') {
         // Child is distressed -> Toy autonomously chooses soothing co-regulation actions
@@ -3313,14 +3417,21 @@ export const FullCameraARExperience: React.FC = () => {
 
   const handleChildCooperationGesture = () => {
     if (stateRef.current.toyIsTalking) return;
-    triggerToyTemporaryMotion('wave', 2600);
-    triggerToyHandPopNow();
+    const name = stateRef.current.childName;
+    updateToyThoughtCloud(
+      '👋',
+      `I see ${name} waving at me on the webcam! Waving my 3D hand back and jumping to catch a bubble together!`,
+      `Waving Back to ${name}!`
+    );
+    triggerToyTemporaryMotion('wave', 2800);
+    if (bubblesRef.current.length > 0) {
+      triggerToyHandPopNow();
+    }
     speakAsToy(
-      `Hi ${stateRef.current.childName}, I see you waving! Watch me jump to catch a 3D bubble for you!`,
+      `Hi ${name}, I see you waving at me on the camera! I'm waving my 3D hand right back—what should we do together?`,
       activeToyItem.voicePitch
     );
   };
-
   const handleSelectPrebuiltToy = (item: ToyCatalogItem) => {
     setActiveCustomToy(null);
     setActiveToyItem(item);
@@ -3438,51 +3549,144 @@ export const FullCameraARExperience: React.FC = () => {
     return true;
   };
 
-  // 11. LIVE VOICE & FACIAL EXPRESSION CORRESPONDENCE HANDLER (EXECUTES WHAT CHILD ASKS!)
+  // 11. LIVE TWO-SIDED VOICE, TEXT & FACIAL EXPRESSION CONVERSATION + 3D ACTION HANDLER
   const triggerChildExpressionOrVoice = async (
     expr: FacialExpressionType,
     vocalType: 'crying_vocal' | 'laughing_giggle' | 'child_own_language_babble' | 'clear_speech',
     utterance: string
   ) => {
     setFacialExpression(expr);
-    if (utterance) setLastHeardText(`"${utterance}"`);
+    const cleanUtt = (utterance || '').trim();
+    if (cleanUtt) setLastHeardText(`🗣️ You: "${cleanUtt}"`);
 
     const name = stateRef.current.childName;
     const toyTitle = activeCustomToy ? activeCustomToy.name : activeToyItem.name;
     const pitch = activeCustomToy ? activeCustomToy.voicePitch : activeToyItem.voicePitch;
-    const lowUtt = utterance.toLowerCase();
+    const lowUtt = cleanUtt.toLowerCase();
+    const hasWord = (pattern: RegExp) => pattern.test(lowUtt);
 
     // 0) Did the child ask a specific math question or equation? (e.g. "what is 7 plus 5", "6 times 4")
     if (tryParseAndSolveMath(lowUtt)) {
       return;
     }
 
+    // 0B) Direct Two-Way Conversational Check-Ins & Identity Questions ("how are you", "what is your name", "can you hear me")
+    if (hasWord(/(how are you|how do you feel|are you okay|how's it going|how is it going|what's up)/i)) {
+      executeHumanChildAction(
+        'cheer_hurrah',
+        `${name} asked how I am doing—cheering back happily!`,
+        `I'm feeling super happy because I get to play with you, ${name}! How are you feeling today?`,
+        true
+      );
+      return;
+    }
+
+    if (hasWord(/(what is your name|what's your name|who are you|introduce yourself)/i)) {
+      executeHumanChildAction(
+        'bow_ta_da',
+        `Introducing myself to my best friend ${name}!`,
+        `My name is ${toyTitle}, and I'm your 3D playmate, ${name}! Ask me to jump, dance, kick the football, or play a game with you!`,
+        true
+      );
+      return;
+    }
+
+    if (
+      hasWord(
+        /(can you hear me|are you listening|listen to me|talk to me|talk with me|cooperate|interact with me)/i
+      )
+    ) {
+      executeHumanChildAction(
+        'talk_gesture',
+        `Listening attentively to ${name} and watching on the webcam!`,
+        `Yes ${name}, I hear every word you say and I'm watching you on the camera! Tell me what action or game you want us to do together!`,
+        true
+      );
+      return;
+    }
+
+    // 0C) Child shares their own feelings or affection ("i am happy", "i am sad", "i am tired", "i love you", "thank you", "bye")
+    if (hasWord(/(i love you|love you|you are my friend|best friend|thank you|thanks|good job)/i)) {
+      executeHumanChildAction(
+        'blow_kiss',
+        `${name} shared kind words with me—sending a sweet flying kiss back!`,
+        `Aww, thank you ${name}! I love being your playmate too! Mwah—catch my flying kiss! What should we do next?`,
+        true
+      );
+      return;
+    }
+
+    if (
+      vocalType === 'crying_vocal' ||
+      hasWord(/\b(i am sad|i'm sad|i feel sad|crying|upset|scared|afraid|hurt|comfort hug|need a hug)\b/i)
+    ) {
+      setCanvasMode('ar_comfort_soothing_buddy');
+      setInferredChildMode(`Cuddle & Co-Regulation With ${name}`);
+      executeHumanChildAction(
+        'hug',
+        `${name} needs comfort—opening my 3D arms wide for a warm cuddle hug!`,
+        `Aww ${name}, I'm right here with you! Big warm cuddle hug from ${toyTitle}—let's take a slow belly breath or pop calm bubbles together.`,
+        true
+      );
+      return;
+    }
+
+    if (hasWord(/\b(i am happy|i'm happy|i feel happy|i am excited|i'm smiling|i am smiling)\b/i)) {
+      executeHumanChildAction(
+        'clap_hands',
+        `${name} is smiling and happy—clapping my hands to celebrate together!`,
+        `Yay ${name}, I see your happy smile! I'm clapping my hands with you—what fun activity should we do together?`,
+        true
+      );
+      return;
+    }
+
+    if (hasWord(/\b(i am tired|i'm tired|i feel tired|bored|too hard|switch game)\b/i)) {
+      executeHumanChildAction(
+        'sit_relax',
+        `${name} wants a cozy break or switch—sitting on the soft grass together!`,
+        `That's totally okay, ${name}! Let's sit and relax together—would you like to kick the 3D football, draw a picture, or pop bubbles instead?`,
+        true
+      );
+      return;
+    }
+
+    if (hasWord(/\b(bye|goodbye|see you|goodnight|good night)\b/i)) {
+      executeHumanChildAction(
+        'wave',
+        `Waving goodbye to ${name}!`,
+        `Bye-bye for now, ${name}! Look at my 3D hand waving—I'll be right here waiting whenever you want to play again!`,
+        true
+      );
+      return;
+    }
+
     // A) Did the child ask the toy to change the Cartoon World / Stage Environment?
-    if (lowUtt.includes('candy') || lowUtt.includes('lollipop')) {
+    if (hasWord(/\b(candy|lollipop)\b/i)) {
       setStageEnv('candy_wonderland');
       triggerToyCartoonSpin();
       speakAsToy(`Yay ${name}, welcome to Candy Wonderland! Look at the giant lollipops!`, pitch);
       return;
     }
-    if (lowUtt.includes('dino park') || lowUtt.includes('jungle')) {
+    if (hasWord(/\b(dino park|jungle)\b/i)) {
       setStageEnv('dino_jungle');
       triggerToyCartoonJump();
       speakAsToy(`Rawr-hehe ${name}, we're in Sunny Dino Park now!`, pitch);
       return;
     }
-    if (lowUtt.includes('playroom') || lowUtt.includes('blocks')) {
+    if (hasWord(/\b(playroom|blocks)\b/i)) {
       setStageEnv('cozy_playroom');
       triggerToyTemporaryMotion('wave', 3000);
       speakAsToy(`Ooh ${name}, look at our Cozy Toy Playroom with ABC blocks!`, pitch);
       return;
     }
-    if (lowUtt.includes('starlight') || lowUtt.includes('moon') || lowUtt.includes('night')) {
+    if (hasWord(/\b(starlight|moon|night)\b/i)) {
       setStageEnv('starlight_garden');
       triggerToyTemporaryMotion('hug', 3000);
       speakAsToy(`Look at the glowing moon and stars in our Starlight Garden, ${name}!`, pitch);
       return;
     }
-    if (lowUtt.includes('meadow') || (lowUtt.includes('rainbow') && lowUtt.includes('world'))) {
+    if (hasWord(/\b(meadow|rainbow world)\b/i)) {
       setStageEnv('rainbow_meadow');
       triggerToyCartoonJump();
       speakAsToy(`Yay ${name}, look at the big 3D rainbow in Rainbow Meadow!`, pitch);
@@ -3490,158 +3694,158 @@ export const FullCameraARExperience: React.FC = () => {
     }
 
     // B) Did the child ask the toy to DRAW something for them?
-    if (
-      lowUtt.includes('draw') ||
-      lowUtt.includes('paint') ||
-      lowUtt.includes('picture') ||
-      lowUtt.includes('sketch')
-    ) {
+    if (hasWord(/\b(draw|paint|picture|sketch)\b/i)) {
       startToyAutoDrawing(lowUtt);
       return;
     }
 
     // C) Did the child ask to SING a song or hear music?
-    if (
-      lowUtt.includes('sing') ||
-      lowUtt.includes('song') ||
-      lowUtt.includes('twinkle') ||
-      lowUtt.includes('music')
-    ) {
+    if (hasWord(/\b(sing|song|twinkle|music|lullaby)\b/i)) {
       startSingingFavouriteSong();
       return;
     }
 
     // D0) Did the child ask the Toy to THINK & DECIDE for herself ("decide", "what do you want to do", "your choice")?
-    if (
-      lowUtt.includes('decide') ||
-      lowUtt.includes('what do you want') ||
-      lowUtt.includes('your choice') ||
-      lowUtt.includes('do anything')
-    ) {
+    if (hasWord(/(decide|what do you want|your choice|do anything|surprise me)/i)) {
       triggerAutonomousChildBrainDecisionNow(true);
       return;
     }
 
     // D1) Did the child ask for any of the 35 Real-World Human-Child 3D Activities?
-    if (lowUtt.includes('cartwheel') || lowUtt.includes('flip') || lowUtt.includes('gymnastics')) {
-      executeHumanChildAction('cartwheel_flip');
+    if (hasWord(/\b(cartwheel|flip|gymnastics)\b/i)) {
+      executeHumanChildAction(
+        'cartwheel_flip',
+        `${name} asked me to do a cartwheel—doing a 3D Cartwheel Flip!`,
+        `Wheee ${name}, watch me do a full 3D cartwheel flip across the grass for you! Want to do another one?`,
+        true
+      );
       return;
     }
-    if (
-      lowUtt.includes('one foot') ||
-      lowUtt.includes('one leg') ||
-      lowUtt.includes('flamingo') ||
-      lowUtt.includes('balance')
-    ) {
-      executeHumanChildAction('hop_one_foot');
+    if (hasWord(/(one foot|one leg|flamingo|balance)/i)) {
+      executeHumanChildAction(
+        'hop_one_foot',
+        `${name} asked me to balance on one foot—hopping like a flamingo!`,
+        `Hop, hop, hop on one foot! Look ${name}, I'm balancing on one leg—can you try it on camera with me?`,
+        true
+      );
       return;
     }
-    if (lowUtt.includes('airplane') || lowUtt.includes('fly') || lowUtt.includes('zoom')) {
-      executeHumanChildAction('airplane_zoom');
+    if (hasWord(/\b(airplane|fly|zoom|wings)\b/i)) {
+      executeHumanChildAction(
+        'airplane_zoom',
+        `${name} asked me to fly like an airplane—zooming across the 3D stage!`,
+        `Zooooom, ${name}! Look at my arms spread wide like airplane wings! Spread your arms and fly with me!`,
+        true
+      );
       return;
     }
-    if (lowUtt.includes('march') || lowUtt.includes('parade') || lowUtt.includes('soldier')) {
-      executeHumanChildAction('march_parade');
+    if (hasWord(/\b(march|parade|soldier)\b/i)) {
+      executeHumanChildAction(
+        'march_parade',
+        `${name} asked me to march—marching with high knees!`,
+        `Left, right, left, right! Watch me march in a parade with you, ${name}!`,
+        true
+      );
       return;
     }
-    if (lowUtt.includes('hula') || lowUtt.includes('hip')) {
+    if (hasWord(/\b(hula|hip wiggle)\b/i)) {
       executeHumanChildAction('hula_wiggle');
       return;
     }
-    if (lowUtt.includes('superhero') || lowUtt.includes('hero') || lowUtt.includes('strong')) {
+    if (hasWord(/\b(superhero|hero|strong|power pose)\b/i)) {
       executeHumanChildAction('superhero_pose');
       return;
     }
-    if (lowUtt.includes('laugh') || lowUtt.includes('giggle') || lowUtt.includes('funny')) {
+    if (hasWord(/\b(laugh|giggle|funny|joke)\b/i)) {
       executeHumanChildAction('laugh_giggle');
       return;
     }
-    if (lowUtt.includes('kiss') || lowUtt.includes('mwah')) {
+    if (hasWord(/\b(kiss|mwah)\b/i)) {
       executeHumanChildAction('blow_kiss');
       return;
     }
-    if (lowUtt.includes('high five') || lowUtt.includes('high-five')) {
-      executeHumanChildAction('high_five');
+    if (hasWord(/(high five|high-five|give me five)/i)) {
+      executeHumanChildAction(
+        'high_five',
+        `${name} asked for a High-Five—jumping up with my hand raised!`,
+        `Up high, ${name}! Hold your hand up to the camera for a big 3D High-Five! Bam-hehe!`,
+        true
+      );
       return;
     }
-    if (lowUtt.includes('point') || lowUtt.includes('look up') || lowUtt.includes('look at')) {
+    if (hasWord(/(point|look up|look at the sky)/i)) {
       executeHumanChildAction('point_look');
       return;
     }
-    if (lowUtt.includes('sleep') || lowUtt.includes('nap') || lowUtt.includes('bedtime')) {
+    if (hasWord(/\b(sleep|nap|bedtime)\b/i)) {
       executeHumanChildAction('sleepy_nap');
       return;
     }
-    if (lowUtt.includes('finger') || lowUtt.includes('count hand')) {
+    if (hasWord(/(finger|fingers|count hand|count on hand)/i)) {
       executeHumanChildAction('count_fingers');
       return;
     }
-    if (lowUtt.includes('clap') || lowUtt.includes('applaud')) {
-      executeHumanChildAction('clap_hands');
+    if (hasWord(/\b(clap|applaud)\b/i)) {
+      executeHumanChildAction(
+        'clap_hands',
+        `${name} asked to clap hands—clapping together!`,
+        `Clap-clap-clap! Yay ${name}, I'm clapping my hands with you!`,
+        true
+      );
       return;
     }
-    if (lowUtt.includes('sit') || lowUtt.includes('rest') || lowUtt.includes('relax')) {
+    if (hasWord(/\b(sit|sit down|rest|relax)\b/i)) {
       executeHumanChildAction('sit_relax');
       return;
     }
-    if (lowUtt.includes('think') || lowUtt.includes('wonder') || lowUtt.includes('hmm')) {
+    if (hasWord(/\b(think|wonder|hmm)\b/i)) {
       executeHumanChildAction('think_curious');
       return;
     }
-    if (lowUtt.includes('peek') || lowUtt.includes('hide')) {
+    if (hasWord(/\b(peek|peekaboo|peek-a-boo|hide)\b/i)) {
       executeHumanChildAction('peekaboo_hide');
       return;
     }
-    if (lowUtt.includes('jumping jack') || lowUtt.includes('exercise') || lowUtt.includes('workout')) {
+    if (hasWord(/(jumping jack|jumping jacks|exercise|workout)/i)) {
       executeHumanChildAction('jumping_jacks');
       return;
     }
-    if (lowUtt.includes('skip')) {
+    if (hasWord(/\b(skip|skipping)\b/i)) {
       executeHumanChildAction('skip_hop');
       return;
     }
-    if (lowUtt.includes('tiptoe') || lowUtt.includes('sneak') || lowUtt.includes('quietly')) {
+    if (hasWord(/\b(tiptoe|sneak|quietly)\b/i)) {
       executeHumanChildAction('tiptoe_sneak');
       return;
     }
-    if (lowUtt.includes('stretch') || lowUtt.includes('yawn')) {
+    if (hasWord(/\b(stretch|yawn)\b/i)) {
       executeHumanChildAction('stretch_yawn');
       return;
     }
-    if (
-      (lowUtt.includes('breathe') || lowUtt.includes('breath') || lowUtt.includes('calm down')) &&
-      !lowUtt.includes('game')
-    ) {
+    if (hasWord(/\b(breathe|breath|calm down)\b/i) && !hasWord(/\bgame\b/i)) {
       executeHumanChildAction('calm_breathe');
       return;
     }
-    if (lowUtt.includes('bow') || lowUtt.includes('ta-da') || lowUtt.includes('tada')) {
+    if (hasWord(/\b(bow|ta-da|tada)\b/i)) {
       executeHumanChildAction('bow_ta_da');
       return;
     }
-    if (lowUtt.includes('cheer') || lowUtt.includes('hurrah') || lowUtt.includes('hooray')) {
+    if (hasWord(/\b(cheer|hurrah|hooray|yay)\b/i)) {
       executeHumanChildAction('cheer_hurrah');
       return;
     }
-    if (
-      lowUtt.includes('football') ||
-      lowUtt.includes('soccer') ||
-      lowUtt.includes('kick') ||
-      lowUtt.includes('dribble') ||
-      lowUtt.includes('goal') ||
-      lowUtt.includes('ball')
-    ) {
-      executeHumanChildAction('kick_football');
+    if (hasWord(/\b(football|soccer|kick|dribble|goal|ball)\b/i)) {
+      executeHumanChildAction(
+        'kick_football',
+        `${name} asked me to play football—dribbling and kicking the 3D ball into the goal!`,
+        `Pass to me, ${name}! Watch me dribble the 3D football across the field and kick a goal for us! Wanna kick it again?`,
+        true
+      );
       return;
     }
 
     // D) Direct Toy Physical Action Requests ("jump", "catch", "spin", "pop", "dance", "walk", "run", "wave", "hug")
-    if (
-      lowUtt.includes('pop') ||
-      lowUtt.includes('bubble') ||
-      lowUtt.includes('catch') ||
-      lowUtt.includes('your turn')
-    ) {
+    if (hasWord(/\b(pop|bubble|bubbles|catch|your turn|help me)\b/i)) {
       if (
         canvasMode !== 'ar_intelligent_20_games' &&
         canvasMode !== 'ar_cartoon_math_match' &&
@@ -3649,62 +3853,67 @@ export const FullCameraARExperience: React.FC = () => {
       ) {
         setCanvasMode('ar_interactive_fun_bubbles');
       }
-      executeHumanChildAction('jump_catch');
+      executeHumanChildAction(
+        'jump_catch',
+        `${name} asked me to catch a bubble—running and leaping in 3D!`,
+        `I'm on it, ${name}! Watch me run and leap up to catch a 3D bubble with you—now it's your turn!`,
+        true
+      );
       return;
     }
 
-    if (lowUtt.includes('jump') || lowUtt.includes('hop') || lowUtt.includes('bounce')) {
+    if (hasWord(/\b(jump|jumping|hop|bounce)\b/i)) {
       if (bubblesRef.current.length > 0) {
         triggerToyHandPopNow();
       } else {
         triggerToyCartoonJump();
       }
       updateToyThoughtCloud('🦘', `Jumping high in 3D space with ${name}!`, 'Jumping High!');
-      if (lowUtt.includes('game') || lowUtt.includes('count')) {
+      if (hasWord(/\b(game|count|together)\b/i)) {
         setPhysicalActionType('jump');
         setCanvasMode('ar_physical_and_math_game');
         setPhysicalRepCount(0);
         speakAsToy(
-          `Wheee ${name}, let's jump and catch ${physicalRepTarget} times together on the camera!`,
+          `Wheee ${name}, let's jump ${physicalRepTarget} times together on the camera! Jump with me!`,
           pitch
         );
       } else {
         speakAsToy(
-          `Wheee, look at me jumping up in 3D space to catch the bubble for you, ${name}!`,
+          `Wheee, look at me jumping high in 3D space for you, ${name}! Can you jump with me on the camera?`,
           pitch
         );
       }
       return;
     }
 
-    if (lowUtt.includes('spin') || lowUtt.includes('turn around') || lowUtt.includes('twirl')) {
+    if (hasWord(/\b(spin|turn around|twirl)\b/i)) {
       updateToyThoughtCloud('🌀', `Spinning around 360° for ${name}!`, '3D Spin Around!');
       triggerToyCartoonSpin();
-      speakAsToy(`Wheee, round and round I spin for you, ${name}! Hehe!`, pitch);
+      speakAsToy(`Wheee, round and round I spin for you, ${name}! Can you spin too?`, pitch);
       return;
     }
 
-    if (lowUtt.includes('walk') || lowUtt.includes('run') || lowUtt.includes('stroll')) {
-      executeHumanChildAction(lowUtt.includes('run') ? 'run' : 'walk');
+    if (hasWord(/\b(walk|run|running|stroll)\b/i)) {
+      executeHumanChildAction(hasWord(/\b(run|running)\b/i) ? 'run' : 'walk');
       return;
     }
 
-    if (lowUtt.includes('dance') || lowUtt.includes('wiggle') || lowUtt.includes('party')) {
-      executeHumanChildAction('dance');
+    if (hasWord(/\b(dance|dancing|wiggle|party)\b/i)) {
+      executeHumanChildAction(
+        'dance',
+        `${name} asked me to dance—doing my 3D movie dance!`,
+        `Hehe, I love dancing with you, ${name}! Move on the camera and let's dance together!`,
+        true
+      );
       return;
     }
 
-    if (lowUtt.includes('wave') || lowUtt.includes('hello') || lowUtt.includes('hi')) {
-      executeHumanChildAction('wave');
-      return;
-    }
-
-    if (lowUtt.includes('hug') || lowUtt.includes('cuddle') || expr === 'crying_distressed') {
+    if (hasWord(/\b(hug|cuddle)\b/i) || expr === 'crying_distressed') {
       executeHumanChildAction('hug');
       return;
     }
 
-    if (lowUtt.includes('math') || lowUtt.includes('number') || lowUtt.includes('count')) {
+    if (hasWord(/\b(math|number|numbers|count|counting)\b/i)) {
       setCanvasMode('ar_cartoon_math_match');
       triggerToyHandPopNow();
       speakAsToy(
@@ -3726,7 +3935,7 @@ export const FullCameraARExperience: React.FC = () => {
         .filter((w) => w.length >= 2);
       if (
         lowUtt.includes(currRound.correct.label.toLowerCase()) ||
-        targetWords.some((tw) => lowUtt.includes(tw))
+        targetWords.some((tw) => hasWord(new RegExp(`\\b${tw}\\b`, 'i')))
       ) {
         handleSolveEducationalChoice(currRound.correct.label, true, 'child');
         return;
@@ -3737,26 +3946,26 @@ export const FullCameraARExperience: React.FC = () => {
     const matchedEduGame = INTELLIGENT_20_GAMES_CATALOG.find((g) => {
       const titleLow = g.title.toLowerCase();
       return (
-        (lowUtt.includes('emotion') && g.id.includes('emotion')) ||
-        (lowUtt.includes('turn') && g.id.includes('turn_taking')) ||
-        (lowUtt.includes('greet') && g.id.includes('greetings')) ||
-        (lowUtt.includes('kind') && g.id.includes('empathy')) ||
-        (lowUtt.includes('space') && g.id.includes('personal_space')) ||
-        (lowUtt.includes('morning') && g.id.includes('morning')) ||
-        (lowUtt.includes('food') && g.id.includes('healthy_food')) ||
-        (lowUtt.includes('weather') && g.id.includes('weather')) ||
-        (lowUtt.includes('clean') && g.id.includes('tidy_up')) ||
-        (lowUtt.includes('body') && g.id.includes('body_self_care')) ||
-        (lowUtt.includes('need') && g.id.includes('express_needs')) ||
-        (lowUtt.includes('letter') && g.id.includes('phonics')) ||
-        (lowUtt.includes('verb') && g.id.includes('action_verbs')) ||
-        (lowUtt.includes('question') && g.id.includes('wh_questions')) ||
-        (lowUtt.includes('opposite') && g.id.includes('opposites')) ||
-        (lowUtt.includes('pattern') && g.id.includes('pattern')) ||
-        (lowUtt.includes('shape') && g.id.includes('shape_color')) ||
-        (lowUtt.includes('breath') && g.id.includes('calm_breathing')) ||
-        (lowUtt.includes('animal') && g.id.includes('animal_habitat')) ||
-        (lowUtt.includes('safe') && g.id.includes('safety')) ||
+        (hasWord(/\bemotion/i) && g.id.includes('emotion')) ||
+        (hasWord(/\bturn/i) && g.id.includes('turn_taking')) ||
+        (hasWord(/\bgreet/i) && g.id.includes('greetings')) ||
+        (hasWord(/\bkind/i) && g.id.includes('empathy')) ||
+        (hasWord(/\bspace/i) && g.id.includes('personal_space')) ||
+        (hasWord(/\bmorning/i) && g.id.includes('morning')) ||
+        (hasWord(/\bfood/i) && g.id.includes('healthy_food')) ||
+        (hasWord(/\bweather/i) && g.id.includes('weather')) ||
+        (hasWord(/\bclean/i) && g.id.includes('tidy_up')) ||
+        (hasWord(/\bbody/i) && g.id.includes('body_self_care')) ||
+        (hasWord(/\bneed/i) && g.id.includes('express_needs')) ||
+        (hasWord(/\bletter/i) && g.id.includes('phonics')) ||
+        (hasWord(/\bverb/i) && g.id.includes('action_verbs')) ||
+        (hasWord(/\bquestion/i) && g.id.includes('wh_questions')) ||
+        (hasWord(/\bopposite/i) && g.id.includes('opposites')) ||
+        (hasWord(/\bpattern/i) && g.id.includes('pattern')) ||
+        (hasWord(/\bshape/i) && g.id.includes('shape_color')) ||
+        (hasWord(/\bbreath/i) && g.id.includes('calm_breathing')) ||
+        (hasWord(/\banimal/i) && g.id.includes('animal_habitat')) ||
+        (hasWord(/\bsafe/i) && g.id.includes('safety')) ||
         lowUtt.includes(titleLow)
       );
     });
@@ -3765,29 +3974,25 @@ export const FullCameraARExperience: React.FC = () => {
       return;
     }
 
-    // E) Did the child AGREE ("yes", "okay", "sure", "let's play", "together")?
-    if (
-      lowUtt === 'yes' ||
-      lowUtt.includes('yes ') ||
-      lowUtt.includes('yeah') ||
-      lowUtt.includes('okay') ||
-      lowUtt.includes('sure') ||
-      lowUtt.includes('let us') ||
-      lowUtt.includes("let's") ||
-      lowUtt.includes('together')
-    ) {
+    // D4) Greetings ("hello", "hi", "hey", "good morning", "wave") -> Two-way greeting & cooperative invitation!
+    if (hasWord(/\b(wave|hello|hi|hey|howdy|good morning|good afternoon|good evening|yo)\b/i)) {
+      executeHumanChildAction(
+        'wave',
+        `${name} said "${cleanUtt}" to me—waving my 3D hand back and inviting ${name} to play!`,
+        `Hello ${name}! I'm waving my 3D hand at you! I'm listening to your voice and watching you on the camera—want to kick the 3D football, jump for bubbles, dance, or play a game together?`,
+        true
+      );
+      return;
+    }
+
+    // E) Did the child AGREE ("yes", "okay", "sure", "let's play", "play with me", "together")?
+    if (hasWord(/\b(yes|yeah|yep|okay|ok|sure|let us|let's|together|play with me)\b/i)) {
       acceptActiveToyProposal();
       return;
     }
 
     // F) Did the child ask to CHANGE preference or mode?
-    if (
-      lowUtt.includes('change') ||
-      lowUtt.includes('preference') ||
-      lowUtt.includes('different') ||
-      lowUtt.includes('switch') ||
-      lowUtt.includes('quiet')
-    ) {
+    if (hasWord(/\b(change|preference|different|switch|quiet)\b/i)) {
       acceptActiveToyProposal({
         type: 'offer_change_preference',
         title: 'Switch Interaction Method',
@@ -3796,8 +4001,6 @@ export const FullCameraARExperience: React.FC = () => {
       });
       return;
     }
-
-    triggerToyTemporaryMotion('wave', 3000);
 
     try {
       const res = await fetch('http://localhost:8085/api/ar/toy-conversation', {
@@ -3809,7 +4012,7 @@ export const FullCameraARExperience: React.FC = () => {
           toy_category: activeToyItem.category,
           facial_expression: expr,
           audio_vocal_type: vocalType,
-          child_utterance: utterance,
+          child_utterance: cleanUtt,
           active_canvas_mode: canvasMode,
         }),
       });
@@ -3819,34 +4022,44 @@ export const FullCameraARExperience: React.FC = () => {
         if (data.suggested_canvas_activity) {
           setCanvasMode(data.suggested_canvas_activity as CanvasActivityMode);
         }
-        speakAsToy(data.toy_speech, pitch);
+        if (data.suggested_3d_action) {
+          executeHumanChildAction(
+            data.suggested_3d_action as ToyMotionClipType,
+            `Responding to ${name}: "${cleanUtt}"`,
+            data.toy_speech,
+            true
+          );
+        } else {
+          triggerToyTemporaryMotion('talk_gesture', 3600);
+          speakAsToy(data.toy_speech, pitch);
+        }
         return;
       }
     } catch {
       // Fallback local toy intelligence
     }
 
-    if (vocalType === 'crying_vocal') {
-      setCanvasMode('ar_comfort_soothing_buddy');
-      setInferredChildMode(`Cuddle & Co-Regulation With ${name}`);
-      speakAsToy(
-        `Aww ${name}, big cuddle hug from ${toyTitle}—wanna pop calm 3D bubbles together?`,
-        pitch
-      );
-    } else if (expr === 'frowning_frustrated') {
+    if (expr === 'frowning_frustrated') {
       setInferredChildMode(`Sweet Peer Switch for ${name}`);
-      speakAsToy(
+      executeHumanChildAction(
+        'talk_gesture',
+        `Offering ${name} a gentle activity choice`,
         `That's okay ${name}, what would you like to do instead—kick the 3D football, draw, or jump for bubbles?`,
-        pitch
+        true
       );
     } else {
       setInferredChildMode(`Natural Turn-Taking With ${name}`);
-      speakAsToy(
-        `Hehe, I heard you ${name}! Wanna watch me kick the 3D football, jump to catch bubbles, or draw?`,
-        pitch
+      executeHumanChildAction(
+        'talk_gesture',
+        `Replying to ${name}: "${cleanUtt}"`,
+        cleanUtt
+          ? `I heard you say "${cleanUtt}", ${name}! I'm right here playing with you—want me to jump, dance, kick the 3D football, or play a game together?`
+          : `Hehe, I'm listening ${name}! Tell me what action or game you want us to do together!`,
+        true
       );
     }
   };
+
 
   // 12. SPAWN TRUE 3D BUBBLE ORBS IN THREE.JS SCENE FOR 20 DEVELOPMENTAL GAMES, MATH, PHYSICAL GAME, BUBBLE PARTY & COMFORT MODE
   useEffect(() => {
@@ -4974,6 +5187,64 @@ export const FullCameraARExperience: React.FC = () => {
                   >
                     ↕ Drag Here to Resize Camera
                   </div>
+
+                  {/* Quick Two-Sided Webcam Gesture & Expression Cooperation Triggers */}
+                  <div className="preset-mini-row" style={{ marginTop: 4 }}>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setTrackingStatusText(`👋 ${childName} Waved on Camera!`);
+                        setLastHeardText(`👋 [Webcam: ${childName} Waved Hello]`);
+                        handleChildCooperationGesture();
+                      }}
+                      className="preset-mini-btn"
+                      title="Wave hello on camera — Toy waves back and invites you to play!"
+                    >
+                      👋 Wave
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() =>
+                        void triggerChildExpressionOrVoice(
+                          'smiling_happy',
+                          'laughing_giggle',
+                          'I am smiling!'
+                        )
+                      }
+                      className="preset-mini-btn"
+                      title="Show a happy smile — Toy claps and celebrates with you!"
+                    >
+                      😊 Smile
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() =>
+                        void triggerChildExpressionOrVoice(
+                          'smiling_happy',
+                          'clear_speech',
+                          'Jump with me!'
+                        )
+                      }
+                      className="preset-mini-btn"
+                      title="Jump on camera — Toy jumps in 3D right with you!"
+                    >
+                      🦘 Jump
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() =>
+                        void triggerChildExpressionOrVoice(
+                          'crying_distressed',
+                          'crying_vocal',
+                          'I need a hug'
+                        )
+                      }
+                      className="preset-mini-btn"
+                      title="Show distress/sadness — Toy gives a warm cuddle hug & calm breathing!"
+                    >
+                      🤗 Hug
+                    </button>
+                  </div>
                 </>
               ) : (
                 <div style={{ fontSize: 11, color: '#92400e' }}>
@@ -4981,6 +5252,7 @@ export const FullCameraARExperience: React.FC = () => {
                 </div>
               )}
             </div>
+
 
             {/* 2. TOY LIVE TURN-TAKING SPEECH & CO-PLAY RESPONSE */}
             <div className="sidebar-card">

@@ -262,74 +262,177 @@ class AutonomousCameraVoiceAgent:
     async def generate_toy_reaction(
         self, req_data: "CustomToyConversationInput"
     ) -> "CustomToyConversationResponse":
+        import re
         from ar_schemas import CustomToyConversationResponse
 
         utterance = (req_data.child_utterance or "").strip().lower()
-        toy = req_data.toy_name
+        toy = req_data.toy_name or "Barnaby"
         name = req_data.child_name or "Mia"
 
-        # 1. Crying / Distressed -> Toy comforts child like a sweet little peer friend (short & natural)
-        if req_data.facial_expression == "crying_distressed" or req_data.audio_vocal_type == "crying_vocal":
+        def has_word(pattern: str) -> bool:
+            return bool(re.search(pattern, utterance))
+
+        # 1. Crying / Distressed or sad feelings -> Toy comforts child with a warm hug or belly breathing
+        if (
+            req_data.facial_expression == "crying_distressed"
+            or req_data.audio_vocal_type == "crying_vocal"
+            or has_word(r"\b(sad|cry|crying|upset|hurt|scared|afraid|help me|hug|cuddle)\b")
+        ):
             return CustomToyConversationResponse(
-                toy_speech=f"Aww {name}, big cuddle hug from {toy}—wanna pop calm bubbles together?",
+                toy_speech=f"Aww {name}, I'm right here with you! Big warm cuddle hug from {toy}—want to do a slow belly breath or pop calm bubbles together?",
                 toy_animation_state="comfort_hug_glow",
                 suggested_canvas_activity="ar_comfort_soothing_buddy",
                 inferred_child_mode=f"Cuddle & Co-Regulation With {name}",
+                suggested_3d_action="hug",
             )
 
-        # 2. Frustrated / Frowning -> Sweet peer friend offers something cosy or fun
-        if req_data.facial_expression == "frowning_frustrated" or any(
-            w in utterance for w in ("change", "different", "switch", "hard", "bored", "tired")
-        ):
+        # 2. Greetings ("hello", "hi", "hey", "good morning", "good afternoon")
+        if has_word(r"\b(hello|hi|hey|howdy|good morning|good afternoon|good evening|yo)\b"):
             return CustomToyConversationResponse(
-                toy_speech=f"That's okay {name}, what should we play next—bubbles or drawing?",
+                toy_speech=f"Hello {name}! I'm waving my hand at you! It makes me so happy to hear your voice—what should we play together?",
+                toy_animation_state="curious_tilt_wave",
+                suggested_canvas_activity=req_data.active_canvas_mode,
+                inferred_child_mode=f"Two-Way Greeting With {name}",
+                suggested_3d_action="wave",
+            )
+
+        # 3. Conversational Check-Ins ("how are you", "how do you feel", "are you okay")
+        if has_word(r"(how are you|how do you feel|are you okay|how's it going|what's up)"):
+            return CustomToyConversationResponse(
+                toy_speech=f"I'm feeling super happy because I get to play with you, {name}! How are you feeling today?",
+                toy_animation_state="happy_jump_dance",
+                suggested_canvas_activity=req_data.active_canvas_mode,
+                inferred_child_mode=f"Two-Way Check-In With {name}",
+                suggested_3d_action="cheer_hurrah",
+            )
+
+        # 4. Identity & Capabilities ("what is your name", "who are you", "what can you do", "can you hear me")
+        if has_word(r"(your name|who are you|what are you)"):
+            return CustomToyConversationResponse(
+                toy_speech=f"Hehe, my name is {toy}, and I'm your 3D best friend, {name}! Ask me to jump, kick the football, dance, or play a game with you!",
+                toy_animation_state="curious_tilt_wave",
+                suggested_canvas_activity=req_data.active_canvas_mode,
+                inferred_child_mode=f"Introducing {toy} to {name}",
+                suggested_3d_action="bow_ta_da",
+            )
+
+        if has_word(r"(can you hear|are you listening|listen to me|what can you do)"):
+            return CustomToyConversationResponse(
+                toy_speech=f"Yes {name}, I'm listening to every word you say and watching you on the camera! Tell me what action we should do together!",
+                toy_animation_state="curious_tilt_wave",
+                suggested_canvas_activity=req_data.active_canvas_mode,
+                inferred_child_mode=f"Listening Attentively to {name}",
+                suggested_3d_action="talk_gesture",
+            )
+
+        # 5. Child shares positive feelings or affection ("i am happy", "i love you", "thank you", "good job")
+        if has_word(r"(i love you|love you|best friend|you are cute|thank you|thanks|good job)"):
+            return CustomToyConversationResponse(
+                toy_speech=f"Aww, thank you {name}! I love being your playmate too! Here is a sweet flying kiss and a big high-five for you!",
+                toy_animation_state="happy_jump_dance",
+                suggested_canvas_activity=req_data.active_canvas_mode,
+                inferred_child_mode=f"Sharing Affection With {name}",
+                suggested_3d_action="blow_kiss",
+            )
+
+        if has_word(r"\b(happy|excited|great|good|awesome|fun)\b"):
+            return CustomToyConversationResponse(
+                toy_speech=f"Yay {name}, I'm so glad you feel happy! Let's clap our hands and celebrate together!",
+                toy_animation_state="happy_jump_dance",
+                suggested_canvas_activity=req_data.active_canvas_mode,
+                inferred_child_mode=f"Celebrating With {name}",
+                suggested_3d_action="clap_hands",
+            )
+
+        # 6. Frustrated / Tired / Switch request
+        if req_data.facial_expression == "frowning_frustrated" or has_word(
+            r"\b(change|different|switch|hard|bored|tired|sleepy)\b"
+        ):
+            if has_word(r"\b(tired|sleepy|nap|rest)\b"):
+                return CustomToyConversationResponse(
+                    toy_speech=f"Let's take a cozy rest together, {name}. I'm sitting down on the soft grass with you—no rush at all!",
+                    toy_animation_state="comfort_hug_glow",
+                    suggested_canvas_activity=req_data.active_canvas_mode,
+                    inferred_child_mode=f"Cozy Rest With {name}",
+                    suggested_3d_action="sit_relax",
+                )
+            return CustomToyConversationResponse(
+                toy_speech=f"That's totally okay {name}! What would you like to do instead—kick the 3D football, pop bubbles, or draw together?",
                 toy_animation_state="curious_tilt_wave",
                 suggested_canvas_activity="ar_interactive_fun_bubbles",
                 inferred_child_mode=f"Sweet Peer Switch for {name}",
+                suggested_3d_action="talk_gesture",
             )
 
-        # 3. Child asks the toy to draw something for them
-        if any(w in utterance for w in ("draw", "paint", "sketch", "picture")):
+        # 7. Child asks the toy to draw something for them
+        if has_word(r"\b(draw|paint|sketch|picture|art)\b"):
             return CustomToyConversationResponse(
-                toy_speech=f"Yay {name}, watch me draw this for you—what colour do you like best?",
+                toy_speech=f"Yay {name}, watch me draw this for you—what colour or animal do you want to add next?",
                 toy_animation_state="curious_tilt_wave",
                 suggested_canvas_activity="ar_3d_2d_art_studio",
                 inferred_child_mode=f"Drawing Together With {name}",
+                suggested_3d_action="wave",
             )
 
-        # 4. Child asks or agrees to sing a favourite song or dance together
-        if any(w in utterance for w in ("sing", "song", "music", "twinkle", "melody", "lullaby")):
+        # 8. Child asks or agrees to sing a favourite song or dance together
+        if has_word(r"\b(sing|song|music|twinkle|melody|lullaby)\b"):
             return CustomToyConversationResponse(
-                toy_speech=f"Hehe, let's sing together {name}! Ready to sing with me?",
+                toy_speech=f"Hehe, let's sing and dance together {name}! Ready to sing with me?",
                 toy_animation_state="happy_jump_dance",
                 suggested_canvas_activity="ar_video_3d_animation",
                 inferred_child_mode=f"Singing Together With {name}",
+                suggested_3d_action="dance",
             )
 
-        # 5. Child asks or agrees to play a game / math / bubbles together
-        if any(w in utterance for w in ("math", "count", "number", "match", "game", "yes", "okay", "sure", "play")):
+        # 9. Child asks to play football / soccer / ball
+        if has_word(r"\b(football|soccer|kick|goal|ball|pass)\b"):
             return CustomToyConversationResponse(
-                toy_speech=f"Yippee {name}! I'll use my hand to pop bubbles with you—which one will you pop?",
+                toy_speech=f"Goal time, {name}! Watch me dribble and kick the 3D football right into the net for you—ready to kick the next one?",
                 toy_animation_state="happy_jump_dance",
-                suggested_canvas_activity="ar_cartoon_math_match",
-                inferred_child_mode=f"Co-Play Game With {name}",
+                suggested_canvas_activity="ar_physical_and_math_game",
+                inferred_child_mode=f"3D Football Co-Play With {name}",
+                suggested_3d_action="kick_football",
             )
 
-        # 6. Smiling / Happy default response -> Short, natural turn-taking question
+        # 10. Child asks or agrees to play a game / math / bubbles together
+        if has_word(r"\b(math|count|number|match|game|yes|yeah|okay|sure|play)\b"):
+            return CustomToyConversationResponse(
+                toy_speech=f"Yippee {name}! Let's play together! I'll jump to help you catch the 3D bubbles—which one do you want to pop first?",
+                toy_animation_state="happy_jump_dance",
+                suggested_canvas_activity=req_data.active_canvas_mode,
+                inferred_child_mode=f"Co-Play Game With {name}",
+                suggested_3d_action="jump_catch",
+            )
+
+        # 11. Conversational response acknowledging the child's exact words!
+        if utterance:
+            clean_echo = (req_data.child_utterance or "").strip()
+            return CustomToyConversationResponse(
+                toy_speech=f"I heard you say \"{clean_echo}\", {name}! I'm right here with you—want me to jump, dance, kick the 3D football, or play a game together?",
+                toy_animation_state="curious_tilt_wave",
+                suggested_canvas_activity=req_data.active_canvas_mode,
+                inferred_child_mode=f"Conversing With {name}",
+                suggested_3d_action="talk_gesture",
+            )
+
+        # 12. Smiling / Happy default response -> Short, natural turn-taking question
         if req_data.facial_expression == "smiling_happy":
             return CustomToyConversationResponse(
-                toy_speech=f"Hehe, I love your smile, {name}! What should we do together next?",
+                toy_speech=f"Hehe, I love your sweet smile, {name}! What should we do together next?",
                 toy_animation_state="happy_jump_dance",
                 suggested_canvas_activity=req_data.active_canvas_mode,
                 inferred_child_mode=f"Natural Turn-Taking With {name}",
+                suggested_3d_action="wave",
             )
 
         return CustomToyConversationResponse(
-            toy_speech=f"Hi {name}! I'm listening—tell me what game or action you want me to do!",
+            toy_speech=f"Hi {name}! I'm listening and watching—tell me what game or action you want us to do together!",
             toy_animation_state="curious_tilt_wave",
             suggested_canvas_activity=req_data.active_canvas_mode,
             inferred_child_mode=f"Waiting for {name}'s Turn",
+            suggested_3d_action="wave",
         )
+
 
 
 

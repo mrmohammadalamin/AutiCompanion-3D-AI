@@ -71,3 +71,5 @@ class CustomToyConversationResponse(BaseModel):
     toy_animation_state: Literal["idle_breathe", "happy_jump_dance", "comfort_hug_glow", "curious_tilt_wave", "playful_spin"]
     suggested_canvas_activity: str
     inferred_child_mode: str
+    suggested_3d_action: Optional[str] = None
+
