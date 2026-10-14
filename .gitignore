@@ -28,3 +28,7 @@ env/
 .DS_Store
 Thumbs.db
 *.log
+
+# Large local raw video recordings (hosted on YouTube: https://youtu.be/vL05-y37-_8)
+*.mp4
+

@@ -1,17 +1,18 @@
 # 🧸🌈 AutiCompanion AI — 3D Cartoon Toy Co-Play Studio & Neuro-Affirming Multimodal Agentic Companion (Ages 2–11)
 
+[![Watch Demo on YouTube](https://img.shields.io/badge/YouTube-Watch%20Full%203D%20Studio%20Demo-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://youtu.be/vL05-y37-_8)
 [![Built with Gemini 4 Argon](https://img.shields.io/badge/Architected%20%26%20Engineered%20With-Gemini%204%20Argon-7c3aed?style=for-the-badge)](https://deepmind.google/)
 [![Frontend](https://img.shields.io/badge/Frontend-React%2019%20%7C%20TypeScript%20%7C%20Three.js%20WebGL-ea580c?style=for-the-badge)](./frontend)
 [![Backend](https://img.shields.io/badge/Backend-FastAPI%20%7C%20Bounded%20Multi--Agent%20ADK-059669?style=for-the-badge)](./backend)
 [![Pedagogy](https://img.shields.io/badge/Clinical%20Design-Neuro--Affirming%20%7C%20Errorless%20Co--Play-db2777?style=for-the-badge)](#how-autistic-children-improve-personal-social--skills-development)
 
-> **AutiCompanion AI** is an interactive **3D Cartoon Toy Co-Play Studio** and **Neuro-Affirming Multimodal Agentic Platform** designed for autistic children aged **2 to 11**. It transforms screen time from passive, isolating consumption into **two-sided, real-world 3D peer play**—where a lifelike 3D toy companion thinks, moves, runs, jumps to catch 3D bubbles, dribbles and kicks a 3D football into a goal, draws, sings, and converses naturally in a sweet child-girl peer voice while adapting to the child's live behavior, voice, and sensory needs.
+> **AutiCompanion AI** is an interactive **3D Cartoon Toy Co-Play Studio** and **Neuro-Affirming Multimodal Agentic Platform** designed for autistic children aged **2 to 11**. It transforms screen time from passive, isolating consumption into **two-sided, real-world 3D peer play**—where a lifelike 3D toy companion thinks, moves, runs, jumps to catch 3D bubbles, dribbles and kicks a 3D football into a goal, draws, sings, and converses naturally in a **Sweet Small Girl Peer Voice** (`en-US-AnaNeural` / `en-GB-MaisieNeural`) while adapting to the child's live behavior, voice, and sensory needs.
 
 ---
 
 ## 📑 Table of Contents
 
-1. [🎬 Demo Video & Screenshots Gallery (Placeholders)](#-demo-video--screenshots-gallery)
+1. [🎬 Official YouTube Demo Video & Live Studio Screenshots](#-official-youtube-demo-video--live-studio-screenshots)
 2. [🎯 Purpose: Why AutiCompanion AI Was Built](#-purpose-why-auticompanion-ai-was-built)
 3. [⚙️ How the Application Works (End-to-End)](#️-how-the-application-works-end-to-end)
 4. [🌱 How Autistic Children Improve: Personal, Social & Skills Development](#-how-autistic-children-improve-personal-social--skills-development)
@@ -31,46 +32,51 @@
 
 ---
 
-## 🎬 Demo Video & Screenshots Gallery
+## 🎬 Official YouTube Demo Video & Live Studio Screenshots
 
-> [!TIP]
-> **Media Placeholders Ready:** Replace the placeholder paths below (`docs/media/...` and `docs/screenshots/...`) with your recorded gameplay videos and studio screenshots.
+### 🎥 Watch the Full 3D Studio Demo on YouTube
 
-### 🎥 Official Product Demo Video
-
-<!-- Replace the link and poster image below with your actual demo video -->
 <div align="center">
-  <a href="docs/media/auticompanion-full-demo.mp4">
-    <img src="docs/screenshots/00-video-thumbnail-placeholder.png" alt="AutiCompanion 3D Cartoon Toy Co-Play Studio — Watch Full Demo Video" width="880" />
+  <a href="https://youtu.be/vL05-y37-_8" target="_blank">
+    <img src="./Screenshot%202026-10-14%20132223.png" alt="Watch AutiCompanion AI 3D Cartoon Toy Co-Play Studio Demo on YouTube" width="920" />
   </a>
-  <p><em>▶️ Click above or open <code>docs/media/auticompanion-full-demo.mp4</code> to watch the 3D Toy Character running, jumping to catch 3D bubbles, kicking 3D football goals, thinking autonomously, and co-playing with the child.</em></p>
+  <p>
+    <a href="https://youtu.be/vL05-y37-_8" target="_blank">
+      <img src="https://img.shields.io/badge/%E2%96%B6%EF%B8%8F%20Click%20Here%20to%20Watch%20Full%20Demo%20on%20YouTube-youtu.be%2FvL05--y37--_8-FF0000?style=for-the-badge&logo=youtube&logoColor=white" alt="Watch on YouTube" />
+    </a>
+  </p>
+  <p><em>🔗 <strong>Direct YouTube Link:</strong> <a href="https://youtu.be/vL05-y37-_8">https://youtu.be/vL05-y37-_8</a> — Watch the 3D Toy Companion running, jumping in 3D space to catch bubbles, kicking 3D football goals, thinking autonomously, speaking in a sweet small girl peer voice, and co-playing with the child via live webcam tracking.</em></p>
 </div>
-
-| Demo Clip | Description | Video File / Link Placeholder |
-| :--- | :--- | :--- |
-| **Clip 1: Full-View 3D Cartoon Stage & Hideable Sidebars** | Collapsing Top & Left Sidebars to expand the 60FPS Three.js 3D Cartoon World to full screen. | `[Watch Clip 1](docs/media/demo-01-fullview-3d-stage.mp4)` |
-| **Clip 2: Autonomous Child Brain & 35 3D Human Actions** | Toy observes child's camera behavior, enters `ThinkCurious` pose (`💭`), and autonomously performs cartwheels, airplane zooms, football kicks, and calm breathing. | `[Watch Clip 2](docs/media/demo-02-autonomous-brain-35-actions.mp4)` |
-| **Clip 3: Two-Sided 3D Co-Play (Bubbles, Football & 20 Skill Games)** | Child and 3D Toy taking turns popping 3D orbs, solving any-number math, and playing the 20 developmental games. | `[Watch Clip 3](docs/media/demo-03-two-sided-coplay-games.mp4)` |
-| **Clip 4: Photo-to-3D Favourite Toy & Dual-Voice Correspondence** | Uploading a child's real plush toy photo into a rigged 3D companion with sweet child-girl peer voice vs. warm adult guide voice. | `[Watch Clip 4](docs/media/demo-04-photo-to-3d-voice.mp4)` |
 
 ---
 
-### 📸 Application Screenshots
+### 📸 Live Application Screenshots
 
-| Full-View 3D Cartoon Co-Play Stage | Hideable & Expandable Studio Layout |
-| :---: | :---: |
-| ![Full-View 3D Cartoon Stage](docs/screenshots/01-full-view-3d-cartoon-stage.png) | ![Expandable 5-Zone Studio Layout](docs/screenshots/02-expandable-studio-layout.png) |
-| *100% unobstructed Three.js 3D Cartoon World with 3D Rainbow, Castle, Soccer Goal, Floating 3D Orbs, and Thought Cloud.* | *5-Zone Warm Cream & Amber Studio with 1-click Hide/Expand Top Bar, Left Sidebar, and Right Sidebar.* |
+#### 1. Two-Sided 3D Co-Play, Live Webcam Hand Tracking & Sweet Small Girl Voice Settings
+![Two-Sided 3D Co-Play & Hand Tracking](./Screenshot%202026-10-14%20132223.png)
+> **What this shows:**
+> - **Center 3D WebGL Stage:** The 3D Plush Teddy leaps into the air with green celebration sparkles after clearing a distractor bubble (*"Pop-pop Mia! My hand cleared Mad to help you—can you find Surprised?"*), while **`🖐️ Mia's Hand`** tracks the user's real-time movement from the webcam toward the `😮 Surprised` 3D orb alongside the 3D Soccer Ball & Goal Net.
+> - **Left Sidebar (`👧✨ Sweet Small Girl Voice`):** Live voice persona selector (**Sweet 5y Small Girl · Ana Neural**, **Tiny 4y Little Girl · Maisie Neural**, **Playful 6y Cartoon Girl**, **Gentle 8y Sister Voice**) with **Sweetness/Pitch (`1.48x`)** and **Talking Speed (`0.98x`)** sliders.
+> - **Right Sidebar (`🎥 Mia's Camera` & Turn-Taking Speech):** Drag-resizable live webcam tracking preview (`Toy Watching Mia`) and natural turn-taking speech card.
 
-| Autonomous Child Brain & 30 One-Click 3D Actions | 20 Intelligent Personal, Social & Skill Games |
-| :---: | :---: |
-| ![Autonomous Brain & 30 3D Actions](docs/screenshots/03-autonomous-brain-30-actions.png) | ![20 Intelligent Developmental Games](docs/screenshots/04-20-intelligent-skill-games.png) |
-| *Real-time Thought Cloud (`💭`) and 30 human-child 3D animations (`⚽ Move`, `🤸 Gym & Fun`, `💖 Social`).* | *20 structured games across Emotion Recognition, Daily Routines, Pragmatic Speech, and Sensory Calm.* |
+---
 
-| Two-Sided 3D Football & Jump-Catch Bubble Co-Play | Child Profile, 5 Cartoon Worlds & Photo-to-3D Toy Upload |
-| :---: | :---: |
-| ![3D Football & Jump-Catch Co-Play](docs/screenshots/05-3d-football-and-jump-catch.png) | ![Child Profile & Photo-to-3D Upload](docs/screenshots/06-profile-worlds-photo-to-3d.png) |
-| *3D Toy running across the field, dribbling/kicking the 3D soccer ball into the net, and leaping to catch 3D bubbles.* | *Personalized Child Profile (Toy greets child by name), 5 switchable 3D worlds, and 19+ 3D companions.* |
+#### 2. 20 Intelligent Personal, Social & Life-Skill 3D Bubble Games + Autonomous 3D Thought Cloud
+![20 Intelligent Social & Skill 3D Bubble Games](./Screenshot%202026-10-14%20132253.png)
+> **What this shows:**
+> - **Autonomous 3D Thought Cloud (`🤗 Warm Cuddle Hug!`):** Floating above the 3D Teddy Bear's head in 3D space, showing what the character is thinking and feeling in real time.
+> - **Interactive 3D Glossy Choice Orbs:** Four floating 3D bubbles (`🖍️ Share Crayons`, `😴 Go Sleep`, `🚫 Say No`, `📦 Lock Box`) from the **20 Intelligent Social & Skill Games** (*Sharing Turns Together*), where the toy praises: *"Yay Mia! Taking turns means my turn, then your turn—so much fun!"*
+
+---
+
+#### 3. 100% Unobstructed Full-View 3D Cartoon Stage (Top, Left & Right Sidebars Collapsed)
+![Full-View 3D Cartoon Stage Mode](./Screenshot%202026-10-14%20132344.png)
+> **What this shows:**
+> - **Full-Screen 3D WebGL Immersion:** With one click (`⛶ Full-View 3D` or individual `Hide` buttons), the Top Bar, Left Sidebar, and Right Sidebar collapse into lightweight corner restore pills (`▶ Expand Left Bar`, `🔽 Expand Top Bar (Mia)`, `◀ Expand Right Bar`, `🪟 Restore Top & Left Bars`), allowing the child to enjoy the 3D Rainbow Meadow, 3D Soccer Ball, 3D Goal Net, and 3D Toy (`👋 Wave Hi!`) with zero visual clutter.
+
+| Screenshot 1: Two-Sided Hand Tracking & Voice Settings | Screenshot 2: 20 Social Games & 3D Thought Cloud | Screenshot 3: Full-View 3D Stage (Bars Hidden) |
+| :---: | :---: | :---: |
+| ![Screenshot 1](docs/screenshots/01-two-sided-coplay-hand-tracking.png) | ![Screenshot 2](docs/screenshots/02-20-social-skill-games-and-voice-settings.png) | ![Screenshot 3](docs/screenshots/03-fullview-3d-cartoon-stage.png) |
 
 ---
 
