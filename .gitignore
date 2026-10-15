@@ -29,6 +29,7 @@ env/
 Thumbs.db
 *.log
 
-# Large local raw video recordings (hosted on YouTube: https://youtu.be/vL05-y37-_8)
-*.mp4
+# Large local raw video recordings in root (hosted on YouTube: https://youtu.be/vL05-y37-_8)
+/*.mp4
+!docs/media/*.mp4
 

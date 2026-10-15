@@ -1,40 +1,53 @@
 # 🧸🌈 AutiCompanion AI — 3D Cartoon Toy Co-Play Studio & Neuro-Affirming Multimodal Agentic Companion (Ages 2–11)
 
-[![Watch Demo on YouTube](https://img.shields.io/badge/YouTube-Watch%20Full%203D%20Studio%20Demo-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://youtu.be/vL05-y37-_8)
+[![Watch Demo 1 on YouTube](https://img.shields.io/badge/YouTube%20Demo%201-Full%203D%20Studio%20Walkthrough-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://youtu.be/vL05-y37-_8)
+[![Watch Demo 2 (New Update)](https://img.shields.io/badge/Demo%20Video%202%20(NEW)-120%203D%20Toys%20%7C%2060%20Worlds%20%7C%202--Way%20Co--Play-ec4899?style=for-the-badge&logo=github&logoColor=white)](./docs/media/new-autistic-child-coplay-demo.mp4)
 [![Built with Gemini 4 Argon](https://img.shields.io/badge/Architected%20%26%20Engineered%20With-Gemini%204%20Argon-7c3aed?style=for-the-badge)](https://deepmind.google/)
 [![Frontend](https://img.shields.io/badge/Frontend-React%2019%20%7C%20TypeScript%20%7C%20Three.js%20WebGL-ea580c?style=for-the-badge)](./frontend)
 [![Backend](https://img.shields.io/badge/Backend-FastAPI%20%7C%20Bounded%20Multi--Agent%20ADK-059669?style=for-the-badge)](./backend)
 [![Pedagogy](https://img.shields.io/badge/Clinical%20Design-Neuro--Affirming%20%7C%20Errorless%20Co--Play-db2777?style=for-the-badge)](#how-autistic-children-improve-personal-social--skills-development)
 
-> **AutiCompanion AI** is an interactive **3D Cartoon Toy Co-Play Studio** and **Neuro-Affirming Multimodal Agentic Platform** designed for autistic children aged **2 to 11**. It transforms screen time from passive, isolating consumption into **two-sided, real-world 3D peer play**—where a lifelike 3D toy companion thinks, moves, runs, jumps to catch 3D bubbles, dribbles and kicks a 3D football into a goal, draws, sings, and converses naturally in a **Sweet Small Girl Peer Voice** (`en-US-AnaNeural` / `en-GB-MaisieNeural`) while adapting to the child's live behavior, voice, and sensory needs.
+> **AutiCompanion AI** is an interactive **3D Cartoon Toy Co-Play Studio** and **Neuro-Affirming Multimodal Agentic Platform** designed for autistic children aged **2 to 11**. It transforms screen time from passive, isolating consumption into **two-sided, real-world 3D peer play**—where **120 distinct 3D toy companions** across **60 sensory-friendly 3D stage worlds** think, move, run, jump to catch 3D bubbles, dribble and kick a 3D football into a goal, draw, sing, and converse naturally in a **Sweet Small Girl Peer Voice** (`en-US-AnaNeural` / `en-GB-MaisieNeural`) while listening and responding to the child's live webcam gestures, facial expressions, and voice.
 
 ---
 
 ## 📑 Table of Contents
 
-1. [🎬 Official YouTube Demo Video & Live Studio Screenshots](#-official-youtube-demo-video--live-studio-screenshots)
-2. [🎯 Purpose: Why AutiCompanion AI Was Built](#-purpose-why-auticompanion-ai-was-built)
-3. [⚙️ How the Application Works (End-to-End)](#️-how-the-application-works-end-to-end)
-4. [🌱 How Autistic Children Improve: Personal, Social & Skills Development](#-how-autistic-children-improve-personal-social--skills-development)
-5. [🧠 How Gemini 4 Argon Built & Solved This Complex Solution](#-how-gemini-4-argon-built--solved-this-complex-solution)
-   - [5.1 Autistic Child Needs Reasoning & Neuro-Affirming Pedagogy](#51-autistic-child-needs-reasoning--neuro-affirming-pedagogy)
-   - [5.2 Multi-Layer Agentic Orchestration & Autonomous Child Brain](#52-multi-layer-agentic-orchestration--autonomous-child-brain)
-   - [5.3 3D Graphics, Biomechanical Skeletal Animation & Physics Engineering](#53-3d-graphics-biomechanical-skeletal-animation--physics-engineering)
-6. [🗺️ Visual Mindmaps, Solution Architecture & Workflow Diagrams](#️-visual-mindmaps-solution-architecture--workflow-diagrams)
-   - [6.1 Complete Ecosystem Mindmap](#61-complete-ecosystem-mindmap)
-   - [6.2 Developmental Skills & Clinical Impact Mindmap](#62-developmental-skills--clinical-impact-mindmap)
-   - [6.3 End-to-End Solution Architecture Diagram](#63-end-to-end-solution-architecture-diagram)
-   - [6.4 Autonomous Child Brain & Turn-Taking Workflow](#64-autonomous-child-brain--turn-taking-workflow)
-   - [6.5 3D Character Locomotion, Skeletal Kinematics & Physics State Machine](#65-3d-character-locomotion-skeletal-kinematics--physics-state-machine)
-7. [✨ Complete Feature List](#-complete-feature-list)
-8. [🚀 Getting Started & Running the Platform](#-getting-started--running-the-platform)
-9. [📂 Project Directory Structure](#-project-directory-structure)
+1. [🎬 Official Demo Videos (Video 1 & New Update Video 2) & Live Studio Gallery](#-official-demo-videos-video-1--new-update-video-2--live-studio-gallery)
+2. [🆕 Latest Major Release Highlights (120 3D Toys, 60 3D Worlds & True Two-Way Co-Play)](#-latest-major-release-highlights-120-3d-toys-60-3d-worlds--true-two-way-co-play)
+3. [🎯 Purpose: Why AutiCompanion AI Was Built](#-purpose-why-auticompanion-ai-was-built)
+4. [⚙️ How Each Feature & Working Activity Operates (Step-by-Step Guide)](#️-how-each-feature--working-activity-operates-step-by-step-guide)
+5. [🌱 How Autistic Children Improve: Personal, Social & Skills Development](#-how-autistic-children-improve-personal-social--skills-development)
+6. [🧠 How Gemini 4 Argon Built & Solved This Complex Solution](#-how-gemini-4-argon-built--solved-this-complex-solution)
+   - [6.1 Autistic Child Needs Reasoning & Neuro-Affirming Pedagogy](#61-autistic-child-needs-reasoning--neuro-affirming-pedagogy)
+   - [6.2 Multi-Layer Agentic Orchestration & Autonomous Child Brain](#62-multi-layer-agentic-orchestration--autonomous-child-brain)
+   - [6.3 3D Species Anatomy, Biomechanical Skeletal Animation & Physics Engineering](#63-3d-species-anatomy-biomechanical-skeletal-animation--physics-engineering)
+7. [🗺️ Visual Mindmaps, Solution Architecture & Workflow Diagrams](#️-visual-mindmaps-solution-architecture--workflow-diagrams)
+8. [✨ Complete Feature & Activity Reference](#-complete-feature--activity-reference)
+9. [🚀 Getting Started & Running the Platform](#-getting-started--running-the-platform)
+10. [📂 Project Directory Structure](#-project-directory-structure)
 
 ---
 
-## 🎬 Official YouTube Demo Video & Live Studio Screenshots
+## 🎬 Official Demo Videos (Video 1 & New Update Video 2) & Live Studio Gallery
 
-### 🎥 Watch the Full 3D Studio Demo on YouTube
+### 🎥 Video 2 (NEW UPDATE): 120 3D Toy Characters, 60 3D Stage Worlds & Two-Sided Webcam/Voice Co-Play
+
+<div align="center">
+  <a href="./docs/media/new-autistic-child-coplay-demo.mp4" target="_blank">
+    <img src="./child%20new.png" alt="Watch New Update Video: 120 3D Toys, 60 3D Stage Environments & Live Webcam/Voice Co-Play" width="920" />
+  </a>
+  <p>
+    <a href="./docs/media/new-autistic-child-coplay-demo.mp4" target="_blank">
+      <img src="https://img.shields.io/badge/%E2%96%B6%EF%B8%8F%20Watch%20New%20Update%20Demo%20Video%20(MP4)-120%203D%20Toys%20%26%2060%203D%20Stage%20Worlds-ec4899?style=for-the-badge&logo=github&logoColor=white" alt="Watch New Update Video" />
+    </a>
+  </p>
+  <p><em>🔗 <strong>Direct Repository Video Link:</strong> <a href="./docs/media/new-autistic-child-coplay-demo.mp4"><code>docs/media/new-autistic-child-coplay-demo.mp4</code></a> — Demonstrates the newly expanded <strong>120 3D Toy Companions</strong> (such as <strong>Mochi Pastel Plush Kitty</strong> with 3D triangular ears, whiskers, and bell), <strong>60 Creative 3D Stage Worlds</strong> (Rainbow Meadow, Ringed Planet Space Station, Sensory Rooms, Vehicles & Magic), <strong>Two-Sided Webcam Gesture & Voice Sync</strong> (<code>[Webcam Gesture: Aaima Jumped / Nodded Yes]</code>), <strong>20 Skill Games</strong>, and <strong>3D Toy Auto-Drawing</strong>!</em></p>
+</div>
+
+---
+
+### 🎥 Video 1: Original Full 3D Studio Demo on YouTube
 
 <div align="center">
   <a href="https://youtu.be/vL05-y37-_8" target="_blank">
@@ -50,33 +63,61 @@
 
 ---
 
-### 📸 Live Application Screenshots
+### 📸 Visual Walkthrough of Every Feature & Working Activity
 
-#### 1. Two-Sided 3D Co-Play, Live Webcam Hand Tracking & Sweet Small Girl Voice Settings
-![Two-Sided 3D Co-Play & Hand Tracking](./Screenshot%202026-10-14%20132223.png)
-> **What this shows:**
-> - **Center 3D WebGL Stage:** The 3D Plush Teddy leaps into the air with green celebration sparkles after clearing a distractor bubble (*"Pop-pop Mia! My hand cleared Mad to help you—can you find Surprised?"*), while **`🖐️ Mia's Hand`** tracks the user's real-time movement from the webcam toward the `😮 Surprised` 3D orb alongside the 3D Soccer Ball & Goal Net.
-> - **Left Sidebar (`👧✨ Sweet Small Girl Voice`):** Live voice persona selector (**Sweet 5y Small Girl · Ana Neural**, **Tiny 4y Little Girl · Maisie Neural**, **Playful 6y Cartoon Girl**, **Gentle 8y Sister Voice**) with **Sweetness/Pitch (`1.48x`)** and **Talking Speed (`0.98x`)** sliders.
-> - **Right Sidebar (`🎥 Mia's Camera` & Turn-Taking Speech):** Drag-resizable live webcam tracking preview (`Toy Watching Mia`) and natural turn-taking speech card.
-
----
-
-#### 2. 20 Intelligent Personal, Social & Life-Skill 3D Bubble Games + Autonomous 3D Thought Cloud
-![20 Intelligent Social & Skill 3D Bubble Games](./Screenshot%202026-10-14%20132253.png)
-> **What this shows:**
-> - **Autonomous 3D Thought Cloud (`🤗 Warm Cuddle Hug!`):** Floating above the 3D Teddy Bear's head in 3D space, showing what the character is thinking and feeling in real time.
-> - **Interactive 3D Glossy Choice Orbs:** Four floating 3D bubbles (`🖍️ Share Crayons`, `😴 Go Sleep`, `🚫 Say No`, `📦 Lock Box`) from the **20 Intelligent Social & Skill Games** (*Sharing Turns Together*), where the toy praises: *"Yay Mia! Taking turns means my turn, then your turn—so much fun!"*
+#### 1. Two-Sided Webcam Gesture Sync, 60 3D Stage Worlds & Distinct 3D Kitty Character (`child new.png`)
+![Two-Sided Webcam Gesture Sync & 60 3D Stage Worlds](./child%20new.png)
+> **What Visitors See in Action:**
+> - **Clean 2-Deck Top Studio Header:** Displays the active child profile (`👶 Aaima (5y)`), 1-click 3D Toy switcher (`🐱 Mochi Pastel Plush Kitty 🎲`), 1-click 3D World switcher (`🌈🌸 Rainbow Meadow 🎲`), live webcam/voice telemetry (`[Webcam Gesture: Aaima Jumped / Nodded Yes]`), `🎙️ Mic ON`, `🔊 Test Voice`, and natural language `Ask 💬` input.
+> - **60 3D Stage Worlds Browser (Left Sidebar):** Filterable across `🌟 All (60)`, `🌿 Nature (18)`, `🚂 Vehicles (14)`, `🍭 Magic (15)`, and `🫧 Sensory (13)` with a `🎲 Next World` instant cycler.
+> - **Two-Sided Webcam Co-Play (Center & Right Sidebar):** When the user jumps or moves in `🎥 AAIMA'S CAMERA` (`✨ 😊 Aaima Moving — Toy Synced!`), the 3D Mochi Kitty thinks `🦘 Jumping Together!` in her 3D Thought Cloud and leaps alongside `🖐️ Aaima's Hand` to catch floating 3D bubbles!
 
 ---
 
-#### 3. 100% Unobstructed Full-View 3D Cartoon Stage (Top, Left & Right Sidebars Collapsed)
-![Full-View 3D Cartoon Stage Mode](./Screenshot%202026-10-14%20132344.png)
-> **What this shows:**
-> - **Full-Screen 3D WebGL Immersion:** With one click (`⛶ Full-View 3D` or individual `Hide` buttons), the Top Bar, Left Sidebar, and Right Sidebar collapse into lightweight corner restore pills (`▶ Expand Left Bar`, `🔽 Expand Top Bar (Mia)`, `◀ Expand Right Bar`, `🪟 Restore Top & Left Bars`), allowing the child to enjoy the 3D Rainbow Meadow, 3D Soccer Ball, 3D Goal Net, and 3D Toy (`👋 Wave Hi!`) with zero visual clutter.
+#### 2. 120 Pre-Built 3D Toy Characters, Animal Voice Match & AI Toy Auto-Drawing
+![120 Pre-Built 3D Toy Characters & Auto-Drawing](./docs/screenshots/new-video-feature-04.png)
+> **What Visitors See in Action:**
+> - **120 Pre-Built 3D Toys Library (Left Sidebar):** Searchable (`🔍 Search 120 toys: kitty, elephant, dog...`) and organized into **10 category tabs**: `🌟 All (120)`, `🐱 Cats (16)`, `🐶 Dogs (16)`, `🐘 Elephant/Safari (18)`, `🧸 Bears/Bunnies (20)`, `🐮 Farm (10)`, `🦕🦄 Dino/Magic (14)`, `🐬🐧 Ocean/Birds (14)`, `🚓 Cars (6)`, and `🤖🧚 Robots/Dolls (6)`.
+> - **3D Space Station World (`🪐🚀 Ringed Planet Space Station`):** Custom 3D ringed planet, glowing stars, and 3D rocket ship behind the 3D character.
+> - **Interactive Speech & Sound Bubble Game:** Floating 3D glossy orbs (`🐸 Ribbit Frog`, `🐮 Moo Cow`, `🐝 Buzz Bee`, `🐍 Hiss Snake`) tracked by `🖐️ Aaima's Hand`.
+> - **AI Toy Stroke-by-Stroke Auto-Drawing (Right Sidebar):** 1-click buttons (`🐱 Draw Cat`, `🏎️ Draw Car`, `🌈 Rainbow`, `🌸 Flower`, `🏠 House`, `💖 Heart`) where the 3D toy draws colorful artwork directly on the stage.
 
-| Screenshot 1: Two-Sided Hand Tracking & Voice Settings | Screenshot 2: 20 Social Games & 3D Thought Cloud | Screenshot 3: Full-View 3D Stage (Bars Hidden) |
+---
+
+#### 3. Space Station Co-Play Scoreboard, Turn-Taking Speech & 3D Rainbow Flower Art
+| Space Station Co-Play & Turn-Taking (`new-video-feature-03.png`) | Toy Auto-Drawing 3D Flower & 120 Toy Browser (`new-video-feature-05.png`) |
+| :---: | :---: |
+| ![Space Station Co-Play](./docs/screenshots/new-video-feature-03.png) | ![Toy Auto-Drawing & 120 Toys](./docs/screenshots/new-video-feature-05.png) |
+| *Live Two-Sided Co-Play Scoreboard (`⭐ 47` \| `👧 Aaima: 90 👏` \| `🦘 Toy Catch: 44`), Sweet 6y Cartoon Girl Voice settings (`1.49x`), and 20 Intelligent Skill Games.* | *3D Mochi Kitty drawing a glowing 3D Rainbow Flower in the Space Station while browsing Raccoon, Spotted Fawn, Red-Nosed Reindeer, Hamster, Capybara & Mouse 3D toys.* |
+
+---
+
+#### 4. Classic 3D Teddy Co-Play, 20 Social Games & 100% Unobstructed Full-View 3D Stage
+| Two-Sided Hand Tracking & Voice Settings | 20 Social Games & 3D Thought Cloud | Full-View 3D Stage (All Bars Hidden) |
 | :---: | :---: | :---: |
-| ![Screenshot 1](docs/screenshots/01-two-sided-coplay-hand-tracking.png) | ![Screenshot 2](docs/screenshots/02-20-social-skill-games-and-voice-settings.png) | ![Screenshot 3](docs/screenshots/03-fullview-3d-cartoon-stage.png) |
+| ![Screenshot 1](./Screenshot%202026-10-14%20132223.png) | ![Screenshot 2](./Screenshot%202026-10-14%20132253.png) | ![Screenshot 3](./Screenshot%202026-10-14%20132344.png) |
+
+---
+
+## 🆕 Latest Major Release Highlights (120 3D Toys, 60 3D Worlds & True Two-Way Co-Play)
+
+1. **🧸 120 Distinct 3D Toy Characters with Species-Specific 3D Anatomy & Coat Markings:**
+   - Every 3D character renders with a **unique 3D body silhouette, exterior 3D anatomical parts, and procedural 3D surface patterns** (stripes, spots, patches, facial masks, and tuxedo bibs)—never a generic color swap:
+     - **🐱 16 Kitties, Cats & Big Cats:** Sleek feline torso, tall pointed 3D triangular ears with pink inner shells, twin plump white `ω` whisker muzzle puffs, pink 3D triangle nose, 6 long exterior 3D whiskers, high S-curved feline tail, pink collar + golden bell (or red 3D bowtie on Tuxedo Kitty), plus tabby/tiger stripes and calico/leopard spots.
+     - **🐶 16 Baby Dogs & Puppies:** Sculpted 3D canine muzzle box, big glossy black 3D dog nose, breed-specific **long hanging 3D floppy ears** (Golden Puppy, Dalmatian, Beagle, Pug, Poodle, Dachshund, Bernese) or **tall perky ears** (Corgi, Husky, Frenchie, Shiba, Puppy), happy pink 3D tongue on the articulated jaw bone, Poodle pom-pom crown, Dalmatian spots, and red collar + golden tag.
+     - **🐘 18 Baby Elephants & Safari Friends:** Chubby elephant body, giant exterior 3D scalloped fan ears (`x = ±0.54`), articulated 5-segment S-curved 3D elephant trunk (`z = +0.94`), and 2 curved ivory 3D tusks; **Baby Lion** with a 14-petal 3D mane ring; **Baby Giraffe** with elongated neck, spots, and ossicone horns; **Zebra** with black/white stripes; **Kangaroo** with exterior 3D belly pouch & baby Joey peeking out; **Hippo & Rhino** with wide barrel snouts & nose horn.
+     - **🧸 20 Bears, Pandas, Bunnies, Koalas, Sloths, Hedgehogs, Raccoons & Deer:** Giant Panda black/white limb & eye patches, tall Bunny ears, 20 exterior 3D Hedgehog back quills, giant Squirrel/Red Panda plume tails, Raccoon 3D bandit mask, and multi-branched Deer/Reindeer antlers (with glowing red nose on Comet Reindeer).
+     - **🦕🦄🐬🚓 40+ Farm Animals, Dinosaurs, Dragons, Unicorns, Ocean Friends, Birds & Rescue Vehicles:** Triceratops crown shield frill & 3 horns, Stegosaurus dorsal plates, 1.4m-span Dragon/Pegasus/Fairy 3D wings, domed emerald Sea Turtle carapace shell, Dolphin/Whale/Narwhal flippers & dorsal fin, 6 splayed Octopus tentacles, 6 crimson Axolotl gill branches, Frog top-mounted eye domes, Penguin red winter scarf & beak, Superhero flowing red cape & mask, plus Police Cruiser lightbar, Fire Engine roof ladder & beacon, and School Bus roof sign & `STOP` arm.
+2. **🎡 60 Sensory-Friendly 3D Stage Environments Across 4 Categories:**
+   - **🌿 Nature & Animals (18 Worlds):** *Rainbow Meadow*, *Sunny Dino Park*, *Butterfly Flower Garden*, *Tropical Dolphin Lagoon*, *Bamboo Panda Forest*, *Snowy Penguin Iceberg*, *Autumn Acorn Woods*, *Bunny Carrot Patch*, *Koi Fish Zen Pond*, *Sunflower Bee Field*, *Safari Sunset Savanna*, *Misty Waterfall Oasis*, *Cherry Blossom Park*, *Desert Cactus Canyon*, *Alpine Snowy Peaks*, *Meadow Picnic Blanket*, *Glowing Mushroom Grove*, *Enchanted Treehouse*.
+   - **🚂 Vehicles, Space & Builders (14 Worlds):** *Steam Train Valley*, *Ringed Planet Space Station*, *3D Voxel Block World*, *Toy Car Race Track*, *Pirate Treasure Cove*, *Hot Air Balloon Sky*, *Firefighter Rescue Station*, *Airport Runway & Jets*, *Construction Crane Site*, *Harbor Tugboat Dock*, *Lunar Moon Rover Base*, *Submarine Deep Sea Trench*, *Farm Tractor Barn*, *Robot Invention Lab*.
+   - **🍭 Magic, Fantasy & Sweet (15 Worlds):** *Candy Wonderland*, *Amusement Ferris Park*, *Bouncy Trampoline Castle*, *Dragon Crystal Cavern*, *Mermaid Pearl Palace*, *Unicorn Cloud Kingdom*, *Gingerbread Cookie Village*, *Ice Cream Sundae Island*, *Wizard Potion Library*, *Fairy Lantern Woods*, *Floating Sky Islands*, *Giant Storybook Castle*, *Teddy Bear Tea Party*, *Rainbow Waterpark Slide*, *Pirate Sky Airship*.
+   - **🫧 Sensory, Calm & Indoor (13 Worlds):** *Cozy Toy Playroom*, *Starlight Night Garden*, *Sensory Lava Lamp Room*, *Ocean Coral Aquarium*, *Musical Xylophone Stage*, *Giant Bubble Dome*, *Soft Pillow Fort Tent*, *Fiber Optic Sensory Cave*, *Warm Campfire Night*, *Northern Lights Igloo*, *Art & Paint easel Studio*, *Calm Zen Sand Garden*, *Sensory Ball Pit Gym*.
+3. **🤝 True Two-Sided Cooperative Turn-Taking (Voice + Webcam Gestures + Expressions):**
+   - **Never Monologues Unprompted:** The 3D Toy speaks **one concise, affectionate turn** in her Sweet Small Girl Voice and then automatically pauses (`👂 Waiting for Child's Turn`), resuming the microphone so the child can answer at their own pace.
+   - **Live Webcam Gesture & Expression Sync:** Detects child waves, jumps, head nods, smiles, and distress on camera, mirroring the child's actions in 3D space and responding empathetically.
+4. **⚽ Dedicated 3D Football & Sports Mode + Organized 2-Deck Top Bar:**
+   - The 3D Soccer Ball and 3D Goal Net appear **exclusively** when playing **3D Football & Sports Game** mode (or when the child asks to kick the ball), keeping all other 60 stage worlds clean and uncluttered.
 
 ---
 
@@ -86,30 +127,56 @@ Many traditional educational apps fail autistic children for four core reasons:
 1. **Harsh Sensory & Evaluative Pressure:** Loud buzzers, countdown timers, red `"X"` failure screens, and robotic adult instruction voices trigger demand avoidance and sensory overload.
 2. **One-Sided "Test" Dynamics Instead of Peer Play:** Conventional apps quiz the child endlessly rather than playing *with* the child like a relatable peer friend.
 3. **Static, Lifeless Avatars:** Flat 2D stickers or rigid models that only bob up and down fail to model real-world human movement, joint attention, body language, or reciprocal motor imitation.
-4. **Lack of Personalization & Special-Interest ("Spin") Bonding:** Autistic children thrive when learning is anchored around their own name, their favorite physical toys, and their beloved themes (cute animals, dinosaurs, trains, space, rainbows).
+4. **Lack of Personalization & Special-Interest ("Spin") Bonding:** Autistic children thrive when learning is anchored around their own name, their favorite physical toys, and their beloved themes (kitties, puppies, baby elephants, dinosaurs, trains, space, rainbows).
 
-**AutiCompanion AI** was built to solve these exact challenges by creating a **Neuro-Affirming 3D Cartoon Toy Co-Play Studio** where:
+**AutiCompanion AI** solves these exact challenges by creating a **Neuro-Affirming 3D Cartoon Toy Co-Play Studio** where:
 - The 3D toy companion acts, thinks, moves, and speaks like a **sweet, playful child friend**—never an authoritarian lecturer.
-- Every game is **two-sided and cooperative**: when the child pops a 3D bubble or kicks a 3D ball, the 3D toy physically runs and jumps in 3D space to catch bubbles and kick goals *with* the child.
-- The 3D toy possesses an **Autonomous Human-Child Brain** that observes the child's live facial expression, voice, and movement energy, thinks for herself (`🤔💭`), and chooses comforting, silly, or active human-child activities naturally.
+- Every activity is **two-sided and cooperative**: when the child pops a 3D bubble, jumps on camera, or asks a question, the 3D toy physically runs, jumps, catches bubbles, kicks goals, draws, or sings *with* the child.
 
 ---
 
-## ⚙️ How the Application Works (End-to-End)
+## ⚙️ How Each Feature & Working Activity Operates (Step-by-Step Guide)
 
-1. **Personalized Child Profile & Warm Studio Setup:**
-   - Parents, therapists, or the child configure the **Child Profile** (Name, Age `2–11`, and Favorite Interest) in the Left Sidebar. From that moment on, the 3D Toy addresses the child by name (e.g., *"Hi Mia! Watch me dribble the 3D football and kick a goal for you!"*).
-2. **Unobstructed Full-View 3D Cartoon World (Three.js WebGL at 60FPS):**
-   - The center stage renders a rich, changeable 3D cartoon environment (**Rainbow Meadow**, **Candy Wonderland**, **Sunny Dino Park**, **Cozy Toy Playroom**, or **Starlight Night Garden**) complete with 3D hills, trees, castle towers, spinning windmills, a 3D soccer goal net, a 3D soccer ball with gravity/bounce physics, and floating 3D bubble orbs.
-   - **Hideable & Expandable Bars:** The Top Bar, Left Sidebar, and Right Sidebar can be collapsed with a single click (`◀ Hide Left`, `🔼 Hide Top`, `▶ Hide Right`, or `⛶ Full-View 3D Stage`), triggering a `ResizeObserver` that immediately expands the 3D WebGL viewport to full screen.
-3. **Dual-Persona Voice Architecture & Natural Turn-Taking:**
-   - **👧 Sweet Child-Girl Peer Voice (`speakAsSweetChildGirlToy`):** Used exclusively by the 3D Toy when chatting, giggling, encouraging, and playing with the child. Crucially, the toy speaks **one short, natural turn** and then enters **Listening & Waiting Mode** (`👂 Waiting for Mia's Response`) so she never monologues over the child.
-   - **👩‍🏫 Calm Adult Guide Voice (`speakAsAdultAppGuide`):** Used exclusively for app settings, camera/microphone status updates, and activity transitions.
-4. **Multimodal Input (Voice + Hands-Free Webcam Motion + Touch/Pointer):**
-   - **Live Speech Recognition (`webkitSpeechRecognition`):** Continuously listens (when enabled) for natural requests (*"do a cartwheel"*, *"fly like an airplane"*, *"what is 8 plus 7"*, *"draw a cat"*, *"kick the football"*, *"sing a song"*, *"candy world"*), math equations, or Gestalt phrases.
-   - **Hands-Free Webcam Motion & Expression Correspondence:** Tracks the child's hand cursor (`🖐️`) in real time so the child can pop 3D bubbles or complete physical jump/wave/dance reps simply by moving in front of the camera.
-5. **Autonomous Human-Child Brain & 35 Real-World 3D Animations:**
-   - Every ~6.8 seconds (when `🧠 Auto-Think: ON` is active and the toy is not speaking), or whenever the child says *"decide"* / taps `💡 Let Toy Think & Decide Activity Now!`, the 3D toy places her hand on her chin (`think_curious`), updates her floating 3D Thought Cloud (`💭`), evaluates the child's current state (distressed, frustrated, high-energy moving, or calm), and autonomously executes one of **35 human-child 3D animations**.
+Below is a complete walkthrough of how every interactive feature and working activity in **AutiCompanion AI** operates for the child, parent, or therapist:
+
+### 1. 🧸 Choosing or Uploading Any of the 120+ 3D Toy Companions
+- **How It Works:**
+  1. In the **Left Sidebar (`🧸 120 PRE-BUILT 3D TOYS`)** or the **Top Header (`🎲` Toy Pill)**, type in the search bar (e.g., `"kitty"`, `"elephant"`, `"corgi"`, `"dragon"`, `"turtle"`), select any of the **10 category tabs**, or click **`🎲 Next Toy`**.
+  2. You can also switch toys hands-free by **speaking or typing** in the Top Ask Bar (e.g., *"change to baby elephant"*, *"be a kitty"*, *"show puppy"*).
+  3. **Photo-to-3D Favourite Toy Upload:** Click **`📸 Upload Favourite Toy Photo`** in the Left Sidebar to upload a photo of the child's real-life toy; the engine removes the background, extracts dominant colors, and wraps the texture onto a live 3D skeletal rig.
+
+### 2. 🎡 Exploring the 60 Creative 3D Stage Environments
+- **How It Works:**
+  1. In the **Left Sidebar (`🎡 3D STAGE WORLDS (60)`)**, filter by **`🌟 All (60)`**, **`🌿 Nature (18)`**, **`🚂 Vehicles (14)`**, **`🍭 Magic (15)`**, or **`🫧 Sensory (13)`**, or click **`🎲 Next World`**.
+  2. You can also switch worlds by voice (e.g., *"space station"*, *"ferris wheel"*, *"aquarium"*, *"lava lamp"*, *"train world"*).
+  3. Each world builds custom 3D procedural architecture, lighting, sky dome, and animated 3D stage props at 60FPS.
+
+### 3. 🗣️ Two-Sided Voice, Text & Webcam Gesture Conversation
+- **How It Works:**
+  1. **Voice Input (`🎙️ Mic ON`):** Speak naturally into the microphone (*"Hello"*, *"How are you?"*, *"Let's jump together"*, *"Do a cartwheel"*, *"What is 6 plus 5?"*). Live interim speech appears immediately in the Top Header so you know the toy hears you.
+  2. **Speaker Audio Lock & Turn-Taking:** While the 3D toy replies in her **Sweet Small Girl Voice** (`🔊 Test Voice` / `👧 Speak Now`), microphone capture pauses so Windows/Chrome never ducks speaker volume. As soon as she finishes her short sentence, the mic resumes and displays **`👂 Waiting for Child's Turn`**.
+  3. **Live Webcam Gesture & Expression Sync (`🎥 Camera`):** Wave, jump, nod, or smile in front of the webcam—or click the quick expression pills (`😊 Smile`, `😢 Comfort`, `🤩 Surprise`, `😣 Frustrated`)—and watch the 3D toy mirror your movement and respond with comforting or celebratory actions.
+
+### 4. 🤸 35 Real-World Human-Child 3D Actions & Autonomous Child Brain (`💭`)
+- **How It Works:**
+  1. In the **Right Sidebar (`🤸 30 HUMAN-CHILD 3D ACTIONS`)**, filter between **`⚽ Move & Sports (10)`**, **`🤸 Gym & Fun (10)`**, and **`💖 Social & Calm (10)`**, or click any action button (`🤸‍♀️ 3D Cartwheel`, `✈️ Airplane Zoom`, `🥁 Parade March`, `🦩 1-Foot Hop`, `✋ 3D High-Five`, `🌬️ Calm Breathe`, `🤗 Cuddle Hug`, `🙈 Peek-a-Boo`).
+  2. **Autonomous Brain (`🧠 Auto-Think`):** When enabled, the toy periodically puts her hand on her chin (`🤔`), shows her internal reasoning in the floating **3D Thought Cloud (`💭`)** above her head, and chooses an activity tailored to the child's mood (without talking over the child).
+
+### 5. 🎓 6 Interactive Co-Play Studio Modes (Bottom Mode Bar)
+Visitors can switch between **6 complete co-play modes** at any time using the bottom studio bar:
+1. **`🎓💖 20 Social & Skill 3D Games`:**
+   - 20 errorless 3D bubble games across **Emotions & Social Reciprocity (5)**, **Personal & Daily Life Skills (5)**, **Speech & Communication (5)**, and **Sensory & Calm Thinking (5)**.
+   - Both the child (by touching bubbles or moving `🖐️ Hand` on webcam) and the 3D Toy (by running and leaping in 3D space) pop bubbles together!
+2. **`🫧🔢 Any-Number 3D Math`:**
+   - Practice `+`, `−`, `×`, `÷`, and Counting across `1–5`, `1–10`, `1–20`, `1–100`, or type/speak any custom math question (*"What is 14 plus 9?"*).
+3. **`⚽🏃 3D Football & Sports Game`:**
+   - Brings the **3D Soccer Ball** and **3D Goal Net** onto the field! Click or say *"Kick football"* to watch the 3D toy dribble across the grass, wind up her leg, and kick the 3D ball into the goal net with real gravity, bounce, spin, and celebration sparkles, alongside a **Physical Exercise Rep Counter** (Jump, Wave, Dance on camera).
+4. **`🧸🎨 3D Toy & Auto-Drawing`:**
+   - Ask the 3D toy to draw a `🐱 Cat`, `🏎️ Car`, `🌈 Rainbow`, `🌸 Flower`, `🏠 House`, or `💖 Heart` stroke-by-stroke with musical notes, or paint together on the 2D/3D canvas.
+5. **`🎵🌟 Sing & Dance Together`:**
+   - Interactive children's karaoke songs with WebAudio melodies, synchronized jaw lip-sync, and 3D dance choreography.
+6. **`🦘🎉 3D Jump & Catch Bubbles`:**
+   - High-energy cooperative bubble party where the 3D toy runs and leaps across the 3D stage to catch floating orbs alongside the child's webcam hand cursor.
 
 ---
 
@@ -129,75 +196,68 @@ AutiCompanion AI embeds evidence-informed, neurodiversity-affirming practices (*
 
 ## 🧠 How Gemini 4 Argon Built & Solved This Complex Solution
 
-Building a real-time, neuro-affirming 3D developmental studio required solving deep challenges across **clinical autism reasoning**, **multi-agent orchestration**, and **60FPS 3D WebGL skeletal animation & physics**. Here is how **Gemini 4 Argon** architected and engineered the solution:
+Building a real-time, neuro-affirming 3D developmental studio required solving deep challenges across **clinical autism reasoning**, **multi-agent orchestration**, and **60FPS 3D WebGL procedural anatomy, skeletal animation & physics**. Here is how **Gemini 4 Argon** architected and engineered the solution:
 
-### 5.1 Autistic Child Needs Reasoning & Neuro-Affirming Pedagogy
+### 6.1 Autistic Child Needs Reasoning & Neuro-Affirming Pedagogy
 1. **Eliminating "Robotic Adult Over-Talking" via Dual-Persona Turn-Taking:**
    - *Challenge:* Early prototypes used a single TTS voice that continuously talked, overwhelming the child and leaving no conversational space for a response.
-   - *Gemini 4 Argon Solution:* Engineered a **Dual-Persona Voice Synthesizer** ([soundEffects.ts](file:///c:/Users/mrmoh/Desktop/austicapp/frontend/src/utils/soundEffects.ts)) that separates the **3D Toy's Sweet Child-Girl Peer Voice** (high-pitched, warm, playful cartoon cadence) from the **Adult App Guide Voice** (calm instructional voice for settings). Furthermore, Gemini 4 Argon implemented a strict **Turn-Taking Gate** (`waitingForChildReply` + `lastSpeechEndTimeRef`) so the toy speaks one concise, affectionate sentence using the child's name and then waits silently for the child to speak, move, or tap.
+   - *Gemini 4 Argon Solution:* Engineered a **Dual-Persona Voice Synthesizer** ([`soundAndSpeech.ts`](file:///c:/Users/mrmoh/Desktop/austicapp/frontend/src/services/soundAndSpeech.ts)) that separates the **3D Toy's Sweet Child-Girl Peer Voice** (high-pitched, warm, playful cartoon cadence with WebAudio fallback chimes) from the **Adult App Guide Voice** (calm instructional voice for settings). Furthermore, Gemini 4 Argon implemented a strict **Turn-Taking Gate** (`waitingForChildReply` + `lastSpeechEndTimeRef`) so the toy speaks one concise, affectionate sentence using the child's name and then waits silently for the child to speak, move, or tap.
 2. **Errorless Two-Sided Cooperative Play:**
    - *Challenge:* Autistic learners often experience anxiety when faced with pass/fail quizzes or when playing alone on screen.
-   - *Gemini 4 Argon Solution:* Designed **Two-Sided 3D Co-Play**. In every bubble, math, and developmental skill game, the 3D Toy actively participates alongside the child—running across the 3D stage and leaping into the air to clear distractor bubbles with her own 3D hands (`Toy 3D Catch` counter) while cheering the child on toward the target answer.
+   - *Gemini 4 Argon Solution:* Designed **Two-Sided 3D Co-Play**. In every bubble, math, and developmental skill game, the 3D Toy actively participates alongside the child—running across the 3D stage and leaping into the air to clear distractor bubbles with her own 3D hands (`Toy Catch` counter) while cheering the child on toward the target answer.
 3. **Affective & Sensory Co-Regulation Without Invasive Surveillance:**
    - *Challenge:* Children may become distressed (`crying_distressed`), frustrated (`frowning_frustrated`), or hyper-active (`motionLevel > 3.2`).
    - *Gemini 4 Argon Solution:* Built a behavior-sensitive mapping where distress immediately shifts the toy's autonomous brain into **Soothing Co-Regulation** (`calm_breathe`, `hug`, `blow_kiss`), frustration triggers **Low-Demand Silly Play** (`tiptoe_sneak`, `hula_wiggle`, `sit_relax`), and high camera motion triggers **Reciprocal Gross-Motor Play** (`jumping_jacks`, `cartwheel_flip`, `airplane_zoom`, `kick_football`).
 
-### 5.2 Multi-Layer Agentic Orchestration & Autonomous Child Brain
+### 6.2 Multi-Layer Agentic Orchestration & Autonomous Child Brain
 1. **Frontend Autonomous Human-Child Brain (`triggerAutonomousChildBrainDecisionNow`):**
    - *Challenge:* A static character that only reacts when clicked feels mechanical rather than like a living cartoon playmate.
-   - *Gemini 4 Argon Solution:* Engineered an **Autonomous Human-Child Decision Engine** ([FullCameraARExperience.tsx](file:///c:/Users/mrmoh/Desktop/austicapp/frontend/src/components/FullCameraARExperience.tsx#L2700-L2965)) that runs a two-stage cognitive cycle:
+   - *Gemini 4 Argon Solution:* Engineered an **Autonomous Human-Child Decision Engine** ([`FullCameraARExperience.tsx`](file:///c:/Users/mrmoh/Desktop/austicapp/frontend/src/components/FullCameraARExperience.tsx)) that runs a two-stage cognitive cycle:
      - **Stage 1 (Visible Thinking):** The 3D toy enters the `think_curious` skeletal pose (right hand on chin, head tilted) for `850ms` and displays a real-time 3D Thought Cloud Sprite (`💭 Thinking...`) above her head in Three.js space.
-     - **Stage 2 (Contextual Decision Execution):** Based on live webcam motion energy, facial expression state, and recent history, the brain selects from **35 human-child 3D activities**, updates the 3D Thought Cloud with her internal reasoning, and executes the full 3D locomotion + voice turn.
-2. **Backend Bounded Multi-Agent Architecture (`orchestrator.py`):**
+     - **Stage 2 (Contextual Decision Execution):** Based on live webcam motion energy, facial expression state, and recent history, the brain selects from **35 human-child 3D activities**, updates the 3D Thought Cloud with her internal reasoning, and executes the full 3D locomotion.
+2. **Backend Bounded Multi-Agent Architecture (`agents.py` & `ar_agent.py`):**
    - *Challenge:* Unconstrained LLM outputs can violate clinical safety, break motor-plan consistency, or introduce latency during a meltdown.
-   - *Gemini 4 Argon Solution:* Architected a **5-Agent Bounded Orchestrator** ([orchestrator.py](file:///c:/Users/mrmoh/Desktop/austicapp/backend/agents/orchestrator.py)) with a **`<5ms` Deterministic Safety Preemption Gateway** (`STOP` and `SAFE HARBOR` bypass all LLM latency), a **Sensory Guardian Agent**, a **GLP/Echolalia Interpreter Agent**, a **Special-Interest ("Spin") Pedagogical Weaver**, and a **Caregiver Insights Agent**.
+   - *Gemini 4 Argon Solution:* Architected a **5-Agent Bounded Orchestrator** ([`agents.py`](file:///c:/Users/mrmoh/Desktop/austicapp/backend/agents.py)) with a **`<5ms` Deterministic Safety Preemption Gateway** (`STOP` and `SAFE HARBOR` bypass all LLM latency), a **Sensory Guardian Agent**, a **GLP/Echolalia Interpreter Agent**, a **Special-Interest ("Spin") Pedagogical Weaver**, and a **Caregiver Insights Agent**.
 
-### 5.3 3D Graphics, Biomechanical Skeletal Animation & Physics Engineering
-1. **Unobstructed Full-View 3D Stage & Dynamic `ResizeObserver` Layout:**
-   - *Challenge:* Floating UI banners over the canvas blocked the 3D character, and hiding sidebars didn't automatically resize the WebGL projection matrix.
-   - *Gemini 4 Argon Solution:* Relocated all HUD controls, speech bubbles, and game cards cleanly into the Left and Right Sidebars, made the **Top Bar, Left Sidebar, and Right Sidebar hideable and expandable**, and attached a `ResizeObserver` directly to the Three.js mount so collapsing any bar seamlessly expands the 3D viewport to full view.
-2. **Seamless Skinned Plush Rigs + 35 Skeletal `AnimationClip`s + 60FPS Bone Kinematics:**
-   - *Challenge:* Early 3D primitives had visible joint seams and only 2–3 basic motions (simple bobbing or spinning) instead of real human-child movement.
-   - *Gemini 4 Argon Solution:* Built a hybrid **Skeletal `AnimationMixer` + Real-Time Biomechanical Limb Kinematics Engine** ([threeToyBuilder.ts](file:///c:/Users/mrmoh/Desktop/austicapp/frontend/src/services/threeToyBuilder.ts), [FullCameraARExperience.tsx](file:///c:/Users/mrmoh/Desktop/austicapp/frontend/src/components/FullCameraARExperience.tsx#L903-L1620)) featuring:
-     - **35 distinct `AnimationClip`s** driving hips, spine, head, jaw, upper arms, forearms, thighs, and shins.
-     - **True 3D Spatial Locomotion State Machine:** The toy physically walks, runs, skips, tiptoes, marches, cartwheels, and airplane-zooms across `(x, y, z)` coordinates on the 3D stage, leaning into turns and tracking targets with her head bone.
-     - **Real-World 3D Football & Jump-Catch Physics:** Added a 3D soccer ball with gravity (`-6.8 m/s²`), grass restitution bounce, spin, and 3D Goal Net collision detection (`x: [1.84, 2.48]`), plus mid-air apex hand-reach kinematics when jumping to pop 3D bubbles.
+### 6.3 3D Species Anatomy, Biomechanical Skeletal Animation & Physics Engineering
+1. **120 Species-Specific 3D Toy Characters (Signed Distance Fields + MarchingCubes + Exterior Bone Attachments):**
+   - *Challenge:* Standard procedural plush meshes look like the same bear if only colors change or if accessories are scaled inside the mesh.
+   - *Gemini 4 Argon Solution:* Engineered [`buildSeamlessSculptedPlushGeometry`](file:///c:/Users/mrmoh/Desktop/austicapp/frontend/src/services/threeToyBuilder.ts) and [`attachPlushFacialDetailsToHeadBone`](file:///c:/Users/mrmoh/Desktop/austicapp/frontend/src/services/threeToyBuilder.ts) with species-specific torso/head/muzzle/limb/ear/tail/trunk SDFs, procedural 3D vertex-color coat markings (stripes, spots, masks, tuxedo bibs), and `1.42×` exterior bone-attached 3D anatomy (elephant fan ears, 5-segment trunks & ivory tusks, cat triangular ears & whiskers, dog muzzles & floppy/perky ears, 14-petal lion manes, antlers, wings, turtle shells, dorsal fins, tentacles, and vehicle rescue equipment).
+2. **60 Procedural 3D Cartoon Worlds + 35 Skeletal `AnimationClip`s + 60FPS Physics:**
+   - Built **60 distinct 3D environments** in [`build3DCartoonStageWorld`](file:///c:/Users/mrmoh/Desktop/austicapp/frontend/src/services/threeToyBuilder.ts), **35 skeletal `AnimationClip`s**, a **3D Spatial Locomotion State Machine**, and **3D Football & Jump-Catch Bubble Physics**.
 
 ---
 
 ## 🗺️ Visual Mindmaps, Solution Architecture & Workflow Diagrams
 
-### 6.1 Complete Ecosystem Mindmap
+### 7.1 Complete Ecosystem Mindmap
 
 ```mermaid
 flowchart LR
     ROOT(("🧸🌈 AutiCompanion AI\n3D Co-Play Studio"))
 
-    subgraph S1["🎨 1. 3D Cartoon World & Full-View Stage"]
-        W1["5 Switchable 3D Worlds\n(Rainbow, Candy, Dino, Playroom, Starlight)"]
-        W2["Hideable & Expandable Layout\n(Top Bar, Left Bar, Right Bar + ResizeObserver)"]
-        W3["3D Physics Props\n(Soccer Ball, Goal Net, 3D Bubble Orbs, Thought Cloud)"]
+    subgraph S1["🎨 1. 60 3D Stage Worlds & Full-View Studio"]
+        W1["60 Switchable 3D Worlds\n(18 Nature, 14 Vehicles/Space, 15 Magic, 13 Sensory)"]
+        W2["Organized 2-Deck Top Bar & Hideable Sidebars\n(Top, Left, Right + ResizeObserver Full-View)"]
+        W3["3D Physics Props\n(Mode-Gated 3D Football & Goal, 3D Orbs, Thought Cloud)"]
     end
 
-    subgraph S2["🤸 2. 35 Human-Child 3D Animations & Brain"]
-        A1["🧠 Autonomous Child Brain\n(Observes Behavior -> Thinks -> Decides)"]
-        A2["⚽ 10 Move & Sports Actions\n(Dribble & Kick, Jump-Catch, Airplane, March, Skip...)"]
-        A3["🤸‍♀️ 10 Gym & Fun Actions\n(3D Cartwheel, Superhero, Hula, High-Five, Point...)"]
-        A4["💖 10 Social & Calm Actions\n(Clap, Laugh, Blow Kiss, Sit, Calm Breathe, Nap...)"]
+    subgraph S2["🧸 2. 120 Distinct 3D Toy Characters"]
+        T1["🐱 16 Cats & 🐶 16 Dogs\n(3D Triangular/Floppy Ears, Muzzles, Whiskers, Collars)"]
+        T2["🐘 18 Safari & 🧸 30 Woodland/Farm\n(3D Trunks, Tusks, Manes, Antlers, Pouches, Quills)"]
+        T3["🦕 14 Dino/Magic, 🐬 14 Ocean & 🚓 12 Vehicles/Dolls\n(3D Wings, Shells, Fins, Tentacles, Sirens, Ladders)"]
     end
 
-    subgraph S3["🎓 3. Two-Sided Co-Play & 20 Skill Games"]
+    subgraph S3["🤸 3. 35 Human-Child 3D Animations & Brain"]
+        A1["🧠 Autonomous Child Brain\n(Observes Webcam/Voice -> Thinks -> Decides)"]
+        A2["⚽ 10 Move & Sports + 🤸 10 Gym Actions\n(Dribble & Kick, Jump-Catch, Cartwheel, Airplane...)"]
+        A3["💖 10 Social & Calm Actions\n(Clap, High-Five, Blow Kiss, Sit, Calm Breathe, Nap)"]
+    end
+
+    subgraph S4["🎓 4. Two-Sided Co-Play & 20 Skill Games"]
         G1["20 Intelligent Developmental Games\n(Social, Daily Life, Speech, Sensory)"]
-        G2["Any-Number 3D Math\n(+, -, ×, ÷, Count | 1-5 to 1-100)"]
-        G3["3D Football & Physical Rep Counter\n(Jump, Wave, Dance on Camera)"]
-        G4["AI Auto-Drawing & Karaoke Singing\n(Stroke-by-Stroke Art + Pentatonic Songs)"]
-    end
-
-    subgraph S4["👧 4. Multimodal Voice, Vision & Personalization"]
-        V1["Dual-Persona Voice Engine\n(Sweet Child-Girl Peer vs. Warm Adult Guide)"]
-        V2["Natural Turn-Taking Gate\n(1 Short Turn -> Waits for Child Reply)"]
-        V3["Child Profile & Photo-to-3D Toy\n(Calls Child by Name + Custom Photo Rig)"]
-        V4["Hands-Free Webcam & Mic\n(Hand Cursor Bubble Pop + Live Voice Commands)"]
+        G2["Any-Number 3D Math & 3D Football\n(+, -, ×, ÷, Count | 3D Goal Physics)"]
+        G3["AI Auto-Drawing, Karaoke & Dual Voice\n(Sweet Child-Girl Peer Voice + Turn-Taking Gate)"]
     end
 
     ROOT --> S1
@@ -208,7 +268,7 @@ flowchart LR
 
 ---
 
-### 6.2 Developmental Skills & Clinical Impact Mindmap
+### 7.2 Developmental Skills & Clinical Impact Mindmap
 
 ```mermaid
 flowchart TD
@@ -216,7 +276,7 @@ flowchart TD
 
     subgraph DOM1["💖 Social-Emotional & Empathy"]
         D1A["Emotion Recognition\n(Happy, Sad, Surprised, Calm)"]
-        D1B["Reciprocal Turn-Taking\n(Child Pops <-> Toy Jumps & Catches)"]
+        D1B["Reciprocal Turn-Taking\n(Child Speaks/Pops <-> Toy Replies/Catches)"]
         D1C["Joint Attention\n(3D Point & Look at Rainbow / Shared Toys)"]
     end
 
@@ -246,19 +306,19 @@ flowchart TD
 
 ---
 
-### 6.3 End-to-End Solution Architecture Diagram
+### 7.3 End-to-End Solution Architecture Diagram
 
 ```mermaid
 flowchart TB
     subgraph CLIENT["🖥️ Frontend: React 19 + TypeScript + Three.js WebGL Studio (Port 5173)"]
         direction TB
-        UI["5-Zone Expandable Studio UI\n• Hideable Top Bar (Profile, Voice Bar, Expressions)\n• Hideable Left Sidebar (Profile Config, 5 Worlds, Photo-to-3D, 19 Toys)\n• Full-View Center Stage (ResizeObserver WebGL + 2D Overlay)\n• Hideable Right Sidebar (Draggable Webcam, 30 Actions, 20 Games)\n• Bottom Mode Switcher (6 Co-Play Modes)"]
+        UI["5-Zone Expandable Studio UI\n• 2-Deck Top Bar (Profile, 120 Toys Pill, 60 Worlds Pill, Mic/Voice, Ask Bar)\n• Hideable Left Sidebar (Voice Settings, Profile, 60 Worlds, Photo-to-3D, 120 Toys)\n• Full-View Center Stage (ResizeObserver WebGL + 2D Overlay)\n• Hideable Right Sidebar (Draggable Webcam, Turn-Taking Speech, 30 Actions, 20 Games)\n• Bottom Mode Switcher (6 Co-Play Modes)"]
 
         subgraph ENGINE["⚙️ Real-Time Client Engines (60FPS)"]
-            BRAIN["🧠 Autonomous Child Brain\nObserves Expression + Motion\nThinks (850ms) -> Decides Action"]
-            THREE_ENG["🎬 Three.js 3D Engine\n• 35 Skeletal AnimationClips\n• Biomechanical Limb Kinematics\n• 3D Football & Bubble Physics"]
-            VISION["📷 Webcam Motion & Hand Tracker\nOptical Flow Centroid + Hand Cursor"]
-            AUDIO["🔊 Dual-Persona Voice & Audio\n• Sweet Child-Girl Toy TTS\n• Adult Guide TTS\n• WebAudio Kalimba & Chimes"]
+            BRAIN["🧠 Autonomous Child Brain\nObserves Expression + Webcam Gesture\nThinks (850ms) -> Decides Action"]
+            THREE_ENG["🎬 Three.js 3D Engine\n• 120 Species-Specific 3D Rigs\n• 60 Procedural 3D Stage Worlds\n• 35 Skeletal AnimationClips & Physics"]
+            VISION["📷 Webcam Gesture & Hand Tracker\nJump / Wave / Nod Detection + Hand Cursor"]
+            AUDIO["🔊 Dual-Persona Voice & Audio\n• Sweet Child-Girl Toy TTS + WebAudio Chimes\n• Mic Pause Lock During Speech (Zero Ducking)"]
         end
 
         UI --> BRAIN
@@ -272,7 +332,7 @@ flowchart TB
         API["FastAPI REST Gateway\n/api/session/interact | /api/toy-companion/correspond"]
         SAFETY["⚡ Deterministic Safety Gateway (<5ms)\nImmediate Preemption for STOP & SAFE HARBOR"]
 
-        subgraph AGENTS["🤖 5 Specialized Bounded Agents (orchestrator.py)"]
+        subgraph AGENTS["🤖 5 Specialized Bounded Agents (agents.py)"]
             AG1["Agent 1: Sensory & Affective Guardian\n(Taps/sec, Noise dB, Overload Prevention)"]
             AG2["Agent 2: GLP & Echolalia Interpreter\n(Scripts -> Functional Intent + NLA Modeling)"]
             AG3["Agent 3: Special-Interest ('Spin') Weaver\n(Dinosaurs, Space, Trains, Animals)"]
@@ -289,120 +349,15 @@ flowchart TB
 
 ---
 
-### 6.4 Autonomous Child Brain & Turn-Taking Workflow
+## ✨ Complete Feature & Activity Reference
 
-```mermaid
-sequenceDiagram
-    autonumber
-    actor Child as 👶 Autistic Child
-    participant CamMic as 📷🎥 Webcam & Mic
-    participant Brain as 🧠 Autonomous Toy Brain
-    participant Rig3D as 🧸 3D Toy Rig & Thought Cloud
-    participant Voice as 👧 Sweet Child-Girl Voice
-
-    Child->>CamMic: Smiles, moves hands, or speaks ("Do a cartwheel!" / "8 + 7")
-    CamMic->>Brain: Updates smoothX/Y, motionLevel, facialExpression & transcript
-
-    alt Child Spoke a Direct Command or Math Question
-        Brain->>Rig3D: Update 3D Thought Cloud 💭 + Trigger 3D Locomotion/Clip
-        Rig3D->>Child: Performs 3D Cartwheel / Kicks 3D Ball / Spawns Math Orbs
-        Brain->>Voice: Speaks 1 short peer turn ("Wheee Mia, watch my 3D cartwheel!")
-        Voice->>Brain: onEnd -> Enters Waiting Mode (👂 Waiting for Mia's Turn)
-    else Autonomous Brain Cycle (~Every 6.8s When Idle & Not Speaking)
-        Brain->>Rig3D: Step 1: Enter 'think_curious' Pose (Hand on Chin, 850ms)
-        Rig3D->>Child: Displays Floating 3D Cloud: "🤔 Thinking..."
-        Brain->>Brain: Step 2: Evaluate Child State (Distressed? Frustrated? Active? Calm?)
-        Brain->>Rig3D: Step 3: Execute Chosen 3D Human-Child Activity (1 of 35)
-        Rig3D->>Child: Performs 3D Action (e.g., Calm Breathe, Airplane Zoom, High-Five)
-        Brain->>Voice: Speaks natural peer invitation & waits for Child's response
-    end
-```
-
----
-
-### 6.5 3D Character Locomotion, Skeletal Kinematics & Physics State Machine
-
-```mermaid
-stateDiagram-v2
-    [*] --> IdleGaze: Studio Initialized (60FPS Loop)
-
-    state "Idle & Gaze Tracking" as IdleGaze {
-        [*] --> BreathingAndBlinking
-        BreathingAndBlinking: • Gentle Chest Breathing\n• Natural Eye Blink (~3.4s)\n• Head Bone Tracks Child Webcam Position
-    }
-
-    IdleGaze --> ThinkCurious: Autonomous Brain Trigger (850ms)
-    ThinkCurious --> Locomotion3D: Chooses Moving Action
-    ThinkCurious --> Stationary3D: Chooses Stationary Action
-
-    state "3D Spatial Locomotion (x, y, z)" as Locomotion3D {
-        RunToBubble: 🏃 Run to 3D Bubble Orb
-        JumpCatchBubble: 🦘 Leap to Apex & Reach Arms Overhead
-        DribbleFootball: ⚽ Dribble 3D Ball Across Grass
-        KickFootballGoal: 🥅 Wind Up Leg & Strike Ball Into 3D Goal
-        AirplaneZoom: ✈️ Spread Wings Wide + Bank Torso
-        MarchParade: 🥁 High-Knee Parade March
-        CartwheelFlip: 🤸‍♀️ 360° Sideways Cartwheel Roll
-        SkipAndTiptoe: 🐰 Skip-Hop / 🤫 Tiptoe Sneak
-
-        RunToBubble --> JumpCatchBubble: distXZ <= 0.32m
-        DribbleFootball --> KickFootballGoal: distXZ <= 0.16m
-    }
-
-    state "Biomechanical Stationary Actions" as Stationary3D {
-        GymAndPlay: 🦸 Superhero | 🌺 Hula | 🤸 Jumping Jacks | 🦩 1-Foot Hop | 💃 Dance
-        SocialGestures: 👏 Clap | ✋ High-Five | 😘 Blow Kiss | 👆 Point & Look | 🖐️ Count 1-5
-        CalmAndCozy: 🌬️ Calm Breathe | 🧘 Sit on Grass | 🤗 Hug | 🙆 Stretch | 😴 Sleepy Nap
-    }
-
-    Locomotion3D --> IdleGaze: Action Completed / Ball Scored
-    Stationary3D --> IdleGaze: Duration Timer Settled
-```
-
----
-
-## ✨ Complete Feature List
-
-### 1. 🏞️ Full-View 3D Cartoon Studio & Hideable/Expandable Interface
-- **100% Unobstructed Central 3D Stage:** All UI cards, speech readouts, and controls live cleanly inside sidebars so the 3D world and 3D character are never covered.
-- **Hideable & Expandable Top Bar, Left Sidebar, and Right Sidebar:**
-  - Instant 1-click collapse buttons (`◀ Hide Left Bar`, `🔼 Hide Top`, `▶ Hide Right Bar`, and `⛶ Full-View 3D Stage`).
-  - Floating edge tabs (`🔽 Expand Top Bar`, `▶ Expand Left Bar`, `◀ Expand Right Bar`, `🪟 Restore Top & Left Bars`) appear on the edges of the central stage whenever panels are hidden.
-  - **Live `ResizeObserver` WebGL Scaling:** The Three.js camera aspect ratio and WebGL canvas automatically resize the instant any sidebar is hidden or expanded.
-- **5 Switchable 3D Cartoon Artwork Environments:**
-  1. 🌈 **Rainbow Meadow** (Sunny sky, 3D rainbow arch, pastel castle, rolling hills, wildflowers)
-  2. 🍭 **Candy Wonderland** (Pink cotton-candy sky, giant 3D spiral lollipops, peppermint hills)
-  3. 🦕 **Sunny Dino Park** (Golden jungle sky, palm trees, volcano backdrop, prehistoric ferns)
-  4. 🧸 **Cozy Toy Playroom** (Warm wood/carpet floor, giant 3D `A-B-C` blocks, starry window)
-  5. 🌙 **Starlight Night Garden** (Deep twilight sky, glowing 3D crescent moon, fireflies, calm lavender hills)
-
-### 2. 🤸 35 Real-World Human-Child 3D Animations & Autonomous Brain
-- **Autonomous Human-Child Brain (`🧠 Auto-Think: ON/OFF`):**
-  - Observes the child's live facial expression (`smiling_happy`, `crying_distressed`, `surprised_curious`, `frowning_frustrated`) and webcam movement energy (`motionLevel`).
-  - Enters a visible `think_curious` pose (hand on chin, head tilted) and updates a **3D Floating Thought Cloud Sprite (`💭`)** above the toy's head before autonomously choosing the most helpful child activity.
-- **30 One-Click & Voice-Activated Human-Child 3D Activities** (plus 5 core reactive clips = **35 total 3D animations**), organized into 3 filterable categories:
-  - **⚽ Move & Sports (10):** `⚽ Dribble & Kick`, `🦘 Jump & Catch`, `✈️ Airplane Zoom`, `🥁 Parade March`, `🤸 Jumping Jacks`, `🐰 Skip & Hop`, `🦩 1-Foot Hop`, `🚶 Walk Around`, `🏃 Fast Run`, `🤫 Tiptoe Sneak`.
-  - **🤸 Gym & Fun Play (10):** `🤸‍♀️ 3D Cartwheel`, `🦸 Superhero Pose`, `🌺 Hula Wiggle`, `💃 3D Dance`, `🙈 Peek-a-Boo`, `✋ 3D High-Five`, `🙇 Ta-Da! Bow`, `👆 Point & Look`, `🖐️ Count 1-2-3-4-5`, `🤔 Think Curious`.
-  - **💖 Social, Emotion & Calm (10):** `👏 Clap Hands`, `🙌 Cheer Hurrah`, `🤭 Laugh & Giggle`, `😘 Blow Kiss`, `👋 Wave Hello`, `🤗 Cuddle Hug`, `🧘 Sit on Grass`, `🌬️ Calm Breathe`, `🙆 Big Stretch`, `😴 Sleepy Nap`.
-
-### 3. 🎓 20 Intelligent Personal, Social & Developmental Skill Games
-- Organized across **4 Clinical Developmental Domains** with filter tabs and 1-click or 3D bubble-pop answers:
-  - **💖 Social-Emotional & Empathy (Games 1–5):** *Happy or Sad Face Match*, *Sharing Turns Together*, *Kind Helping Friend*, *Understanding Surprise*, *Making Friends Wave*.
-  - **🏡 Daily Living & Personal Independence (Games 6–10):** *Healthy Yummy Snack*, *Brush Teeth & Wash Hands*, *Weather Dress-Up*, *Clean Up Toy Room*, *Safe Crossing & Traffic Lights*.
-  - **🗣️ Communication & Pragmatic Speech (Games 11–15):** *Say Magic Words (Please & Thank You)*, *Ask for Help Calmly*, *Animal Voice Match*, *Yes or No Choice*, *Greeting Friends (Hello & Goodbye)*.
-  - **🧘 Sensory Regulation & Executive Thinking (Games 16–20):** *Calm Belly Breathing*, *Quiet vs. Loud Sounds*, *Pattern Next Step*, *Big vs. Little Sort*, *Bedtime Calm Routine*.
-
-### 4. ⚽ Two-Sided 3D Co-Play, Any-Number Math & Creative Studio
-- **3D Football Physics & Goal Net:** Real-time 3D soccer ball with gravity, grass bounce, spin, dribbling at the toy's feet, and goal net collision detection with celebratory particle bursts.
-- **3D Jump-Catch Bubble Co-Play:** Both the child (via touch or webcam hand cursor `🖐️`) and the 3D Toy (by physically running and leaping in 3D space) catch and pop floating 3D orbs with a live scoreboard (`👧 Child Pops` vs. `🦘 Toy 3D Catch`).
-- **Any-Number 3D Math Engine:** Supports Addition (`+`), Subtraction (`−`), Multiplication (`×`), Division (`÷`), and Counting (`count`) across number ranges `1–5`, `1–10`, `1–20`, `1–100`, plus custom spoken or typed math equations (e.g., *"What is 12 + 15?"*).
-- **AI Toy Stroke-by-Stroke Auto-Drawing & 3D Brush Canvas:** Ask the toy to draw a `🐱 Cat`, `🏎️ Car`, `🌈 Rainbow`, `🌸 Flower`, `🏠 House`, or `💖 Heart` and watch it animate stroke-by-stroke with musical notes, or draw together on the canvas.
-- **Sing & Dance Karaoke Mode:** Built-in favourite children's songs with synchronized WebAudio melodies, lyrics, jaw lip-sync, and 3D dance motion.
-
-### 5. 🧸 19 Pre-Built 3D Companions + Photo-to-3D Favourite Toy Upload
-- **19 Pre-Built 3D Toys** across **Plush Friends**, **Flying Birds**, **Toy Vehicles**, and **Expressive Robots** (combining seamless procedural skinned plush rigs and studio `.glb` models with `RoomEnvironment` PBR lighting).
-- **Photo ➔ Live 3D Toy Converter:** Upload any photo of a child's real-world favourite toy; the app automatically removes the background, extracts dominant colours/textures, and binds it onto a fully rigged 3D companion.
-- **Dockable, Drag-Movable & Drag-Resizable Webcam Preview:** Located in the Right Sidebar with a 1-click `🙈 Hide / 🎥 Show` toggle for sensory-sensitive moments.
+| Feature Category | Count | Included Items & Capabilities |
+| :--- | :---: | :--- |
+| **🧸 Pre-Built 3D Toy Characters** | **120** | **16 Cats/Kitties**, **16 Dogs/Puppies**, **18 Elephants & Safari**, **20 Bears/Pandas/Bunnies/Woodland**, **10 Farm**, **14 Dinosaurs/Dragons/Unicorns**, **14 Ocean/Birds/Amphibians**, **6 Rescue/Toy Vehicles**, **6 Robots/Dolls** + **Photo-to-3D Upload** |
+| **🎡 3D Cartoon Stage Worlds** | **60** | **18 Nature & Animal Worlds**, **14 Vehicle, Space & Builder Worlds**, **15 Magic, Fantasy & Sweet Worlds**, **13 Sensory, Calm & Indoor Worlds** |
+| **🤸 Human-Child 3D Animations** | **35** | **10 Move & Sports**, **10 Gym & Fun Play**, **10 Social, Emotion & Calm**, plus **5 Reactive Locomotion Clips** |
+| **🎓 Intelligent Skill Games** | **20** | **5 Social-Emotional & Empathy**, **5 Daily Living & Independence**, **5 Communication & Pragmatic Speech**, **5 Sensory Regulation & Executive Thinking** |
+| **🔢 Any-Number 3D Math & Co-Play** | **6 Modes** | **20 Skill Games**, **Any-Number 3D Math (`+`, `−`, `×`, `÷`, Count)**, **3D Football & Sports**, **AI Toy Auto-Drawing**, **Sing & Dance Karaoke**, **3D Jump & Catch Bubbles** |
 
 ---
 
@@ -450,8 +405,9 @@ austicapp/
 │   ├── test_agents.py               # Automated multi-agent & safety gateway verification suite
 │   └── requirements.txt
 ├── docs/
-│   ├── media/                       # Placeholders for full product demo video & feature clips
-│   └── screenshots/                 # Placeholders for 3D Cartoon Stage & Studio UI screenshots
+│   ├── media/
+│   │   └── new-autistic-child-coplay-demo.mp4 # Compressed GitHub Demo Video 2 (120 Toys, 60 Worlds & Co-Play)
+│   └── screenshots/                 # High-resolution 3D Cartoon Stage & Feature Walkthrough screenshots
 ├── frontend/
 │   ├── public/
 │   │   ├── draco/                   # Draco 3D mesh compression decoders
@@ -466,14 +422,15 @@ austicapp/
 │   │   │   ├── CreativeCoPlayStudio.tsx    # Co-Play Music & Creative Sandbox
 │   │   │   └── CaregiverClinicianPortal.tsx # Adult Telemetry & Clinical Controls
 │   │   ├── services/
-│   │   │   ├── threeToyBuilder.ts          # Three.js Rig Builder, 35 Skeletal Clips, 5 Cartoon Worlds & 3D Props
+│   │   │   ├── threeToyBuilder.ts          # 120 3D Toy Rigs, Species Anatomy, 35 Skeletal Clips & 60 3D Worlds
 │   │   │   ├── intelligentGamesCatalog.ts  # 20 Personal, Social & Developmental Skill Games Catalog
 │   │   │   ├── soundAndSpeech.ts           # Dual-Persona Voice Engine (Child-Girl Peer vs. Adult Guide) & WebAudio
 │   │   │   ├── toyActivitiesAndDrawing.ts  # Stroke-by-Stroke AI Toy Auto-Drawing & Song Melodies
 │   │   │   └── agentClient.ts              # Frontend-to-FastAPI Multi-Agent Client
 │   │   ├── App.tsx
-│   │   └── App.css                         # Warm Cream/Amber 5-Zone Studio Styles & Expandable Edge Tabs
+│   │   └── App.css                         # Warm Cream/Amber 5-Zone Studio Styles & 2-Deck Top Bar
 │   └── package.json
+├── child new.png                    # Featured Screenshot: Mochi Plush Kitty, 60 Worlds & Webcam Gesture Sync
 ├── start-app.ps1                    # One-click PowerShell launcher for Backend + Frontend
 └── README.md
 ```
