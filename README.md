@@ -1,7 +1,7 @@
 # 🧸🌈 AutiCompanion AI — 3D Cartoon Toy Co-Play Studio & Neuro-Affirming Multimodal Agentic Companion (Ages 2–11)
 
 [![Watch Demo 1 on YouTube](https://img.shields.io/badge/YouTube%20Demo%201-Full%203D%20Studio%20Walkthrough-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://youtu.be/vL05-y37-_8)
-[![Watch Demo 2 (New Update)](https://img.shields.io/badge/Demo%20Video%202%20(NEW)-120%203D%20Toys%20%7C%2060%20Worlds%20%7C%202--Way%20Co--Play-ec4899?style=for-the-badge&logo=github&logoColor=white)](./docs/media/new-autistic-child-coplay-demo.mp4)
+[![Watch Demo 2 on YouTube (New Update)](https://img.shields.io/badge/YouTube%20Demo%202%20(NEW)-120%203D%20Toys%20%7C%2060%20Worlds%20%7C%202--Way%20Co--Play-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://www.youtube.com/watch?v=xL-cn_nuLi4)
 [![Built with Gemini 4 Argon](https://img.shields.io/badge/Architected%20%26%20Engineered%20With-Gemini%204%20Argon-7c3aed?style=for-the-badge)](https://deepmind.google/)
 [![Frontend](https://img.shields.io/badge/Frontend-React%2019%20%7C%20TypeScript%20%7C%20Three.js%20WebGL-ea580c?style=for-the-badge)](./frontend)
 [![Backend](https://img.shields.io/badge/Backend-FastAPI%20%7C%20Bounded%20Multi--Agent%20ADK-059669?style=for-the-badge)](./backend)
@@ -31,18 +31,18 @@
 
 ## 🎬 Official Demo Videos (Video 1 & New Update Video 2) & Live Studio Gallery
 
-### 🎥 Video 2 (NEW UPDATE): 120 3D Toy Characters, 60 3D Stage Worlds & Two-Sided Webcam/Voice Co-Play
+### 🎥 Video 2 (NEW UPDATE on YouTube): 120 3D Toy Characters, 60 3D Stage Worlds & Two-Sided Webcam/Voice Co-Play
 
 <div align="center">
-  <a href="./docs/media/new-autistic-child-coplay-demo.mp4" target="_blank">
-    <img src="./child%20new.png" alt="Watch New Update Video: 120 3D Toys, 60 3D Stage Environments & Live Webcam/Voice Co-Play" width="920" />
+  <a href="https://www.youtube.com/watch?v=xL-cn_nuLi4" target="_blank">
+    <img src="./child%20new.png" alt="Watch New Update Video on YouTube: 120 3D Toys, 60 3D Stage Environments & Live Webcam/Voice Co-Play" width="920" />
   </a>
   <p>
-    <a href="./docs/media/new-autistic-child-coplay-demo.mp4" target="_blank">
-      <img src="https://img.shields.io/badge/%E2%96%B6%EF%B8%8F%20Watch%20New%20Update%20Demo%20Video%20(MP4)-120%203D%20Toys%20%26%2060%203D%20Stage%20Worlds-ec4899?style=for-the-badge&logo=github&logoColor=white" alt="Watch New Update Video" />
+    <a href="https://www.youtube.com/watch?v=xL-cn_nuLi4" target="_blank">
+      <img src="https://img.shields.io/badge/%E2%96%B6%EF%B8%8F%20Watch%20New%20Update%20Demo%202%20on%20YouTube-youtu.be%2FxL--cn__nuLi4-FF0000?style=for-the-badge&logo=youtube&logoColor=white" alt="Watch New Update Video on YouTube" />
     </a>
   </p>
-  <p><em>🔗 <strong>Direct Repository Video Link:</strong> <a href="./docs/media/new-autistic-child-coplay-demo.mp4"><code>docs/media/new-autistic-child-coplay-demo.mp4</code></a> — Demonstrates the newly expanded <strong>120 3D Toy Companions</strong> (such as <strong>Mochi Pastel Plush Kitty</strong> with 3D triangular ears, whiskers, and bell), <strong>60 Creative 3D Stage Worlds</strong> (Rainbow Meadow, Ringed Planet Space Station, Sensory Rooms, Vehicles & Magic), <strong>Two-Sided Webcam Gesture & Voice Sync</strong> (<code>[Webcam Gesture: Aaima Jumped / Nodded Yes]</code>), <strong>20 Skill Games</strong>, and <strong>3D Toy Auto-Drawing</strong>!</em></p>
+  <p><em>🔗 <strong>Direct YouTube Link (Video 2 — New Update):</strong> <a href="https://www.youtube.com/watch?v=xL-cn_nuLi4">https://www.youtube.com/watch?v=xL-cn_nuLi4</a> (Local Repo Copy: <a href="./docs/media/new-autistic-child-coplay-demo.mp4"><code>docs/media/new-autistic-child-coplay-demo.mp4</code></a>) — Demonstrates the newly expanded <strong>120 3D Toy Companions</strong> (such as <strong>Mochi Pastel Plush Kitty</strong> with 3D triangular ears, whiskers, and bell), <strong>60 Creative 3D Stage Worlds</strong> (Rainbow Meadow, Ringed Planet Space Station, Sensory Rooms, Vehicles & Magic), <strong>Two-Sided Webcam Gesture & Voice Sync</strong> (<code>[Webcam Gesture: Aaima Jumped / Nodded Yes]</code>), <strong>20 Skill Games</strong>, and <strong>3D Toy Auto-Drawing</strong>!</em></p>
 </div>
 
 ---
