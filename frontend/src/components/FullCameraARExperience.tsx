@@ -20,6 +20,7 @@ import {
   build3DThoughtCloudSprite,
   buildSmooth3DToyRig,
   CARTOON_STAGE_ENVIRONMENTS,
+  CartoonEnvironmentCategory,
   CartoonEnvironmentId,
   extractDominantColorsFromImage,
   playToyMotionClip,
@@ -342,8 +343,9 @@ export const FullCameraARExperience: React.FC = () => {
   const [childAge, setChildAge] = useState<number>(5);
   const [childInterest, setChildInterest] = useState<string>('🐱 Cute Animals');
 
-  // Changeable Cartoon Artwork Stage Environment State
+  // Changeable Cartoon Artwork Stage Environment State (30 Total 3D Worlds across 4 Categories)
   const [stageEnv, setStageEnv] = useState<CartoonEnvironmentId>('rainbow_meadow');
+  const [stageCategoryFilter, setStageCategoryFilter] = useState<'all' | CartoonEnvironmentCategory>('all');
 
   // Hideable / Expandable Top Bar, Left Sidebar & Right Sidebar State (For Full-View Central 3D Canvas!)
   const [topBarExpanded, setTopBarExpanded] = useState<boolean>(true);
@@ -3661,35 +3663,39 @@ export const FullCameraARExperience: React.FC = () => {
       return;
     }
 
-    // A) Did the child ask the toy to change the Cartoon World / Stage Environment?
-    if (hasWord(/\b(candy|lollipop)\b/i)) {
-      setStageEnv('candy_wonderland');
-      triggerToyCartoonSpin();
-      speakAsToy(`Yay ${name}, welcome to Candy Wonderland! Look at the giant lollipops!`, pitch);
-      return;
-    }
-    if (hasWord(/\b(dino park|jungle)\b/i)) {
-      setStageEnv('dino_jungle');
+    // A) Did the child ask the toy to change the Cartoon World / Stage Environment (All 30 3D Stage Worlds)?
+    if (hasWord(/\b(next world|surprise world|change world|new stage|random world)\b/i)) {
+      const currIdx = CARTOON_STAGE_ENVIRONMENTS.findIndex((e) => e.id === stageEnv);
+      const nextEnv = CARTOON_STAGE_ENVIRONMENTS[(currIdx + 1) % CARTOON_STAGE_ENVIRONMENTS.length];
+      setStageEnv(nextEnv.id);
       triggerToyCartoonJump();
-      speakAsToy(`Rawr-hehe ${name}, we're in Sunny Dino Park now!`, pitch);
+      speakAsToy(
+        `Yay ${name}, let's explore ${nextEnv.name} together! Look at ${nextEnv.description.toLowerCase()}—what do you see first?`,
+        pitch
+      );
       return;
     }
-    if (hasWord(/\b(playroom|blocks)\b/i)) {
-      setStageEnv('cozy_playroom');
-      triggerToyTemporaryMotion('wave', 3000);
-      speakAsToy(`Ooh ${name}, look at our Cozy Toy Playroom with ABC blocks!`, pitch);
-      return;
-    }
-    if (hasWord(/\b(starlight|moon|night)\b/i)) {
-      setStageEnv('starlight_garden');
-      triggerToyTemporaryMotion('hug', 3000);
-      speakAsToy(`Look at the glowing moon and stars in our Starlight Garden, ${name}!`, pitch);
-      return;
-    }
-    if (hasWord(/\b(meadow|rainbow world)\b/i)) {
-      setStageEnv('rainbow_meadow');
-      triggerToyCartoonJump();
-      speakAsToy(`Yay ${name}, look at the big 3D rainbow in Rainbow Meadow!`, pitch);
+
+    const matchedStageEnv = CARTOON_STAGE_ENVIRONMENTS.find((env) => {
+      if (lowUtt.includes(env.name.toLowerCase())) return true;
+      return env.voiceKeywords.some((kw) => {
+        const escaped = kw.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        return new RegExp(`\\b${escaped}\\b`, 'i').test(lowUtt);
+      });
+    });
+    if (matchedStageEnv) {
+      setStageEnv(matchedStageEnv.id);
+      if (matchedStageEnv.category === 'sensory') {
+        triggerToyTemporaryMotion('hug', 3200);
+      } else if (matchedStageEnv.category === 'magic') {
+        triggerToyCartoonSpin();
+      } else {
+        triggerToyCartoonJump();
+      }
+      speakAsToy(
+        `Yay ${name}, welcome to ${matchedStageEnv.name}! Look at ${matchedStageEnv.description.toLowerCase()}—do you want to play here together?`,
+        pitch
+      );
       return;
     }
 
@@ -4809,14 +4815,66 @@ export const FullCameraARExperience: React.FC = () => {
               </button>
             </div>
 
-            {/* 3. CHANGEABLE 3D CARTOON ARTWORK STAGE WORLD */}
+            {/* 3. CHANGEABLE 3D CARTOON ARTWORK STAGE WORLD (30 CREATIVE AUTISM-FRIENDLY WORLDS) */}
             <div className="sidebar-card">
-              <div className="sidebar-card-top-row">
-                <span className="sidebar-tag">🎨 3D Cartoon Stage World</span>
+              <div className="sidebar-card-top-row" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <span className="sidebar-tag">🎨 3D Stage Worlds (30)</span>
+                <button
+                  type="button"
+                  onClick={() => {
+                    const currIdx = CARTOON_STAGE_ENVIRONMENTS.findIndex((e) => e.id === stageEnv);
+                    const nextEnv =
+                      CARTOON_STAGE_ENVIRONMENTS[(currIdx + 1) % CARTOON_STAGE_ENVIRONMENTS.length];
+                    setStageEnv(nextEnv.id);
+                    triggerToyCartoonJump();
+                    speakAsToy(
+                      `Yay ${childName}, let's play in ${nextEnv.name}! Look at ${nextEnv.description.toLowerCase()}!`,
+                      voiceSettings.sweetnessPitch
+                    );
+                  }}
+                  className="preset-mini-btn"
+                  title="Switch to the next 3D Cartoon Stage World"
+                >
+                  🎲 Next World
+                </button>
               </div>
-              <h3 className="sidebar-subheading">Change 3D Cartoon World</h3>
-              <div className="character-list" style={{ maxHeight: 160 }}>
-                {CARTOON_STAGE_ENVIRONMENTS.map((env) => {
+              <h3 className="sidebar-subheading">
+                Choose 3D Co-Play Stage ({activeEnvMeta.emoji} {activeEnvMeta.name})
+              </h3>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4, marginBottom: 8 }}>
+                {(
+                  [
+                    { id: 'all', label: '🌟 All (30)' },
+                    { id: 'nature', label: '🌿 Nature (8)' },
+                    { id: 'vehicles', label: '🚂 Vehicles (7)' },
+                    { id: 'magic', label: '🍭 Magic (9)' },
+                    { id: 'sensory', label: '🫧 Sensory (6)' },
+                  ] as const
+                ).map((cat) => (
+                  <button
+                    key={cat.id}
+                    type="button"
+                    onClick={() => setStageCategoryFilter(cat.id)}
+                    className={`preset-mini-btn ${stageCategoryFilter === cat.id ? 'active' : ''}`}
+                    style={{
+                      fontSize: 10,
+                      padding: '3px 7px',
+                      background:
+                        stageCategoryFilter === cat.id
+                          ? 'linear-gradient(135deg, #f59e0b, #ea580c)'
+                          : undefined,
+                      color: stageCategoryFilter === cat.id ? '#fff' : undefined,
+                      fontWeight: 800,
+                    }}
+                  >
+                    {cat.label}
+                  </button>
+                ))}
+              </div>
+              <div className="character-list" style={{ maxHeight: 240 }}>
+                {CARTOON_STAGE_ENVIRONMENTS.filter(
+                  (env) => stageCategoryFilter === 'all' || env.category === stageCategoryFilter
+                ).map((env) => {
                   const isSelected = stageEnv === env.id;
                   return (
                     <button
@@ -4824,9 +4882,15 @@ export const FullCameraARExperience: React.FC = () => {
                       type="button"
                       onClick={() => {
                         setStageEnv(env.id);
-                        triggerToyCartoonJump();
+                        if (env.category === 'sensory') {
+                          triggerToyTemporaryMotion('hug', 3000);
+                        } else if (env.category === 'magic') {
+                          triggerToyCartoonSpin();
+                        } else {
+                          triggerToyCartoonJump();
+                        }
                         speakAsToy(
-                          `Yay ${childName}, look at our ${env.name} cartoon world!`,
+                          `Yay ${childName}, welcome to ${env.name}! Look at ${env.description.toLowerCase()}—what would you like to do together here?`,
                           voiceSettings.sweetnessPitch
                         );
                       }}
@@ -4835,7 +4899,7 @@ export const FullCameraARExperience: React.FC = () => {
                       <span className="char-icon">{env.emoji}</span>
                       <div className="char-info">
                         <span className="char-name">{env.name}</span>
-                        <span className="char-sub">3D Cartoon Stage</span>
+                        <span className="char-sub">{env.description}</span>
                       </div>
                     </button>
                   );
