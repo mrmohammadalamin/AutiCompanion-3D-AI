@@ -677,8 +677,10 @@ export const FullCameraARExperience: React.FC = () => {
       }
     });
 
-    // Build 3D Soccer Ball & 3D Goal Net on the 3D Playground Turf
+    // Build 3D Soccer Ball & 3D Goal Net (Shown ONLY during 3D Football Game Mode!)
     const { ballGroup, goalGroup } = build3DSoccerBallAndGoal();
+    goalGroup.visible = false;
+    ballGroup.visible = false;
     scene.add(goalGroup);
     scene.add(ballGroup);
     soccerBall3DRef.current = ballGroup;
@@ -802,9 +804,18 @@ export const FullCameraARExperience: React.FC = () => {
 
       // =======================================================================
       // B. UPDATE 3D SOCCER BALL / FOOTBALL PROJECTILE, BOUNCE & GOAL PHYSICS
+      //    (Visible ONLY in 3D Football & Sports Game mode or active kick!)
       // =======================================================================
       const ballMesh = soccerBall3DRef.current;
-      if (ballMesh) {
+      const goalMesh = soccerGoal3DRef.current;
+      const showFootballProps =
+        st.canvasMode === 'ar_physical_and_math_game' ||
+        loco.state === 'run_to_kick_football' ||
+        loco.state === 'dribble_to_kick_football' ||
+        sp.inFlight;
+      if (ballMesh) ballMesh.visible = showFootballProps;
+      if (goalMesh) goalMesh.visible = showFootballProps;
+      if (ballMesh && showFootballProps) {
         if (sp.inFlight) {
           sp.x += sp.vx * delta;
           sp.y += sp.vy * delta;
@@ -2052,6 +2063,7 @@ export const FullCameraARExperience: React.FC = () => {
    * wind up its 3D leg, and KICK the 3D Football into the 3D Goal Net!
    */
   const triggerToyKickFootballNow = () => {
+    setCanvasMode('ar_physical_and_math_game');
     const sp = soccerPhysicsRef.current;
     // Place the 3D ball on the playable midfield grass if it's currently in flight or inside the goal
     if (sp.inFlight || sp.x > 1.35 || sp.x < -1.35) {
@@ -2443,6 +2455,14 @@ export const FullCameraARExperience: React.FC = () => {
     setToyIsTalking(true);
     setWaitingForChildReply(false);
     setAdultGuideStatus(`👧 Toy Talking to ${stateRef.current.childName} (Sweet Girl Voice)`);
+    // Pause active microphone capture while speaking so Windows/Chrome never ducks speaker audio
+    if (speechRecRef.current) {
+      try {
+        speechRecRef.current.stop();
+      } catch {
+        // ignore
+      }
+    }
     void speakAsSweetChildGirlToy(text, DEFAULT_SENSORY, {
       pitchBoost: pitch,
       onStart: () => {
@@ -2455,9 +2475,9 @@ export const FullCameraARExperience: React.FC = () => {
         setAdultGuideStatus(
           `👂 Waiting for ${stateRef.current.childName}'s Response · 👧 Sweet Girl Voice`
         );
-        // Immediately ensure microphone recognition is active for the child's reply turn!
+        // Immediately resume microphone recognition for the child's reply turn!
         window.setTimeout(() => {
-          if (speechRecRef.current && !stateRef.current.toyIsTalking) {
+          if (speechRecRef.current && !stateRef.current.toyIsTalking && stateRef.current) {
             try {
               speechRecRef.current.start();
               setMicListening(true);
@@ -2465,7 +2485,7 @@ export const FullCameraARExperience: React.FC = () => {
               // Already listening
             }
           }
-        }, 420);
+        }, 380);
       },
     });
   };
@@ -2477,6 +2497,13 @@ export const FullCameraARExperience: React.FC = () => {
   const speakAdultDirection = (directionText: string, followUpToyLine?: string) => {
     setToyIsTalking(false);
     setAdultGuideStatus(`👩‍🏫 Adult Guide: "${directionText}"`);
+    if (speechRecRef.current) {
+      try {
+        speechRecRef.current.stop();
+      } catch {
+        // ignore
+      }
+    }
     void speakAsAdultAppGuide(directionText, DEFAULT_SENSORY, {
       onEnd: () => {
         lastSpeechEndTimeRef.current = Date.now();
@@ -2487,6 +2514,17 @@ export const FullCameraARExperience: React.FC = () => {
           setTimeout(() => {
             speakAsToy(followUpToyLine, activeToyItem.voicePitch);
           }, 300);
+        } else {
+          window.setTimeout(() => {
+            if (speechRecRef.current && !stateRef.current.toyIsTalking) {
+              try {
+                speechRecRef.current.start();
+                setMicListening(true);
+              } catch {
+                // Already listening
+              }
+            }
+          }, 380);
         }
       },
     });
@@ -2517,6 +2555,7 @@ export const FullCameraARExperience: React.FC = () => {
     const loco = toyLocomotionRef.current;
 
     if (actionType === 'kick_football') {
+      setCanvasMode('ar_physical_and_math_game');
       updateToyThoughtCloud(
         '⚽',
         customThought || `${name} loves sports—I will dribble and kick the 3D football into the goal!`,
@@ -4009,7 +4048,7 @@ export const FullCameraARExperience: React.FC = () => {
     }
 
     try {
-      const res = await fetch('http://localhost:8085/api/ar/toy-conversation', {
+      const res = await fetch('http://127.0.0.1:8085/api/ar/toy-conversation', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -4400,27 +4439,41 @@ export const FullCameraARExperience: React.FC = () => {
       />
 
       {/* =====================================================================
-          1. TOP BAR: CHILD PROFILE BADGE, TURN-TAKING VOICE BAR, EXPRESSIONS & HIDE/EXPAND CONTROLS
+          1. TOP BAR: CLEAN, WELL-ORGANIZED SINGLE-ROW 3-ZONE STUDIO HEADER
          ===================================================================== */}
       {topBarExpanded && (
         <header className="studio-top-bar">
+          {/* ZONE 1: Brand + Active Child + Active 3D Stage Pill */}
           <div className="studio-brand-block">
             <span className="studio-logo-badge">🧸🌈</span>
             <div style={{ minWidth: 0 }}>
-              <h1 className="studio-main-title">
-                AutiCompanion 3D Studio — Playing With{' '}
-                <span style={{ color: '#ea580c', textDecoration: 'underline' }}>{childName}</span>
-              </h1>
-              <div className="studio-mode-sub">
-                <span>
-                  👶 <strong>{childName}</strong> ({childAge}y)
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
+                <h1 className="studio-main-title">AutiCompanion 3D</h1>
+                <span className="top-meta-badge">
+                  👶 {childName} ({childAge}y)
                 </span>
-                <span>·</span>
+                <button
+                  type="button"
+                  className="top-meta-badge stage-badge"
+                  onClick={() => {
+                    const currIdx = CARTOON_STAGE_ENVIRONMENTS.findIndex((e) => e.id === stageEnv);
+                    const nextEnv =
+                      CARTOON_STAGE_ENVIRONMENTS[(currIdx + 1) % CARTOON_STAGE_ENVIRONMENTS.length];
+                    setStageEnv(nextEnv.id);
+                    triggerToyCartoonJump();
+                    speakAsToy(
+                      `Yay ${childName}, welcome to ${nextEnv.name}!`,
+                      voiceSettings.sweetnessPitch
+                    );
+                  }}
+                  title="Click to cycle through all 60 3D Stage Environments!"
+                >
+                  {activeEnvMeta.emoji} {activeEnvMeta.name} 🎲
+                </button>
+              </div>
+              <div className="studio-mode-sub">
                 <span style={{ color: '#be185d', fontWeight: 800 }}>
-                  👧{' '}
-                  {SMALL_GIRL_VOICE_PRESETS.find((v) => v.id === voiceSettings.preset)?.label ||
-                    'Sweet 5y Small Girl'}{' '}
-                  ({voiceSettings.sweetnessPitch.toFixed(2)}x)
+                  👧 {voiceSettings.sweetnessPitch.toFixed(2)}x Girl Voice
                 </span>
                 <span>·</span>
                 <span>
@@ -4430,7 +4483,7 @@ export const FullCameraARExperience: React.FC = () => {
             </div>
           </div>
 
-          {/* Talk to 3D Toy Bar + Sweet Girl Voice Test + Adult Guide Button */}
+          {/* ZONE 2: Unified Voice Mic, Sound Test & Ask-Toy Bar */}
           <div className="toy-talk-bar">
             <button
               type="button"
@@ -4446,14 +4499,14 @@ export const FullCameraARExperience: React.FC = () => {
               className={`toy-mic-btn ${alwaysListenEnabled || micListening ? 'listening' : ''}`}
               title="Toggle continuous microphone listening"
             >
-              {alwaysListenEnabled ? '🎙️ Mic On' : '🎤 Mic Off'}
+              {alwaysListenEnabled ? '🎙️ Mic ON' : '🎤 Mic OFF'}
             </button>
             <button
               type="button"
               onClick={() => {
-                setLeftSidebarExpanded(true);
+                playGentleSuccessChime(DEFAULT_SENSORY);
                 speakAsToy(
-                  `Hi ${childName}! I'm speaking in my sweet small girl voice! Wanna play a game or jump together?`,
+                  `Hi ${childName}! My sweet small girl voice and sound are working! What game should we play together?`,
                   voiceSettings.sweetnessPitch
                 );
               }}
@@ -4463,22 +4516,9 @@ export const FullCameraARExperience: React.FC = () => {
                 borderColor: '#f472b6',
                 color: '#be185d',
               }}
-              title="Test Sweet Small Girl Voice & Open Voice Settings in Left Sidebar"
+              title="Click to test & unlock Sweet Small Girl Voice and Sound immediately"
             >
-              👧 Sweet Girl Voice
-            </button>
-            <button
-              type="button"
-              onClick={() =>
-                speakAdultDirection(
-                  `Adult App Guide: ${childName}'s profile is active. The 3D toy speaks in a sweet small girl voice and waits for ${childName}'s response.`,
-                  `Hi ${childName}! Tell me what game or action you want me to do!`
-                )
-              }
-              className="toy-mic-btn adult-guide-btn"
-              title="Hear App Settings & Directions in a Warm Adult Voice"
-            >
-              👩‍🏫 Adult Guide
+              🔊 Test Voice
             </button>
             <form
               onSubmit={(e) => {
@@ -4496,7 +4536,7 @@ export const FullCameraARExperience: React.FC = () => {
             >
               <input
                 type="text"
-                placeholder={`Ask toy: "Cartwheel", "Kick ball", "What is 8 + 7"...`}
+                placeholder={`Say or type: "Hello", "Ferris wheel", "Submarine", "Jump"...`}
                 value={childSpeechInput}
                 onChange={(e) => setChildSpeechInput(e.target.value)}
                 className="toy-talk-input"
@@ -4507,81 +4547,81 @@ export const FullCameraARExperience: React.FC = () => {
             </form>
           </div>
 
-          {/* Child Expression Simulators + Hide/Expand Bar Controls */}
+          {/* ZONE 3: Organized Mood Reactions & Layout View Toggles */}
           <div className="top-expression-pills">
-            <button
-              type="button"
-              onClick={() =>
-                triggerChildExpressionOrVoice('smiling_happy', 'laughing_giggle', 'I am smiling!')
-              }
-              className={`expr-pill ${facialExpression === 'smiling_happy' ? 'active-smile' : ''}`}
-            >
-              😊 Smile
-            </button>
-            <button
-              type="button"
-              onClick={() =>
-                triggerChildExpressionOrVoice('crying_distressed', 'crying_vocal', 'Comfort hug')
-              }
-              className={`expr-pill ${facialExpression === 'crying_distressed' ? 'active-cry' : ''}`}
-            >
-              😢 Comfort
-            </button>
-            <button
-              type="button"
-              onClick={() =>
-                triggerChildExpressionOrVoice(
-                  'frowning_frustrated',
-                  'child_own_language_babble',
-                  'Switch game'
-                )
-              }
-              className={`expr-pill ${
-                facialExpression === 'frowning_frustrated' ? 'active-frown' : ''
-              }`}
-            >
-              😣 Switch
-            </button>
-            <button
-              type="button"
-              onClick={() => setLeftSidebarExpanded((v) => !v)}
-              className="expr-pill"
-              title="Hide or Expand Left Sidebar"
-            >
-              {leftSidebarExpanded ? '◀ Left' : '▶ Left'}
-            </button>
-            <button
-              type="button"
-              onClick={() => setRightSidebarExpanded((v) => !v)}
-              className="expr-pill"
-              title="Hide or Expand Right Sidebar"
-            >
-              {rightSidebarExpanded ? 'Right ▶' : '◀ Right'}
-            </button>
-            <button
-              type="button"
-              onClick={() => setTopBarExpanded(false)}
-              className="expr-pill"
-              title="Hide Top Bar to enlarge the Central 3D Canvas"
-            >
-              🔼 Top
-            </button>
-            <button
-              type="button"
-              onClick={() => {
-                setTopBarExpanded(false);
-                setLeftSidebarExpanded(false);
-              }}
-              className="expr-pill"
-              style={{
-                background: 'linear-gradient(135deg, #f97316, #ea580c)',
-                color: '#ffffff',
-                borderColor: '#ea580c',
-              }}
-              title="Hide Top & Left Bars for Full-View Central 3D Stage"
-            >
-              ⛶ Full-View 3D
-            </button>
+            <div className="top-pill-group">
+              <button
+                type="button"
+                onClick={() =>
+                  triggerChildExpressionOrVoice('smiling_happy', 'laughing_giggle', 'I am smiling!')
+                }
+                className={`expr-pill ${facialExpression === 'smiling_happy' ? 'active-smile' : ''}`}
+                title="Show Happy Smile"
+              >
+                😊 Smile
+              </button>
+              <button
+                type="button"
+                onClick={() =>
+                  triggerChildExpressionOrVoice('crying_distressed', 'crying_vocal', 'Comfort hug')
+                }
+                className={`expr-pill ${facialExpression === 'crying_distressed' ? 'active-cry' : ''}`}
+                title="Request Comfort & Calm Breathing"
+              >
+                😢 Comfort
+              </button>
+              <button
+                type="button"
+                onClick={() =>
+                  triggerChildExpressionOrVoice(
+                    'frowning_frustrated',
+                    'child_own_language_babble',
+                    'Switch game'
+                  )
+                }
+                className={`expr-pill ${
+                  facialExpression === 'frowning_frustrated' ? 'active-frown' : ''
+                }`}
+                title="Switch Activity Gently"
+              >
+                😣 Switch
+              </button>
+            </div>
+
+            <div className="top-pill-group">
+              <button
+                type="button"
+                onClick={() => setLeftSidebarExpanded((v) => !v)}
+                className="expr-pill"
+                title="Toggle Left Sidebar"
+              >
+                {leftSidebarExpanded ? '◧ Left' : '▶ Left'}
+              </button>
+              <button
+                type="button"
+                onClick={() => setRightSidebarExpanded((v) => !v)}
+                className="expr-pill"
+                title="Toggle Right Sidebar"
+              >
+                {rightSidebarExpanded ? 'Right ◨' : '◀ Right'}
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setTopBarExpanded(false);
+                  setLeftSidebarExpanded(false);
+                }}
+                className="expr-pill"
+                style={{
+                  background: 'linear-gradient(135deg, #f97316, #ea580c)',
+                  color: '#ffffff',
+                  borderColor: '#ea580c',
+                }}
+                title="Expand Full-View Central 3D Stage"
+              >
+                ⛶ Full 3D
+              </button>
+            </div>
           </div>
         </header>
       )}
@@ -4590,12 +4630,12 @@ export const FullCameraARExperience: React.FC = () => {
           2. MIDDLE WORKSPACE: HIDEABLE LEFT SIDEBAR + EXPANDABLE CENTRAL 3D CANVAS + HIDEABLE RIGHT SIDEBAR
          ===================================================================== */}
       <div className="studio-middle-row">
-        {/* LEFT SIDEBAR: CHILD PROFILE + SWEET SMALL GIRL VOICE SETTINGS + WORLDS + 19 3D TOYS */}
+        {/* LEFT SIDEBAR: CHILD PROFILE + SWEET SMALL GIRL VOICE SETTINGS + 60 WORLDS + 19 3D TOYS */}
         {leftSidebarExpanded && (
           <aside className="studio-left-sidebar">
             {/* Sticky Non-Overlapping Left Sidebar Header Row */}
             <div className="sidebar-header-row">
-              <span className="sidebar-header-title">🧸 Profile, Girl Voice &amp; 3D Toys</span>
+              <span className="sidebar-header-title">🧸 Profile, Voice &amp; 60 3D Worlds</span>
               <button
                 type="button"
                 onClick={() => setLeftSidebarExpanded(false)}
@@ -4815,10 +4855,10 @@ export const FullCameraARExperience: React.FC = () => {
               </button>
             </div>
 
-            {/* 3. CHANGEABLE 3D CARTOON ARTWORK STAGE WORLD (30 CREATIVE AUTISM-FRIENDLY WORLDS) */}
+            {/* 3. CHANGEABLE 3D CARTOON ARTWORK STAGE WORLD (60 CREATIVE AUTISM-FRIENDLY WORLDS) */}
             <div className="sidebar-card">
               <div className="sidebar-card-top-row" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <span className="sidebar-tag">🎨 3D Stage Worlds (30)</span>
+                <span className="sidebar-tag">🎨 3D Stage Worlds ({CARTOON_STAGE_ENVIRONMENTS.length})</span>
                 <button
                   type="button"
                   onClick={() => {
@@ -4844,11 +4884,23 @@ export const FullCameraARExperience: React.FC = () => {
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4, marginBottom: 8 }}>
                 {(
                   [
-                    { id: 'all', label: '🌟 All (30)' },
-                    { id: 'nature', label: '🌿 Nature (8)' },
-                    { id: 'vehicles', label: '🚂 Vehicles (7)' },
-                    { id: 'magic', label: '🍭 Magic (9)' },
-                    { id: 'sensory', label: '🫧 Sensory (6)' },
+                    { id: 'all', label: `🌟 All (${CARTOON_STAGE_ENVIRONMENTS.length})` },
+                    {
+                      id: 'nature',
+                      label: `🌿 Nature (${CARTOON_STAGE_ENVIRONMENTS.filter((e) => e.category === 'nature').length})`,
+                    },
+                    {
+                      id: 'vehicles',
+                      label: `🚂 Vehicles (${CARTOON_STAGE_ENVIRONMENTS.filter((e) => e.category === 'vehicles').length})`,
+                    },
+                    {
+                      id: 'magic',
+                      label: `🍭 Magic (${CARTOON_STAGE_ENVIRONMENTS.filter((e) => e.category === 'magic').length})`,
+                    },
+                    {
+                      id: 'sensory',
+                      label: `🫧 Sensory (${CARTOON_STAGE_ENVIRONMENTS.filter((e) => e.category === 'sensory').length})`,
+                    },
                   ] as const
                 ).map((cat) => (
                   <button
@@ -4871,7 +4923,7 @@ export const FullCameraARExperience: React.FC = () => {
                   </button>
                 ))}
               </div>
-              <div className="character-list" style={{ maxHeight: 240 }}>
+              <div className="character-list" style={{ maxHeight: 260 }}>
                 {CARTOON_STAGE_ENVIRONMENTS.filter(
                   (env) => stageCategoryFilter === 'all' || env.category === stageCategoryFilter
                 ).map((env) => {

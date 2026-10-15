@@ -3,8 +3,14 @@ import { SensoryProfile } from '../types';
 let audioCtx: AudioContext | null = null;
 let activeOscillators: OscillatorNode[] = [];
 let activeNeuralAudio: HTMLAudioElement | null = null;
+let activeBrowserUtterance: SpeechSynthesisUtterance | null = null;
 let currentSpeechRequestId = 0;
 const neuralAudioBlobCache = new Map<string, string>();
+
+const BACKEND_TTS_URLS = [
+  'http://127.0.0.1:8085/api/tts/speak',
+  'http://127.0.0.1:8000/api/tts/speak',
+];
 
 function getAudioContext(): AudioContext | null {
   if (typeof window === 'undefined') return null;
@@ -23,19 +29,58 @@ function getAudioContext(): AudioContext | null {
 }
 
 /**
- * Preload browser voices as early as possible so getVoices() is populated.
+ * Automatically unlock Web Audio API and SpeechSynthesis on any user click, touch, or key press
+ * so sound and voice are never blocked by browser autoplay restrictions.
  */
-if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
-  window.speechSynthesis.getVoices();
-  window.speechSynthesis.onvoiceschanged = () => {
-    window.speechSynthesis.getVoices();
+if (typeof window !== 'undefined') {
+  const unlockAudioOnGesture = () => {
+    const ctx = getAudioContext();
+    if (ctx && ctx.state === 'suspended') {
+      ctx.resume().catch(() => {});
+    }
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.getVoices();
+      if (window.speechSynthesis.paused) {
+        window.speechSynthesis.resume();
+      }
+    }
   };
+  window.addEventListener('pointerdown', unlockAudioOnGesture, { passive: true });
+  window.addEventListener('click', unlockAudioOnGesture, { passive: true });
+  window.addEventListener('keydown', unlockAudioOnGesture, { passive: true });
+
+  if ('speechSynthesis' in window) {
+    window.speechSynthesis.getVoices();
+    window.speechSynthesis.onvoiceschanged = () => {
+      window.speechSynthesis.getVoices();
+    };
+  }
+}
+
+async function fetchBackendTTS(payload: Record<string, unknown>): Promise<Response | null> {
+  for (const url of BACKEND_TTS_URLS) {
+    try {
+      const controller = new AbortController();
+      const timeoutId = window.setTimeout(() => controller.abort(), 2200);
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+        signal: controller.signal,
+      });
+      window.clearTimeout(timeoutId);
+      if (res.ok) return res;
+    } catch {
+      // Try next port
+    }
+  }
+  return null;
 }
 
 /**
  * Selects a natural Female / Girl voice from the browser's SpeechSynthesis voices,
  * strictly excluding male voices (e.g., Microsoft David, Mark, George, James)
- * so the 3D toy NEVER sounds like an adult male giving instructions.
+ * and preferring reliable local voices so speech never stalls.
  */
 export function selectBrowserVoiceByPersona(
   persona: 'toy_child_girl' | 'adult_guide'
@@ -51,33 +96,36 @@ export function selectBrowserVoiceByPersona(
     (v) => v.lang.toLowerCase().startsWith('en') && !maleNamePatterns.test(v.name)
   );
 
+  // Prefer localService voices first so Chrome online TTS never hangs silently
+  const localNonMale = nonMaleEnglishVoices.filter((v) => v.localService);
+  const pool = localNonMale.length > 0 ? localNonMale : nonMaleEnglishVoices;
+
   if (persona === 'toy_child_girl') {
-    // Priority 1: Child/Girl neural voices (Ana, Maisie, Libby)
-    const childVoice = nonMaleEnglishVoices.find((v) =>
+    const childVoice = pool.find((v) =>
       /\b(ana|maisie|libby|girl|child|kid)\b/i.test(v.name)
     );
     if (childVoice) return childVoice;
 
-    // Priority 2: High-naturalness young-sounding female voices (Aria, Jenny, Sonia, Google Female, Zira, Samantha)
-    const sweetFemaleVoice = nonMaleEnglishVoices.find((v) =>
+    const sweetFemaleVoice = pool.find((v) =>
       /\b(aria|jenny|sonia|natasha|clara|zira|samantha|victoria|karen|hazel|susan|female)\b/i.test(
         v.name
       )
     );
     if (sweetFemaleVoice) return sweetFemaleVoice;
   } else {
-    // Adult Guide: Warm, clear adult voice (Aria, Jenny, Sonia, Zira, Google Female, Samantha)
-    const adultVoice = nonMaleEnglishVoices.find((v) =>
+    const adultVoice = pool.find((v) =>
       /\b(aria|jenny|sonia|samantha|zira|hazel|susan|female)\b/i.test(v.name)
     );
     if (adultVoice) return adultVoice;
   }
 
+  if (pool.length > 0) {
+    return pool[0];
+  }
   if (nonMaleEnglishVoices.length > 0) {
     return nonMaleEnglishVoices[0];
   }
 
-  // Fallback to any non-male voice across locales
   const anyNonMale = voices.find((v) => !maleNamePatterns.test(v.name));
   return anyNonMale || voices[0];
 }
@@ -96,8 +144,17 @@ export function stopAllAudioAndSpeech(): void {
     }
     activeNeuralAudio = null;
   }
+  if (activeBrowserUtterance) {
+    activeBrowserUtterance.onend = null;
+    activeBrowserUtterance.onerror = null;
+    activeBrowserUtterance = null;
+  }
   if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
-    window.speechSynthesis.cancel();
+    try {
+      window.speechSynthesis.cancel();
+    } catch {
+      // ignore
+    }
   }
   for (const osc of activeOscillators) {
     try {
@@ -190,21 +247,20 @@ export const SMALL_GIRL_VOICE_PRESETS: Array<{
  */
 export function playCuteChildGiggleChime(sensory: SensoryProfile): void {
   if (sensory.quiet_mode || !currentVoiceSettings.giggleChimeEnabled) return;
-  // High, sweet music-box notes: G5 (783.99 Hz) -> A5 (880 Hz) -> C6 (1046.5 Hz)
-  playPentatonicNote(783.99, sensory, 'kalimba', 0.16);
+  playPentatonicNote(783.99, sensory, 'kalimba', 0.22);
   setTimeout(() => {
-    playPentatonicNote(880.0, sensory, 'kalimba', 0.16);
+    playPentatonicNote(880.0, sensory, 'kalimba', 0.22);
   }, 75);
   setTimeout(() => {
-    playPentatonicNote(1046.5, sensory, 'kalimba', 0.24);
+    playPentatonicNote(1046.5, sensory, 'kalimba', 0.3);
   }, 150);
 }
 
 /**
  * Speaks as the 3D Toy Character using a Natural Sweet Small Girl Cartoon Voice!
  * Primary: Streams Microsoft 'en-US-AnaNeural' or 'en-GB-MaisieNeural' (genuine young child girl voices)
- * from FastAPI `/api/tts/speak` with customizable sweetness pitch & speed.
- * Fallback: Uses a female/girl browser voice (never male David/Mark) at sweet small girl pitch.
+ * from FastAPI `/api/tts/speak` (ports 8085 or 8000) with customizable sweetness pitch & speed.
+ * Fallback: Uses a local female/girl browser voice with V8 GC protection so it never fails silently.
  */
 export async function speakAsSweetChildGirlToy(
   text: string,
@@ -228,7 +284,6 @@ export async function speakAsSweetChildGirlToy(
   options?.onStart?.();
 
   const vs = currentVoiceSettings;
-  // Map sweetnessPitch (1.15..1.75) to neural pitch_hz (+2Hz..+24Hz)
   const pitchHz = Math.round((vs.sweetnessPitch - 1.15) * 36) + 2;
   const ratePct = Math.round((vs.speechSpeed - 1.0) * 100);
 
@@ -237,24 +292,22 @@ export async function speakAsSweetChildGirlToy(
     let cachedEntry = neuralAudioBlobCache.get(cacheKey);
     let isEdgeNeural = true;
     if (!cachedEntry) {
-      const res = await fetch('http://localhost:8085/api/tts/speak', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          text: text.trim(),
-          persona: 'toy_child_girl',
-          voice_preset: vs.preset,
-          pitch_hz: pitchHz,
-          rate_pct: ratePct,
-        }),
+      const res = await fetchBackendTTS({
+        text: text.trim(),
+        persona: 'toy_child_girl',
+        voice_preset: vs.preset,
+        pitch_hz: pitchHz,
+        rate_pct: ratePct,
       });
-      if (res.ok) {
+      if (res) {
         const engineHeader = res.headers.get('X-Voice-Engine') || '';
         isEdgeNeural = engineHeader.startsWith('edge-tts');
         const blob = await res.blob();
-        const blobUrl = URL.createObjectURL(blob);
-        cachedEntry = `${isEdgeNeural ? 'edge' : 'fallback'}|${blobUrl}`;
-        neuralAudioBlobCache.set(cacheKey, cachedEntry);
+        if (blob.size > 100) {
+          const blobUrl = URL.createObjectURL(blob);
+          cachedEntry = `${isEdgeNeural ? 'edge' : 'fallback'}|${blobUrl}`;
+          neuralAudioBlobCache.set(cacheKey, cachedEntry);
+        }
       }
     }
 
@@ -271,22 +324,19 @@ export async function speakAsSweetChildGirlToy(
       };
 
       if (engineType === 'edge') {
-        // Genuine Microsoft AnaNeural / MaisieNeural small girl voice already has child vocal tract & pitch!
-        // Apply gentle fine-tuned playback rate while keeping natural child cadence.
         const gentleShift = 1.0 + Math.max(-0.06, Math.min(0.14, (vs.sweetnessPitch - 1.45) * 0.25));
         audio.preservesPitch = false;
         audio.webkitPreservesPitch = false;
         audio.mozPreservesPitch = false;
         audio.playbackRate = Number((gentleShift * vs.speechSpeed).toFixed(2));
       } else {
-        // Fallback adult stream -> shift formants & pitch up into a sweet small girl voice
         audio.preservesPitch = false;
         audio.webkitPreservesPitch = false;
         audio.mozPreservesPitch = false;
         audio.playbackRate = Math.min(1.38, Math.max(1.18, vs.sweetnessPitch * 0.85));
       }
 
-      const normalizedVol = Math.min(1.0, Math.max(0.2, (sensory.max_volume_db || 72) / 85));
+      const normalizedVol = Math.min(1.0, Math.max(0.45, (sensory.max_volume_db || 78) / 85));
       audio.volume = sensory.quiet_mode ? 0.25 : normalizedVol;
       activeNeuralAudio = audio;
       audio.onended = () => {
@@ -310,8 +360,6 @@ export async function speakAsSweetChildGirlToy(
 
 /**
  * Speaks App Settings, Camera Controls, and Activity Directions using a Calm, Warm Adult Voice!
- * Primary: Streams natural adult neural audio (en-GB-SoniaNeural) from FastAPI `/api/tts/speak`.
- * Fallback: Uses a natural adult voice (`pitch = 1.0`, `rate = 0.95`) in the browser.
  */
 export async function speakAsAdultAppGuide(
   text: string,
@@ -329,24 +377,23 @@ export async function speakAsAdultAppGuide(
 
   stopAllAudioAndSpeech();
   const reqId = currentSpeechRequestId;
+  playPentatonicNote(523.25, sensory, 'kalimba', 0.22);
   options?.onStart?.();
 
   const cacheKey = `adult_guide::${text.trim()}`;
   try {
     let blobUrl = neuralAudioBlobCache.get(cacheKey);
     if (!blobUrl) {
-      const res = await fetch('http://localhost:8085/api/tts/speak', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          text: text.trim(),
-          persona: 'adult_guide',
-        }),
+      const res = await fetchBackendTTS({
+        text: text.trim(),
+        persona: 'adult_guide',
       });
-      if (res.ok) {
+      if (res) {
         const blob = await res.blob();
-        blobUrl = URL.createObjectURL(blob);
-        neuralAudioBlobCache.set(cacheKey, blobUrl);
+        if (blob.size > 100) {
+          blobUrl = URL.createObjectURL(blob);
+          neuralAudioBlobCache.set(cacheKey, blobUrl);
+        }
       }
     }
 
@@ -358,13 +405,12 @@ export async function speakAsAdultAppGuide(
         webkitPreservesPitch?: boolean;
         mozPreservesPitch?: boolean;
       };
-      // Preserve natural adult vocal-tract formants & calm cadence for App Settings & Directions
       audio.preservesPitch = true;
       audio.webkitPreservesPitch = true;
       audio.mozPreservesPitch = true;
       audio.playbackRate = 0.98;
 
-      const normalizedVol = Math.min(1.0, Math.max(0.2, (sensory.max_volume_db || 72) / 85));
+      const normalizedVol = Math.min(1.0, Math.max(0.45, (sensory.max_volume_db || 78) / 85));
       audio.volume = sensory.quiet_mode ? 0.25 : normalizedVol;
       activeNeuralAudio = audio;
       audio.onended = () => {
@@ -401,36 +447,50 @@ function speakBrowserFallback(
     return;
   }
 
-  window.speechSynthesis.cancel();
-  const u = new SpeechSynthesisUtterance(text);
-  const chosenVoice = selectBrowserVoiceByPersona(persona);
-  if (chosenVoice) {
-    u.voice = chosenVoice;
-  }
+  let finished = false;
+  const finishOnce = () => {
+    if (finished) return;
+    finished = true;
+    activeBrowserUtterance = null;
+    options?.onEnd?.();
+  };
 
-  if (persona === 'toy_child_girl') {
-    const vs = currentVoiceSettings;
-    // Sweet, high-pitched small girl cartoon voice
-    u.pitch = Math.min(1.8, Math.max(1.25, vs.sweetnessPitch || options?.pitchBoost || 1.48));
-    u.rate = Math.min(1.18, Math.max(0.82, vs.speechSpeed || 0.98));
-  } else {
-    // Calm, warm adult voice for App Settings & Directions
-    u.pitch = 1.0;
-    u.rate = 0.95;
-  }
+  try {
+    window.speechSynthesis.cancel();
+    if (window.speechSynthesis.paused) {
+      window.speechSynthesis.resume();
+    }
+    const u = new SpeechSynthesisUtterance(text);
+    activeBrowserUtterance = u; // Prevent Chrome V8 garbage collection of active utterance
+    const chosenVoice = selectBrowserVoiceByPersona(persona);
+    if (chosenVoice) {
+      u.voice = chosenVoice;
+    }
 
-  const normalizedVol = Math.min(1.0, Math.max(0.2, (sensory.max_volume_db || 72) / 85));
-  u.volume = sensory.quiet_mode ? 0.25 : normalizedVol;
-  u.onend = () => options?.onEnd?.();
-  u.onerror = () => options?.onEnd?.();
-  window.speechSynthesis.speak(u);
-  setTimeout(() => options?.onEnd?.(), Math.min(7500, text.length * 80));
+    if (persona === 'toy_child_girl') {
+      const vs = currentVoiceSettings;
+      // Clamp to 1.15..1.45 for Windows SAPI / Chrome local voice stability
+      u.pitch = Math.min(1.45, Math.max(1.15, vs.sweetnessPitch || options?.pitchBoost || 1.38));
+      u.rate = Math.min(1.12, Math.max(0.88, vs.speechSpeed || 0.98));
+    } else {
+      u.pitch = 1.0;
+      u.rate = 0.96;
+    }
+
+    const normalizedVol = Math.min(1.0, Math.max(0.5, (sensory.max_volume_db || 80) / 85));
+    u.volume = sensory.quiet_mode ? 0.25 : normalizedVol;
+    u.onend = () => finishOnce();
+    u.onerror = () => finishOnce();
+    window.speechSynthesis.speak(u);
+    if (window.speechSynthesis.paused) {
+      window.speechSynthesis.resume();
+    }
+  } catch {
+    finishOnce();
+  }
+  setTimeout(() => finishOnce(), Math.min(6500, Math.max(1800, text.length * 75)));
 }
 
-/**
- * Legacy helper kept for compatibility across workspace modules;
- * uses the sweet child-girl voice for companion dialogue.
- */
 export function speakCompanionText(
   text: string,
   sensory: SensoryProfile,
@@ -460,9 +520,9 @@ export function playPentatonicNote(
   osc.type = timbre === 'synth' ? 'triangle' : 'sine';
   osc.frequency.setValueAtTime(frequency, now);
 
-  const maxGain = Math.min(0.28, ((sensory.max_volume_db || 65) / 100) * 0.32);
+  const maxGain = Math.min(0.38, ((sensory.max_volume_db || 78) / 100) * 0.44);
   gain.gain.setValueAtTime(0.001, now);
-  gain.gain.linearRampToValueAtTime(maxGain, now + 0.025);
+  gain.gain.linearRampToValueAtTime(maxGain, now + 0.02);
   gain.gain.exponentialRampToValueAtTime(0.0008, now + durationSec);
 
   osc.connect(gain);
@@ -484,3 +544,4 @@ export function playGentleSuccessChime(sensory: SensoryProfile): void {
     playPentatonicNote(659.25, sensory, 'kalimba', 0.65);
   }, 140);
 }
+

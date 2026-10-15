@@ -2861,7 +2861,37 @@ export type CartoonEnvironmentId =
   | 'ducky_pond_oasis'
   | 'balloon_fiesta_sky'
   | 'puppy_agility_meadow'
-  | 'lava_lamp_chill_zone';
+  | 'lava_lamp_chill_zone'
+  | 'carnival_ferris_park'
+  | 'steam_train_station'
+  | 'submarine_deep_sea'
+  | 'volcano_dino_island'
+  | 'lunar_moon_base'
+  | 'mars_rover_outpost'
+  | 'dutch_tulip_windmill'
+  | 'ancient_pyramid_oasis'
+  | 'bamboo_panda_grove'
+  | 'penguin_iceberg_bay'
+  | 'grand_piano_stage'
+  | 'storybook_library_nook'
+  | 'mega_construction_zone'
+  | 'sunny_airport_runway'
+  | 'harbor_lighthouse_bay'
+  | 'jellyfish_glow_tank'
+  | 'honeybee_meadow_hive'
+  | 'trampoline_bounce_dome'
+  | 'cupcake_bakery_kitchen'
+  | 'dino_fossil_museum'
+  | 'steampunk_clockwork_tower'
+  | 'magic_wizard_observatory'
+  | 'koi_lantern_bridge'
+  | 'rainbow_waterpark_splash'
+  | 'camping_campfire_woods'
+  | 'infinity_mirror_portal'
+  | 'subway_metro_station'
+  | 'chocolate_waffle_village'
+  | 'planetarium_star_dome'
+  | 'tropical_surf_island';
 
 export interface CartoonEnvironmentMeta {
   id: CartoonEnvironmentId;
@@ -3301,6 +3331,428 @@ export const CARTOON_STAGE_ENVIRONMENTS: CartoonEnvironmentMeta[] = [
     description: 'Warm sensory relaxation zone with 3D glowing lava-lamp columns and soft blobs',
     voiceKeywords: ['lava lamp', 'chill zone', 'cozy zone', 'relax room'],
   },
+
+  // ================= 31–60: 30 NEW TOTALLY DIFFERENT 3D ARCHITECTURAL & BIOME STAGE WORLDS =================
+  {
+    id: 'carnival_ferris_park',
+    name: 'Giant Ferris Wheel Carnival',
+    emoji: '🎡🎪',
+    category: 'magic',
+    cssGradient:
+      'radial-gradient(circle at 50% 18%, #fef9c3 0%, #fbcfe8 42%, #bae6fd 78%, #f472b6 100%)',
+    pedestalColor: '#ec4899',
+    ringColor: '#fde047',
+    hillLeftColor: '#f472b6',
+    hillRightColor: '#38bdf8',
+    description: '3D Giant Spoked Ferris Wheel with hanging passenger gondolas & circus tent',
+    voiceKeywords: ['ferris wheel', 'carnival', 'circus', 'amusement park', 'fairground'],
+  },
+  {
+    id: 'steam_train_station',
+    name: 'Grand Steam Train Station',
+    emoji: '🚉🚂',
+    category: 'vehicles',
+    cssGradient:
+      'radial-gradient(circle at 50% 18%, #fef3c7 0%, #bae6fd 42%, #fde68a 78%, #d97706 100%)',
+    pedestalColor: '#475569',
+    ringColor: '#ef4444',
+    hillLeftColor: '#86efac',
+    hillRightColor: '#4ade80',
+    description: 'Full 3D Red/Black Steam Locomotive Engine on 3D railroad tracks with clock tower',
+    voiceKeywords: ['steam train', 'train station', 'locomotive', 'railroad', 'station'],
+  },
+  {
+    id: 'submarine_deep_sea',
+    name: 'Yellow Submarine Trench',
+    emoji: '🚤🐙',
+    category: 'vehicles',
+    cssGradient:
+      'radial-gradient(circle at 50% 18%, #22d3ee 0%, #0284c7 42%, #0369a1 78%, #0f172a 100%)',
+    pedestalColor: '#0e7490',
+    ringColor: '#facc15',
+    hillLeftColor: '#0891b2',
+    hillRightColor: '#155e75',
+    description: '3D Yellow Research Submarine with portholes, periscope, propeller & sea vents',
+    voiceKeywords: ['submarine', 'yellow submarine', 'deep sea', 'underwater boat'],
+  },
+  {
+    id: 'volcano_dino_island',
+    name: 'Lava Volcano Dino Island',
+    emoji: '🌋🦖',
+    category: 'nature',
+    cssGradient:
+      'radial-gradient(circle at 50% 18%, #fef08a 0%, #fdba74 40%, #f97316 76%, #7c2d12 100%)',
+    pedestalColor: '#65a30d',
+    ringColor: '#f97316',
+    hillLeftColor: '#84cc16',
+    hillRightColor: '#4d7c0f',
+    description: 'Towering 3D Volcanic Mountain with glowing molten crater, ferns & 3D dino eggs',
+    voiceKeywords: ['volcano', 'dino island', 'lava', 'prehistoric'],
+  },
+  {
+    id: 'lunar_moon_base',
+    name: 'Lunar Moon Base & Rocket',
+    emoji: '🌕🚀',
+    category: 'vehicles',
+    cssGradient:
+      'radial-gradient(circle at 50% 18%, #312e81 0%, #1e1b4b 45%, #0f172a 80%, #020617 100%)',
+    pedestalColor: '#94a3b8',
+    ringColor: '#38bdf8',
+    hillLeftColor: '#64748b',
+    hillRightColor: '#475569',
+    description: '3D Cratered Moon surface, Multi-Stage Space Rocket on launchpad & glass biodome',
+    voiceKeywords: ['moon base', 'lunar', 'rocket launch', 'astronaut'],
+  },
+  {
+    id: 'mars_rover_outpost',
+    name: 'Red Planet Mars Rover Lab',
+    emoji: '🔴🛞',
+    category: 'vehicles',
+    cssGradient:
+      'radial-gradient(circle at 50% 18%, #fed7aa 0%, #fb923c 42%, #ea580c 78%, #7c2d12 100%)',
+    pedestalColor: '#c2410c',
+    ringColor: '#fde047',
+    hillLeftColor: '#ea580c',
+    hillRightColor: '#9a3412',
+    description: 'Rust-red Martian canyon, 6-wheeled 3D Mars Rover with camera mast & twin moons',
+    voiceKeywords: ['mars', 'mars rover', 'red planet', 'rover'],
+  },
+  {
+    id: 'dutch_tulip_windmill',
+    name: 'Dutch Windmill & Tulip Field',
+    emoji: '🌷🌬️',
+    category: 'nature',
+    cssGradient:
+      'radial-gradient(circle at 50% 18%, #fffbeb 0%, #bae6fd 42%, #fbcfe8 76%, #4ade80 100%)',
+    pedestalColor: '#22c55e',
+    ringColor: '#f43f5e',
+    hillLeftColor: '#86efac',
+    hillRightColor: '#4ade80',
+    description: 'Tall 3D Wooden Windmill with 4 giant sails and rows of colorful 3D tulips',
+    voiceKeywords: ['windmill', 'tulip', 'tulip field', 'dutch'],
+  },
+  {
+    id: 'ancient_pyramid_oasis',
+    name: 'Golden Pyramid Desert Oasis',
+    emoji: '🐪🏜️',
+    category: 'nature',
+    cssGradient:
+      'radial-gradient(circle at 50% 18%, #fef9c3 0%, #fde047 40%, #f59e0b 78%, #b45309 100%)',
+    pedestalColor: '#eab308',
+    ringColor: '#06b6d4',
+    hillLeftColor: '#facc15',
+    hillRightColor: '#d97706',
+    description: '3D Great Golden Pyramids, desert sand dunes, turquoise oasis pool & obelisks',
+    voiceKeywords: ['pyramid', 'desert', 'oasis', 'egypt', 'camel'],
+  },
+  {
+    id: 'bamboo_panda_grove',
+    name: 'Emerald Bamboo Panda Zen',
+    emoji: '🐼🎍',
+    category: 'nature',
+    cssGradient:
+      'radial-gradient(circle at 50% 18%, #ecfdf5 0%, #a7f3d0 42%, #6ee7b7 78%, #059669 100%)',
+    pedestalColor: '#10b981',
+    ringColor: '#ef4444',
+    hillLeftColor: '#34d399',
+    hillRightColor: '#059669',
+    description: 'Towering segmented 3D green bamboo forest, red wooden zen bridge & lanterns',
+    voiceKeywords: ['bamboo', 'panda grove', 'panda forest', 'zen bridge'],
+  },
+  {
+    id: 'penguin_iceberg_bay',
+    name: 'Penguin Iceberg & Igloo Bay',
+    emoji: '🐧🧊',
+    category: 'nature',
+    cssGradient:
+      'radial-gradient(circle at 50% 18%, #f0f9ff 0%, #bae6fd 42%, #7dd3fc 78%, #0284c7 100%)',
+    pedestalColor: '#e0f2fe',
+    ringColor: '#06b6d4',
+    hillLeftColor: '#bae6fd',
+    hillRightColor: '#7dd3fc',
+    description: '3D Domed Snow Igloo with tunnel, faceted turquoise icebergs & icy skating rink',
+    voiceKeywords: ['penguin', 'iceberg', 'igloo', 'snow bay'],
+  },
+  {
+    id: 'grand_piano_stage',
+    name: 'Giant Floor Piano Concert',
+    emoji: '🎹🎼',
+    category: 'sensory',
+    cssGradient:
+      'radial-gradient(circle at 50% 18%, #fef3c7 0%, #e0e7ff 42%, #c7d2fe 78%, #4f46e5 100%)',
+    pedestalColor: '#1e1b4b',
+    ringColor: '#facc15',
+    hillLeftColor: '#818cf8',
+    hillRightColor: '#6366f1',
+    description: 'Walk-on 3D Giant Piano Keyboard floor with white/black keys & golden organ pipes',
+    voiceKeywords: ['piano', 'piano stage', 'keyboard', 'concert hall'],
+  },
+  {
+    id: 'storybook_library_nook',
+    name: 'Giant Open Storybook Library',
+    emoji: '📚🦉',
+    category: 'magic',
+    cssGradient:
+      'radial-gradient(circle at 50% 18%, #fffbeb 0%, #fde68a 42%, #fcd34d 78%, #b45309 100%)',
+    pedestalColor: '#fef3c7',
+    ringColor: '#d97706',
+    hillLeftColor: '#fde68a',
+    hillRightColor: '#f59e0b',
+    description: 'Giant 3D Open Hardcover Book floor, towering colorful 3D book stacks & lamp',
+    voiceKeywords: ['storybook', 'library', 'book world', 'reading nook'],
+  },
+  {
+    id: 'mega_construction_zone',
+    name: 'Tower Crane Construction Site',
+    emoji: '🏗️🚜',
+    category: 'vehicles',
+    cssGradient:
+      'radial-gradient(circle at 50% 18%, #fef9c3 0%, #fed7aa 42%, #fdba74 78%, #ea580c 100%)',
+    pedestalColor: '#d97706',
+    ringColor: '#facc15',
+    hillLeftColor: '#fbbf24',
+    hillRightColor: '#b45309',
+    description: 'Giant 3D Yellow Tower Crane with boom & hook, steel beams & safety barriers',
+    voiceKeywords: ['construction', 'crane', 'bulldozer', 'digger', 'building site'],
+  },
+  {
+    id: 'sunny_airport_runway',
+    name: 'Airport Runway & Control Tower',
+    emoji: '✈️🛫',
+    category: 'vehicles',
+    cssGradient:
+      'radial-gradient(circle at 50% 18%, #f0f9ff 0%, #bae6fd 45%, #7dd3fc 78%, #38bdf8 100%)',
+    pedestalColor: '#334155',
+    ringColor: '#facc15',
+    hillLeftColor: '#4ade80',
+    hillRightColor: '#22c55e',
+    description: '3D Asphalt Runway with centerline lights, Air Traffic Control Tower & Biplane',
+    voiceKeywords: ['airport', 'runway', 'control tower', 'airplane station'],
+  },
+  {
+    id: 'harbor_lighthouse_bay',
+    name: 'Striped Lighthouse & Sailboat',
+    emoji: '🚨⛵',
+    category: 'nature',
+    cssGradient:
+      'radial-gradient(circle at 50% 18%, #fffbeb 0%, #bae6fd 42%, #38bdf8 78%, #0369a1 100%)',
+    pedestalColor: '#0284c7',
+    ringColor: '#ef4444',
+    hillLeftColor: '#38bdf8',
+    hillRightColor: '#0284c7',
+    description: 'Tall Red-and-White Striped 3D Lighthouse with glowing lantern & 3D Sailboat',
+    voiceKeywords: ['lighthouse', 'sailboat', 'harbor', 'seaport'],
+  },
+  {
+    id: 'jellyfish_glow_tank',
+    name: 'Bioluminescent Jellyfish Tank',
+    emoji: '🪼💙',
+    category: 'sensory',
+    cssGradient:
+      'radial-gradient(circle at 50% 18%, #1e1b4b 0%, #312e81 42%, #0f172a 80%, #020617 100%)',
+    pedestalColor: '#1e3a8a',
+    ringColor: '#22d3ee',
+    hillLeftColor: '#1d4ed8',
+    hillRightColor: '#3b82f6',
+    description: 'Translucent 3D glowing jellyfish domes with trailing tentacles in deep indigo calm',
+    voiceKeywords: ['jellyfish', 'glow tank', 'bioluminescent', 'deep ocean calm'],
+  },
+  {
+    id: 'honeybee_meadow_hive',
+    name: 'Golden Honeycomb Bee Hive',
+    emoji: '🐝🍯',
+    category: 'nature',
+    cssGradient:
+      'radial-gradient(circle at 50% 18%, #fefce8 0%, #fef08a 42%, #facc15 78%, #ca8a04 100%)',
+    pedestalColor: '#eab308',
+    ringColor: '#f59e0b',
+    hillLeftColor: '#fde047',
+    hillRightColor: '#eab308',
+    description: '3D Hexagonal Golden Honeycomb wall & floor tiles with giant 3D Sunflowers',
+    voiceKeywords: ['honeycomb', 'bee hive', 'honeybee', 'sunflower'],
+  },
+  {
+    id: 'trampoline_bounce_dome',
+    name: 'Bouncy Trampoline & Foam Pit',
+    emoji: '🤸‍♂️🟣',
+    category: 'magic',
+    cssGradient:
+      'radial-gradient(circle at 50% 18%, #f5f3ff 0%, #ddd6fe 42%, #a78bfa 78%, #6d28d9 100%)',
+    pedestalColor: '#7c3aed',
+    ringColor: '#22d3ee',
+    hillLeftColor: '#c084fc',
+    hillRightColor: '#8b5cf6',
+    description: '3D Circular Spring Trampoline pads, colorful soft foam-cube walls & gym rings',
+    voiceKeywords: ['trampoline', 'bounce park', 'foam pit', 'gymnastics'],
+  },
+  {
+    id: 'cupcake_bakery_kitchen',
+    name: 'Giant Birthday Cake Bakery',
+    emoji: '🎂🍩',
+    category: 'magic',
+    cssGradient:
+      'radial-gradient(circle at 50% 18%, #fff1f2 0%, #fecdd3 42%, #fda4af 78%, #f43f5e 100%)',
+    pedestalColor: '#fb7185',
+    ringColor: '#fef08a',
+    hillLeftColor: '#fda4af',
+    hillRightColor: '#f472b6',
+    description: '3D 3-Tier Frosted Birthday Cake with glowing candles & giant glazed donuts',
+    voiceKeywords: ['birthday cake', 'cupcake', 'bakery', 'donut'],
+  },
+  {
+    id: 'dino_fossil_museum',
+    name: 'Natural History Fossil Hall',
+    emoji: '🦴🏛️',
+    category: 'magic',
+    cssGradient:
+      'radial-gradient(circle at 50% 18%, #fffbeb 0%, #fef3c7 42%, #e7e5e4 78%, #a8a29e 100%)',
+    pedestalColor: '#d6d3d1',
+    ringColor: '#d97706',
+    hillLeftColor: '#e7e5e4',
+    hillRightColor: '#d6d3d1',
+    description: 'Marble 3D Museum Columns, giant prehistoric dino ribcage fossil arch & pedestals',
+    voiceKeywords: ['museum', 'fossil', 'skeleton', 'dino museum'],
+  },
+  {
+    id: 'steampunk_clockwork_tower',
+    name: 'Brass Clockwork Gear Tower',
+    emoji: '⚙️🕰️',
+    category: 'vehicles',
+    cssGradient:
+      'radial-gradient(circle at 50% 18%, #fef3c7 0%, #fde68a 40%, #d97706 78%, #78350f 100%)',
+    pedestalColor: '#b45309',
+    ringColor: '#facc15',
+    hillLeftColor: '#d97706',
+    hillRightColor: '#92400e',
+    description: 'Interlocking 3D Golden & Copper Toothed Gears, giant clock face & brass pipes',
+    voiceKeywords: ['clockwork', 'gear tower', 'clock tower', 'gears'],
+  },
+  {
+    id: 'magic_wizard_observatory',
+    name: 'Starlight Telescope Observatory',
+    emoji: '🔭✨',
+    category: 'magic',
+    cssGradient:
+      'radial-gradient(circle at 50% 18%, #312e81 0%, #4c1d95 42%, #1e1b4b 78%, #0f172a 100%)',
+    pedestalColor: '#4338ca',
+    ringColor: '#fbbf24',
+    hillLeftColor: '#6366f1',
+    hillRightColor: '#4f46e5',
+    description: '3D Brass Astronomical Telescope pointed at the stars & celestial armillary rings',
+    voiceKeywords: ['observatory', 'telescope', 'wizard tower', 'stargazing'],
+  },
+  {
+    id: 'koi_lantern_bridge',
+    name: 'Floating Paper Lantern River',
+    emoji: '🏮🐟',
+    category: 'sensory',
+    cssGradient:
+      'radial-gradient(circle at 50% 18%, #fef3c7 0%, #fed7aa 40%, #fb7185 76%, #881337 100%)',
+    pedestalColor: '#0284c7',
+    ringColor: '#f97316',
+    hillLeftColor: '#fb7185',
+    hillRightColor: '#f43f5e',
+    description: '3D Vermilion Torii Gate, warm glowing paper lanterns floating on water & lotus pads',
+    voiceKeywords: ['lantern river', 'koi pond', 'paper lantern', 'torii'],
+  },
+  {
+    id: 'rainbow_waterpark_splash',
+    name: 'Spiral Water Slide Lagoon',
+    emoji: '🛝💦',
+    category: 'magic',
+    cssGradient:
+      'radial-gradient(circle at 50% 18%, #ecfeff 0%, #67e8f9 42%, #22d3ee 78%, #0284c7 100%)',
+    pedestalColor: '#06b6d4',
+    ringColor: '#facc15',
+    hillLeftColor: '#22d3ee',
+    hillRightColor: '#38bdf8',
+    description: 'Curved 3D Aqua & Yellow Water Slide tubes, splash lagoon & colorful pool rings',
+    voiceKeywords: ['waterpark', 'water slide', 'splash park', 'swimming pool'],
+  },
+  {
+    id: 'camping_campfire_woods',
+    name: 'Cozy Woodland Tent & Campfire',
+    emoji: '⛺🔥',
+    category: 'nature',
+    cssGradient:
+      'radial-gradient(circle at 50% 18%, #fef3c7 0%, #a7f3d0 42%, #059669 78%, #064e3b 100%)',
+    pedestalColor: '#15803d',
+    ringColor: '#f97316',
+    hillLeftColor: '#22c55e',
+    hillRightColor: '#166534',
+    description: '3D A-Frame Canvas Camping Tent, glowing stone-ring campfire, logs & pine woods',
+    voiceKeywords: ['camping', 'campfire', 'tent', 'woodland camp'],
+  },
+  {
+    id: 'infinity_mirror_portal',
+    name: 'Sensory Infinity Light Tunnel',
+    emoji: '🌀🔮',
+    category: 'sensory',
+    cssGradient:
+      'radial-gradient(circle at 50% 18%, #2e1065 0%, #1e1b4b 45%, #090d16 82%, #020617 100%)',
+    pedestalColor: '#1e1b4b',
+    ringColor: '#ec4899',
+    hillLeftColor: '#4c1d95',
+    hillRightColor: '#312e81',
+    description: 'Concentric 3D Neon Geometric Portal Rings creating a soothing optical light tunnel',
+    voiceKeywords: ['infinity mirror', 'light tunnel', 'portal', 'neon sensory'],
+  },
+  {
+    id: 'subway_metro_station',
+    name: 'Modern Metro Subway Platform',
+    emoji: '🚇🎫',
+    category: 'vehicles',
+    cssGradient:
+      'radial-gradient(circle at 50% 18%, #f8fafc 0%, #cbd5e1 42%, #94a3b8 78%, #334155 100%)',
+    pedestalColor: '#475569',
+    ringColor: '#38bdf8',
+    hillLeftColor: '#94a3b8',
+    hillRightColor: '#64748b',
+    description: 'Sleek 3D Silver/Blue Metro Commuter Train Car with glowing windows & platform arch',
+    voiceKeywords: ['subway', 'metro', 'underground train', 'tube station'],
+  },
+  {
+    id: 'chocolate_waffle_village',
+    name: 'Chocolate River & Waffle Village',
+    emoji: '🧇🍫',
+    category: 'magic',
+    cssGradient:
+      'radial-gradient(circle at 50% 18%, #fffbeb 0%, #fde68a 42%, #f59e0b 78%, #78350f 100%)',
+    pedestalColor: '#78350f',
+    ringColor: '#fef08a',
+    hillLeftColor: '#d97706',
+    hillRightColor: '#92400e',
+    description: '3D Waffle-Grid Gingerbread Cottages with whipped-cream roofs & peppermint pillars',
+    voiceKeywords: ['chocolate', 'waffle', 'gingerbread', 'cookie village'],
+  },
+  {
+    id: 'planetarium_star_dome',
+    name: '360° Constellation Planetarium',
+    emoji: '🌌⭐',
+    category: 'sensory',
+    cssGradient:
+      'radial-gradient(circle at 50% 18%, #1e1b4b 0%, #172554 45%, #0f172a 82%, #020617 100%)',
+    pedestalColor: '#1e293b',
+    ringColor: '#60a5fa',
+    hillLeftColor: '#1d4ed8',
+    hillRightColor: '#1e3a8a',
+    description: 'Geodesic 3D Star Projector Sphere, glowing constellation star-rings & nebula',
+    voiceKeywords: ['planetarium', 'constellation', 'star dome', 'night sky'],
+  },
+  {
+    id: 'tropical_surf_island',
+    name: 'Tiki Surfboard Beach Island',
+    emoji: '🏄‍♂️🌺',
+    category: 'nature',
+    cssGradient:
+      'radial-gradient(circle at 50% 18%, #fef9c3 0%, #67e8f9 42%, #06b6d4 78%, #0284c7 100%)',
+    pedestalColor: '#fde047',
+    ringColor: '#06b6d4',
+    hillLeftColor: '#22d3ee',
+    hillRightColor: '#0891b2',
+    description: '3D Colorful Surfboards standing in golden sand, curling 3D ocean wave & palms',
+    voiceKeywords: ['surf island', 'surfboard', 'tropical island', 'hawaii'],
+  },
 ];
 
 /**
@@ -3314,11 +3766,11 @@ export function build3DCartoonStageWorld(envId: CartoonEnvironmentId): THREE.Gro
   const meta =
     CARTOON_STAGE_ENVIRONMENTS.find((e) => e.id === envId) || CARTOON_STAGE_ENVIRONMENTS[0];
 
-  // 1. Wide 3D Cartoon Playground & Football Turf Field + Glowing Ring
+  // 1. Wide 3D Stage Platform + Glowing Rim (No permanent soccer pitch lines!)
   const padGeo = new THREE.CylinderGeometry(3.45, 3.65, 0.2, 64);
   const padMat = new THREE.MeshStandardMaterial({
     color: meta.pedestalColor,
-    roughness: 0.45,
+    roughness: 0.42,
     metalness: 0.08,
   });
   const pad = new THREE.Mesh(padGeo, padMat);
@@ -3340,26 +3792,10 @@ export function build3DCartoonStageWorld(envId: CartoonEnvironmentId): THREE.Gro
   ring.position.set(0, -1.17, 0);
   world.add(ring);
 
-  // Center Playground / Soccer Pitch Circle Marking on the 3D Stage Floor
-  const centerCircleGeo = new THREE.TorusGeometry(0.95, 0.018, 12, 48);
-  centerCircleGeo.rotateX(Math.PI / 2);
-  const centerCircleMat = new THREE.MeshBasicMaterial({
-    color: '#ffffff',
-    transparent: true,
-    opacity: 0.45,
-  });
-  const centerCircle = new THREE.Mesh(centerCircleGeo, centerCircleMat);
-  centerCircle.position.set(0, -1.155, 0);
-  world.add(centerCircle);
-
-  // Helper to build a cute 3D Fluffy Cartoon Cloud
+  // Helper: 3D Fluffy Cloud
   const addFluffyCloud = (x: number, y: number, z: number, scale = 1.0, tint = '#ffffff') => {
     const cloud = new THREE.Group();
-    const mat = new THREE.MeshStandardMaterial({
-      color: tint,
-      roughness: 0.65,
-      metalness: 0.02,
-    });
+    const mat = new THREE.MeshStandardMaterial({ color: tint, roughness: 0.65 });
     const puffs: [number, number, number, number][] = [
       [0, 0, 0, 0.38],
       [-0.32, -0.06, 0.04, 0.28],
@@ -3368,7 +3804,7 @@ export function build3DCartoonStageWorld(envId: CartoonEnvironmentId): THREE.Gro
       [-0.14, 0.14, 0.02, 0.25],
     ];
     puffs.forEach(([px, py, pz, r]) => {
-      const m = new THREE.Mesh(new THREE.SphereGeometry(r, 20, 20), mat);
+      const m = new THREE.Mesh(new THREE.SphereGeometry(r, 18, 18), mat);
       m.position.set(px, py, pz);
       cloud.add(m);
     });
@@ -3377,15 +3813,10 @@ export function build3DCartoonStageWorld(envId: CartoonEnvironmentId): THREE.Gro
     world.add(cloud);
   };
 
-  // Helper to build a 3D Rainbow / Glowing Archway
-  const addGlowingArch = (
-    colors: string[],
-    radius = 2.8,
-    tube = 0.06,
-    zPos = -2.45
-  ) => {
+  // Helper: 3D Glowing Archway
+  const addGlowingArch = (colors: string[], radius = 2.8, tube = 0.06, zPos = -2.45) => {
     colors.forEach((col, i) => {
-      const archGeo = new THREE.TorusGeometry(radius - i * (tube * 1.85), tube, 16, 64, Math.PI);
+      const archGeo = new THREE.TorusGeometry(radius - i * (tube * 1.85), tube, 16, 48, Math.PI);
       const archMat = new THREE.MeshStandardMaterial({
         color: col,
         roughness: 0.28,
@@ -3398,7 +3829,7 @@ export function build3DCartoonStageWorld(envId: CartoonEnvironmentId): THREE.Gro
     });
   };
 
-  // Helper to build 3D Floating Glowing Orbs / Stars / Bubbles
+  // Helper: 3D Floating Glowing Orbs / Crystals
   const addFloatingOrbs = (
     positions: [number, number, number][],
     col: string,
@@ -3408,7 +3839,7 @@ export function build3DCartoonStageWorld(envId: CartoonEnvironmentId): THREE.Gro
     positions.forEach(([ox, oy, oz]) => {
       const geo = octahedron
         ? new THREE.OctahedronGeometry(size, 0)
-        : new THREE.SphereGeometry(size, 20, 20);
+        : new THREE.SphereGeometry(size, 18, 18);
       const mat = new THREE.MeshStandardMaterial({
         color: col,
         emissive: col,
@@ -3421,28 +3852,28 @@ export function build3DCartoonStageWorld(envId: CartoonEnvironmentId): THREE.Gro
     });
   };
 
-  // Distant rolling cartoon hills behind the pedestal
-  const hillLeftMat = new THREE.MeshStandardMaterial({
-    color: meta.hillLeftColor,
-    roughness: 0.7,
-  });
-  const hillLeft = new THREE.Mesh(new THREE.SphereGeometry(2.6, 32, 24), hillLeftMat);
-  hillLeft.position.set(-2.3, -3.1, -2.8);
-  hillLeft.scale.set(1.4, 0.75, 0.8);
-  world.add(hillLeft);
+  // Helper: Rolling Hills (only used for outdoor nature worlds)
+  const addRollingHills = () => {
+    const hillLeft = new THREE.Mesh(
+      new THREE.SphereGeometry(2.6, 28, 20),
+      new THREE.MeshStandardMaterial({ color: meta.hillLeftColor, roughness: 0.7 })
+    );
+    hillLeft.position.set(-2.3, -3.1, -2.8);
+    hillLeft.scale.set(1.4, 0.75, 0.8);
+    world.add(hillLeft);
 
-  const hillRightMat = new THREE.MeshStandardMaterial({
-    color: meta.hillRightColor,
-    roughness: 0.7,
-  });
-  const hillRight = new THREE.Mesh(new THREE.SphereGeometry(2.8, 32, 24), hillRightMat);
-  hillRight.position.set(2.4, -3.2, -3.0);
-  hillRight.scale.set(1.45, 0.78, 0.8);
-  world.add(hillRight);
+    const hillRight = new THREE.Mesh(
+      new THREE.SphereGeometry(2.8, 28, 20),
+      new THREE.MeshStandardMaterial({ color: meta.hillRightColor, roughness: 0.7 })
+    );
+    hillRight.position.set(2.4, -3.2, -3.0);
+    hillRight.scale.set(1.45, 0.78, 0.8);
+    world.add(hillRight);
+  };
 
-  // Environment-specific 3D Scenery & Props
   switch (envId) {
     case 'rainbow_meadow': {
+      addRollingHills();
       addGlowingArch(['#ef4444', '#fb923c', '#facc15', '#4ade80', '#38bdf8', '#a855f7']);
       addFluffyCloud(-2.3, 1.35, -2.1, 1.05, '#ffffff');
       addFluffyCloud(2.35, 1.25, -2.2, 0.95, '#ffffff');
@@ -3464,196 +3895,194 @@ export function build3DCartoonStageWorld(envId: CartoonEnvironmentId): THREE.Gro
       break;
     }
 
-    case 'candy_wonderland': {
-      addFluffyCloud(-2.2, 1.3, -2.1, 1.0, '#fce7f3');
-      addFluffyCloud(2.2, 1.2, -2.1, 1.0, '#fff1f2');
+    case 'candy_wonderland':
+    case 'cupcake_bakery_kitchen':
+    case 'chocolate_waffle_village':
+    case 'ice_cream_beach': {
+      // Giant 3D Tiered Birthday Cake / Waffle Cones & Swirl Lollipops!
+      const cakeGrp = new THREE.Group();
       [
-        { x: -2.45, z: -1.2, col: '#ec4899' },
-        { x: 2.45, z: -1.2, col: '#38bdf8' },
-        { x: -1.75, z: -1.7, col: '#a855f7' },
-        { x: 1.8, z: -1.7, col: '#facc15' },
-      ].forEach((lp) => {
-        const stick = new THREE.Mesh(
-          new THREE.CylinderGeometry(0.04, 0.04, 1.1, 16),
-          new THREE.MeshStandardMaterial({ color: '#ffffff', roughness: 0.3 })
+        { r: 0.75, h: 0.38, y: -0.95, col: '#f472b6' },
+        { r: 0.55, h: 0.34, y: -0.6, col: '#fef08a' },
+        { r: 0.36, h: 0.3, y: -0.28, col: '#38bdf8' },
+      ].forEach((tier) => {
+        const tMesh = new THREE.Mesh(
+          new THREE.CylinderGeometry(tier.r, tier.r, tier.h, 28),
+          new THREE.MeshStandardMaterial({ color: tier.col, roughness: 0.3 })
         );
-        stick.position.set(lp.x, -0.7, lp.z);
-        world.add(stick);
-        const candy = new THREE.Mesh(
-          new THREE.CylinderGeometry(0.34, 0.34, 0.14, 32),
-          new THREE.MeshStandardMaterial({ color: lp.col, roughness: 0.2 })
+        tMesh.position.set(0, tier.y, -2.1);
+        cakeGrp.add(tMesh);
+      });
+      // Glowing Birthday Candles on top of the 3D Cake!
+      [-0.18, 0, 0.18].forEach((cx) => {
+        const candle = new THREE.Mesh(
+          new THREE.CylinderGeometry(0.03, 0.03, 0.28, 12),
+          new THREE.MeshStandardMaterial({ color: '#ffffff' })
         );
-        candy.rotation.x = Math.PI / 2;
-        candy.position.set(lp.x, -0.1, lp.z);
-        world.add(candy);
+        candle.position.set(cx, -0.02, -2.1);
+        const flame = new THREE.Mesh(
+          new THREE.SphereGeometry(0.055, 12, 12),
+          new THREE.MeshStandardMaterial({
+            color: '#facc15',
+            emissive: '#f97316',
+            emissiveIntensity: 0.85,
+          })
+        );
+        flame.position.set(cx, 0.16, -2.1);
+        cakeGrp.add(candle, flame);
+      });
+      world.add(cakeGrp);
+
+      // 3D Giant Ice Cream Waffle Cones & Glazed Donuts on Left & Right
+      [-2.35, 2.35].forEach((xPos, idx) => {
+        const cone = new THREE.Mesh(
+          new THREE.ConeGeometry(0.32, 0.75, 20),
+          new THREE.MeshStandardMaterial({ color: '#d97706', roughness: 0.55 })
+        );
+        cone.rotation.x = Math.PI;
+        cone.position.set(xPos, -0.78, -1.15);
+        const scoop = new THREE.Mesh(
+          new THREE.SphereGeometry(0.34, 20, 20),
+          new THREE.MeshStandardMaterial({
+            color: idx === 0 ? '#fbcfe8' : '#a7f3d0',
+            roughness: 0.3,
+          })
+        );
+        scoop.position.set(xPos, -0.32, -1.15);
+        const donut = new THREE.Mesh(
+          new THREE.TorusGeometry(0.28, 0.12, 16, 32),
+          new THREE.MeshStandardMaterial({
+            color: idx === 0 ? '#ec4899' : '#38bdf8',
+            roughness: 0.25,
+          })
+        );
+        donut.position.set(xPos * 0.78, 0.35, -1.65);
+        world.add(cone, scoop, donut);
       });
       break;
     }
 
     case 'dino_jungle':
+    case 'volcano_dino_island':
     case 'jungle_treehouse': {
-      addFluffyCloud(-2.1, 1.4, -2.2, 0.95, '#fef9c3');
-      [-2.5, 2.5, -1.85, 1.85].forEach((tx, idx) => {
-        const tz = idx < 2 ? -1.35 : -1.85;
+      addRollingHills();
+      // Towering 3D Volcanic Cone with Glowing Molten Lava Crater Rim!
+      const volcano = new THREE.Mesh(
+        new THREE.ConeGeometry(1.55, 2.35, 28, 1, true),
+        new THREE.MeshStandardMaterial({ color: '#57534e', roughness: 0.8 })
+      );
+      volcano.position.set(0, -0.15, -2.55);
+      const lavaRim = new THREE.Mesh(
+        new THREE.TorusGeometry(0.38, 0.11, 16, 32),
+        new THREE.MeshStandardMaterial({
+          color: '#f97316',
+          emissive: '#ef4444',
+          emissiveIntensity: 0.85,
+        })
+      );
+      lavaRim.rotation.x = Math.PI / 2;
+      lavaRim.position.set(0, 0.98, -2.55);
+      world.add(volcano, lavaRim);
+
+      // Prehistoric Palm Trees & 3D Spotted Dino Eggs on Left & Right
+      [-2.45, 2.45, -1.85, 1.85].forEach((tx, idx) => {
+        const tz = idx < 2 ? -1.25 : -1.75;
         const trunk = new THREE.Mesh(
-          new THREE.CylinderGeometry(0.12, 0.18, 1.35, 16),
-          new THREE.MeshStandardMaterial({ color: '#92400e', roughness: 0.7 })
+          new THREE.CylinderGeometry(0.11, 0.17, 1.35, 14),
+          new THREE.MeshStandardMaterial({ color: '#78350f', roughness: 0.7 })
         );
-        trunk.position.set(tx, -0.6, tz);
-        world.add(trunk);
+        trunk.position.set(tx, -0.58, tz);
         const crown = new THREE.Mesh(
-          new THREE.SphereGeometry(0.55, 24, 24),
+          new THREE.SphereGeometry(0.52, 20, 20),
           new THREE.MeshStandardMaterial({
-            color: idx % 2 === 0 ? '#22c55e' : '#16a34a',
+            color: idx % 2 === 0 ? '#22c55e' : '#65a30d',
             roughness: 0.5,
           })
         );
-        crown.position.set(tx, 0.18, tz);
-        world.add(crown);
+        crown.scale.set(1.25, 0.55, 1.25);
+        crown.position.set(tx, 0.16, tz);
+        world.add(trunk, crown);
       });
-      if (envId === 'jungle_treehouse') {
-        addGlowingArch(['#84cc16', '#22c55e', '#facc15'], 2.75, 0.055, -2.4);
-      }
-      [-1.95, 1.95].forEach((mx) => {
-        const cap = new THREE.Mesh(
-          new THREE.SphereGeometry(0.24, 20, 16, 0, Math.PI * 2, 0, Math.PI * 0.55),
-          new THREE.MeshStandardMaterial({ color: '#f43f5e', roughness: 0.35 })
-        );
-        cap.position.set(mx, -0.95, -1.05);
-        world.add(cap);
-      });
+      addFloatingOrbs(
+        [
+          [-0.25, 1.35, -2.4],
+          [0.22, 1.55, -2.45],
+          [0, 1.75, -2.5],
+        ],
+        '#fb923c',
+        false,
+        0.13
+      );
       break;
     }
 
-    case 'cozy_playroom':
-    case 'brick_builder_land': {
-      addGlowingArch(['#ef4444', '#facc15', '#3b82f6', '#22c55e'], 2.75, 0.06, -2.45);
-      [
-        { x: -2.45, y: -0.95, z: -1.0, col: '#ef4444', rot: 0.25 },
-        { x: -2.45, y: -0.55, z: -1.0, col: '#facc15', rot: 0.1 },
-        { x: -1.9, y: -0.98, z: -1.25, col: '#3b82f6', rot: -0.3 },
-        { x: 2.45, y: -0.95, z: -1.0, col: '#22c55e', rot: -0.2 },
-        { x: 2.45, y: -0.55, z: -1.0, col: '#a855f7', rot: 0.05 },
-        { x: 1.95, y: -0.98, z: -1.2, col: '#fb923c', rot: 0.15 },
-      ].forEach((b) => {
-        const cube = new THREE.Mesh(
-          new THREE.BoxGeometry(0.42, 0.38, 0.42),
-          new THREE.MeshStandardMaterial({ color: b.col, roughness: 0.28 })
-        );
-        cube.position.set(b.x, b.y, b.z);
-        cube.rotation.y = b.rot;
-        world.add(cube);
-        const stud = new THREE.Mesh(
-          new THREE.CylinderGeometry(0.11, 0.11, 0.08, 16),
-          new THREE.MeshStandardMaterial({ color: b.col, roughness: 0.25 })
-        );
-        stud.position.set(b.x, b.y + 0.22, b.z);
-        world.add(stud);
-      });
-      break;
-    }
-
-    case 'starlight_garden':
-    case 'aurora_arctic_glow': {
-      addFluffyCloud(-2.2, 1.15, -2.0, 1.05, '#f3e8ff');
-      addFluffyCloud(2.2, 1.1, -2.0, 1.0, '#e0e7ff');
-      if (envId === 'aurora_arctic_glow') {
-        addGlowingArch(['#34d399', '#2dd4bf', '#38bdf8', '#a855f7'], 2.85, 0.065, -2.45);
-      }
-      const moon = new THREE.Mesh(
-        new THREE.TorusGeometry(0.55, 0.16, 20, 40, Math.PI * 1.35),
+    case 'space_galaxy':
+    case 'lunar_moon_base':
+    case 'mars_rover_outpost':
+    case 'planetarium_star_dome': {
+      // 3D Multi-Stage Space Rocket on Launchpad + Ringed Saturn + Lunar Craters!
+      const rocketGrp = new THREE.Group();
+      const body = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.24, 0.28, 1.25, 24),
+        new THREE.MeshStandardMaterial({ color: '#f8fafc', roughness: 0.25 })
+      );
+      const nose = new THREE.Mesh(
+        new THREE.ConeGeometry(0.24, 0.48, 24),
+        new THREE.MeshStandardMaterial({ color: '#ef4444', roughness: 0.25 })
+      );
+      nose.position.y = 0.86;
+      const windowPorch = new THREE.Mesh(
+        new THREE.SphereGeometry(0.12, 16, 16),
         new THREE.MeshStandardMaterial({
-          color: '#fde047',
-          emissive: '#facc15',
-          emissiveIntensity: 0.45,
-          roughness: 0.2,
+          color: '#38bdf8',
+          emissive: '#38bdf8',
+          emissiveIntensity: 0.5,
         })
       );
-      moon.position.set(1.9, 1.35, -1.8);
-      moon.rotation.z = 0.6;
-      world.add(moon);
-      addFloatingOrbs(
-        [
-          [-1.8, 1.3, -1.6],
-          [-1.1, 1.55, -2.0],
-          [0.9, 1.5, -1.9],
-          [-2.0, 0.3, -1.3],
-          [2.05, 0.35, -1.3],
-        ],
-        '#fde047',
-        true,
-        0.16
-      );
-      break;
-    }
+      windowPorch.position.set(0, 0.22, 0.2);
+      rocketGrp.add(body, nose, windowPorch);
+      rocketGrp.position.set(2.15, -0.45, -1.45);
+      world.add(rocketGrp);
 
-    case 'ocean_aquarium':
-    case 'ducky_pond_oasis': {
-      addGlowingArch(['#22d3ee', '#38bdf8', '#f472b6', '#facc15'], 2.8, 0.055, -2.45);
-      // 3D Coral Reef Tubes & Sea Lilypads
-      [
-        { x: -2.45, z: -1.15, h: 1.15, col: '#fb7185' },
-        { x: -2.1, z: -1.35, h: 0.85, col: '#facc15' },
-        { x: 2.45, z: -1.15, h: 1.2, col: '#a855f7' },
-        { x: 2.08, z: -1.35, h: 0.9, col: '#34d399' },
-      ].forEach((c) => {
-        const tube = new THREE.Mesh(
-          new THREE.CylinderGeometry(0.14, 0.1, c.h, 20),
-          new THREE.MeshStandardMaterial({ color: c.col, roughness: 0.35 })
-        );
-        tube.position.set(c.x, -1.15 + c.h / 2, c.z);
-        world.add(tube);
-      });
-      addFloatingOrbs(
-        [
-          [-1.9, 0.5, -1.5],
-          [-1.5, 1.1, -1.8],
-          [1.6, 0.9, -1.7],
-          [2.0, 0.4, -1.4],
-          [0, 1.35, -2.0],
-        ],
-        '#e0f2fe',
-        false,
-        0.14
-      );
-      break;
-    }
-
-    case 'space_galaxy': {
-      // Giant 3D Ringed Saturn Planet in the background sky!
+      // Giant Ringed Saturn Planet in the Sky
       const planetGrp = new THREE.Group();
       const sphere = new THREE.Mesh(
-        new THREE.SphereGeometry(0.62, 32, 32),
+        new THREE.SphereGeometry(0.58, 28, 28),
         new THREE.MeshStandardMaterial({
-          color: '#f59e0b',
+          color: envId === 'mars_rover_outpost' ? '#ea580c' : '#f59e0b',
           emissive: '#d97706',
           emissiveIntensity: 0.25,
-          roughness: 0.35,
         })
       );
       const pRing = new THREE.Mesh(
-        new THREE.TorusGeometry(1.05, 0.08, 16, 64),
+        new THREE.TorusGeometry(1.02, 0.075, 14, 48),
         new THREE.MeshStandardMaterial({
           color: '#38bdf8',
           emissive: '#38bdf8',
           emissiveIntensity: 0.35,
-          roughness: 0.25,
         })
       );
       pRing.rotation.x = 1.15;
       pRing.rotation.y = 0.35;
       planetGrp.add(sphere, pRing);
-      planetGrp.position.set(-1.75, 1.25, -2.2);
+      planetGrp.position.set(-1.85, 1.25, -2.2);
       world.add(planetGrp);
 
-      addGlowingArch(['#818cf8', '#c084fc', '#38bdf8'], 2.85, 0.05, -2.5);
+      // 3D Lunar Craters on the Stage Floor
+      [-2.1, 1.85].forEach((cx) => {
+        const crater = new THREE.Mesh(
+          new THREE.TorusGeometry(0.36, 0.06, 12, 28),
+          new THREE.MeshStandardMaterial({ color: meta.hillLeftColor, roughness: 0.8 })
+        );
+        crater.rotation.x = Math.PI / 2;
+        crater.position.set(cx, -1.14, -0.85);
+        world.add(crater);
+      });
       addFloatingOrbs(
         [
-          [1.8, 1.4, -1.8],
+          [0, 1.5, -2.0],
           [1.1, 1.6, -2.1],
-          [-0.4, 1.55, -2.0],
-          [2.2, 0.55, -1.5],
-          [-2.3, 0.35, -1.5],
+          [-0.6, 1.55, -2.0],
         ],
         '#fde047',
         true,
@@ -3663,157 +4092,588 @@ export function build3DCartoonStageWorld(envId: CartoonEnvironmentId): THREE.Gro
     }
 
     case 'train_wonderland':
-    case 'rainbow_racetrack':
-    case 'fire_rescue_plaza': {
-      const archCols =
-        envId === 'fire_rescue_plaza'
-          ? ['#ef4444', '#facc15', '#ffffff']
-          : envId === 'rainbow_racetrack'
-          ? ['#f97316', '#facc15', '#38bdf8', '#ec4899']
-          : ['#ef4444', '#3b82f6', '#facc15'];
-      addGlowingArch(archCols, 2.82, 0.065, -2.4);
-      addFluffyCloud(-2.15, 1.35, -2.0, 1.0, '#ffffff');
-      addFluffyCloud(2.15, 1.3, -2.0, 0.95, '#ffffff');
-
-      // 3D Signal / Beacon Pillars on Left & Right
-      [-2.45, 2.45].forEach((px, idx) => {
-        const post = new THREE.Mesh(
-          new THREE.CylinderGeometry(0.08, 0.1, 1.25, 16),
-          new THREE.MeshStandardMaterial({ color: '#e2e8f0', roughness: 0.3 })
+    case 'steam_train_station':
+    case 'subway_metro_station': {
+      // Full 3D Steam Locomotive / Metro Train on 3D Railroad Tracks with Sleepers!
+      for (let i = -6; i <= 6; i++) {
+        const sleeper = new THREE.Mesh(
+          new THREE.BoxGeometry(0.18, 0.04, 0.65),
+          new THREE.MeshStandardMaterial({ color: '#78350f' })
         );
-        post.position.set(px, -0.55, -1.2);
-        world.add(post);
-        const beacon = new THREE.Mesh(
-          new THREE.SphereGeometry(0.2, 20, 20),
-          new THREE.MeshStandardMaterial({
-            color: idx === 0 ? '#ef4444' : '#22c55e',
-            emissive: idx === 0 ? '#ef4444' : '#22c55e',
-            emissiveIntensity: 0.5,
-          })
+        sleeper.position.set(i * 0.45, -1.14, -1.35);
+        world.add(sleeper);
+      }
+      const trainGrp = new THREE.Group();
+      const boiler = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.32, 0.32, 1.35, 24),
+        new THREE.MeshStandardMaterial({
+          color: envId === 'subway_metro_station' ? '#38bdf8' : '#ef4444',
+          roughness: 0.3,
+        })
+      );
+      boiler.rotation.z = Math.PI / 2;
+      boiler.position.set(-1.75, -0.58, -1.35);
+      const cabin = new THREE.Mesh(
+        new THREE.BoxGeometry(0.68, 0.82, 0.68),
+        new THREE.MeshStandardMaterial({ color: '#1e3a8a', roughness: 0.35 })
+      );
+      cabin.position.set(-2.35, -0.45, -1.35);
+      const chimney = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.12, 0.09, 0.45, 16),
+        new THREE.MeshStandardMaterial({ color: '#facc15' })
+      );
+      chimney.position.set(-1.3, -0.15, -1.35);
+      trainGrp.add(boiler, cabin, chimney);
+      [-2.35, -1.85, -1.35].forEach((wx) => {
+        const wheel = new THREE.Mesh(
+          new THREE.CylinderGeometry(0.22, 0.22, 0.12, 20),
+          new THREE.MeshStandardMaterial({ color: '#facc15', metalness: 0.3 })
         );
-        beacon.position.set(px, 0.15, -1.2);
-        world.add(beacon);
+        wheel.rotation.x = Math.PI / 2;
+        wheel.position.set(wx, -0.92, -0.98);
+        trainGrp.add(wheel);
       });
+      world.add(trainGrp);
+      addFluffyCloud(-1.25, 0.45, -1.35, 0.55, '#ffffff');
+      addFluffyCloud(-0.95, 0.85, -1.45, 0.72, '#ffffff');
       break;
     }
 
-    case 'snoezelen_sensory':
-    case 'lava_lamp_chill_zone':
-    case 'crystal_gem_cavern': {
-      const col1 = envId === 'lava_lamp_chill_zone' ? '#fb7185' : '#a855f7';
-      const col2 = envId === 'lava_lamp_chill_zone' ? '#facc15' : '#22d3ee';
-      addGlowingArch([col1, col2, '#fde047'], 2.8, 0.06, -2.45);
-      // 3D Glowing Sensory Bubble Tubes / Crystal Columns
+    case 'carnival_ferris_park':
+    case 'balloon_fiesta_sky': {
+      // Giant 3D Spoked Ferris Wheel with 8 Colorful Hanging Gondolas!
+      const wheelGrp = new THREE.Group();
+      const rim = new THREE.Mesh(
+        new THREE.TorusGeometry(1.55, 0.055, 16, 48),
+        new THREE.MeshStandardMaterial({
+          color: '#fde047',
+          emissive: '#facc15',
+          emissiveIntensity: 0.4,
+        })
+      );
+      wheelGrp.add(rim);
+      const gondolaCols = [
+        '#ef4444',
+        '#f97316',
+        '#facc15',
+        '#22c55e',
+        '#06b6d4',
+        '#3b82f6',
+        '#a855f7',
+        '#ec4899',
+      ];
+      for (let i = 0; i < 8; i++) {
+        const ang = (i / 8) * Math.PI * 2;
+        const spoke = new THREE.Mesh(
+          new THREE.CylinderGeometry(0.02, 0.02, 1.55, 8),
+          new THREE.MeshStandardMaterial({ color: '#ffffff' })
+        );
+        spoke.rotation.z = ang;
+        spoke.position.set(Math.cos(ang) * 0.77, Math.sin(ang) * 0.77, 0);
+        const gondola = new THREE.Mesh(
+          new THREE.SphereGeometry(0.19, 16, 16),
+          new THREE.MeshStandardMaterial({ color: gondolaCols[i], roughness: 0.25 })
+        );
+        gondola.position.set(Math.cos(ang) * 1.55, Math.sin(ang) * 1.55, 0.08);
+        wheelGrp.add(spoke, gondola);
+      }
+      wheelGrp.position.set(0, 0.55, -2.35);
+      world.add(wheelGrp);
+      break;
+    }
+
+    case 'submarine_deep_sea':
+    case 'ocean_aquarium':
+    case 'jellyfish_glow_tank':
+    case 'ducky_pond_oasis': {
+      // 3D Yellow Research Submarine with Portholes & Periscope + Bioluminescent Jellyfish!
+      const subGrp = new THREE.Group();
+      const hull = new THREE.Mesh(
+        new THREE.CapsuleGeometry(0.38, 0.95, 16, 24),
+        new THREE.MeshStandardMaterial({ color: '#facc15', roughness: 0.25 })
+      );
+      hull.rotation.z = Math.PI / 2;
+      const conning = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.18, 0.22, 0.42, 18),
+        new THREE.MeshStandardMaterial({ color: '#eab308', roughness: 0.28 })
+      );
+      conning.position.set(0, 0.45, 0);
+      [-0.32, 0, 0.32].forEach((px) => {
+        const port = new THREE.Mesh(
+          new THREE.CylinderGeometry(0.11, 0.11, 0.08, 16),
+          new THREE.MeshStandardMaterial({
+            color: '#38bdf8',
+            emissive: '#22d3ee',
+            emissiveIntensity: 0.6,
+          })
+        );
+        port.rotation.x = Math.PI / 2;
+        port.position.set(px, 0, 0.36);
+        subGrp.add(port);
+      });
+      subGrp.add(hull, conning);
+      subGrp.position.set(-1.95, 0.65, -1.75);
+      world.add(subGrp);
+
+      // Translucent 3D Glowing Jellyfish / Coral Columns on Right
       [
-        { x: -2.45, z: -1.15, col: col1 },
-        { x: -1.9, z: -1.5, col: col2 },
-        { x: 2.45, z: -1.15, col: col2 },
-        { x: 1.9, z: -1.5, col: col1 },
-      ].forEach((tube) => {
-        const cyl = new THREE.Mesh(
-          envId === 'crystal_gem_cavern'
-            ? new THREE.ConeGeometry(0.24, 1.45, 6)
-            : new THREE.CylinderGeometry(0.2, 0.2, 1.45, 24),
+        { x: 1.85, y: 0.85, z: -1.65, col: '#f472b6' },
+        { x: 2.35, y: 0.35, z: -1.35, col: '#22d3ee' },
+      ].forEach((jf) => {
+        const bell = new THREE.Mesh(
+          new THREE.SphereGeometry(0.32, 20, 16, 0, Math.PI * 2, 0, Math.PI * 0.6),
           new THREE.MeshPhysicalMaterial({
-            color: tube.col,
-            emissive: tube.col,
-            emissiveIntensity: 0.35,
-            roughness: 0.15,
+            color: jf.col,
+            emissive: jf.col,
+            emissiveIntensity: 0.45,
             transparent: true,
             opacity: 0.82,
           })
         );
-        cyl.position.set(tube.x, -0.45, tube.z);
-        world.add(cyl);
+        bell.position.set(jf.x, jf.y, jf.z);
+        world.add(bell);
       });
       addFloatingOrbs(
         [
-          [-2.1, 0.65, -1.3],
-          [2.1, 0.75, -1.3],
-          [-1.2, 1.35, -1.9],
-          [1.2, 1.35, -1.9],
+          [-1.2, 1.1, -1.8],
+          [0.8, 1.35, -1.9],
+          [2.1, -0.3, -1.2],
         ],
-        col2,
-        envId === 'crystal_gem_cavern',
+        '#e0f2fe',
+        false,
+        0.13
+      );
+      break;
+    }
+
+    case 'dutch_tulip_windmill':
+    case 'sunny_farmyard': {
+      addRollingHills();
+      // 3D Wooden Windmill with 4 Giant Angled Sails + Red Farm Barn!
+      const millTower = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.32, 0.52, 1.75, 16),
+        new THREE.MeshStandardMaterial({ color: '#b45309', roughness: 0.6 })
+      );
+      millTower.position.set(-1.95, -0.28, -1.75);
+      const millCap = new THREE.Mesh(
+        new THREE.ConeGeometry(0.38, 0.42, 16),
+        new THREE.MeshStandardMaterial({ color: '#ef4444' })
+      );
+      millCap.position.set(-1.95, 0.78, -1.75);
+      world.add(millTower, millCap);
+      for (let i = 0; i < 4; i++) {
+        const blade = new THREE.Mesh(
+          new THREE.BoxGeometry(0.16, 1.45, 0.04),
+          new THREE.MeshStandardMaterial({ color: '#fef3c7' })
+        );
+        blade.rotation.z = (i * Math.PI) / 4 + 0.35;
+        blade.position.set(-1.95, 0.55, -1.4);
+        world.add(blade);
+      }
+      // Colorful 3D Tulip Blossoms along the right side
+      [1.65, 2.05, 2.45].forEach((tx, idx) => {
+        const stem = new THREE.Mesh(
+          new THREE.CylinderGeometry(0.03, 0.03, 0.55, 10),
+          new THREE.MeshStandardMaterial({ color: '#16a34a' })
+        );
+        stem.position.set(tx, -0.88, -1.15);
+        const cup = new THREE.Mesh(
+          new THREE.SphereGeometry(0.18, 16, 14),
+          new THREE.MeshStandardMaterial({
+            color: idx === 0 ? '#f43f5e' : idx === 1 ? '#facc15' : '#ec4899',
+          })
+        );
+        cup.position.set(tx, -0.58, -1.15);
+        world.add(stem, cup);
+      });
+      break;
+    }
+
+    case 'ancient_pyramid_oasis': {
+      // 3D Great Golden Egyptian Pyramids & Desert Oasis Palms!
+      [
+        { x: -1.65, z: -2.25, s: 1.45 },
+        { x: 0.25, z: -2.55, s: 1.85 },
+        { x: 1.95, z: -2.15, s: 1.25 },
+      ].forEach((pyr) => {
+        const pMesh = new THREE.Mesh(
+          new THREE.ConeGeometry(pyr.s * 0.85, pyr.s * 1.15, 4),
+          new THREE.MeshStandardMaterial({ color: '#f59e0b', roughness: 0.45 })
+        );
+        pMesh.rotation.y = Math.PI / 4;
+        pMesh.position.set(pyr.x, -1.15 + (pyr.s * 1.15) / 2, pyr.z);
+        world.add(pMesh);
+      });
+      break;
+    }
+
+    case 'bamboo_panda_grove':
+    case 'cherry_blossom_zen':
+    case 'koi_lantern_bridge': {
+      // Authentic 3D Vermilion Japanese Torii Gate + Segmented Green Bamboo Stalks & Lanterns!
+      const toriiMat = new THREE.MeshStandardMaterial({ color: '#ef4444', roughness: 0.35 });
+      [-1.15, 1.15].forEach((px) => {
+        const pillar = new THREE.Mesh(new THREE.CylinderGeometry(0.11, 0.13, 2.15, 16), toriiMat);
+        pillar.position.set(px, -0.1, -2.25);
+        world.add(pillar);
+      });
+      const topBeam = new THREE.Mesh(new THREE.BoxGeometry(2.95, 0.16, 0.22), toriiMat);
+      topBeam.position.set(0, 0.95, -2.25);
+      const midBeam = new THREE.Mesh(new THREE.BoxGeometry(2.45, 0.12, 0.18), toriiMat);
+      midBeam.position.set(0, 0.62, -2.25);
+      world.add(topBeam, midBeam);
+
+      // Towering Green Bamboo Stalks or Sakura Trees on Left & Right
+      [-2.45, -2.15, 2.15, 2.45].forEach((bx) => {
+        const stalk = new THREE.Mesh(
+          new THREE.CylinderGeometry(0.07, 0.08, 2.1, 14),
+          new THREE.MeshStandardMaterial({
+            color: envId === 'cherry_blossom_zen' ? '#f472b6' : '#10b981',
+            roughness: 0.4,
+          })
+        );
+        stalk.position.set(bx, -0.15, -1.35);
+        world.add(stalk);
+      });
+      addFloatingOrbs(
+        [
+          [-1.6, -0.85, -1.1],
+          [1.6, -0.85, -1.1],
+          [-0.8, 1.35, -1.8],
+          [0.8, 1.35, -1.8],
+        ],
+        '#fde047',
+        false,
+        0.15
+      );
+      break;
+    }
+
+    case 'penguin_iceberg_bay':
+    case 'crystal_ice_palace':
+    case 'aurora_arctic_glow': {
+      // 3D Domed Snow Igloo with Entrance Tunnel + Faceted Turquoise Icebergs & Snowman!
+      const iglooDome = new THREE.Mesh(
+        new THREE.SphereGeometry(0.78, 24, 18, 0, Math.PI * 2, 0, Math.PI * 0.52),
+        new THREE.MeshStandardMaterial({ color: '#f8fafc', roughness: 0.35 })
+      );
+      iglooDome.position.set(-1.95, -1.12, -1.45);
+      const iglooTunnel = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.28, 0.28, 0.48, 16),
+        new THREE.MeshStandardMaterial({ color: '#e0f2fe', roughness: 0.35 })
+      );
+      iglooTunnel.rotation.z = Math.PI / 2;
+      iglooTunnel.position.set(-1.25, -0.95, -1.25);
+      world.add(iglooDome, iglooTunnel);
+
+      // Towering Faceted Crystal Ice Spires on the Right
+      [1.75, 2.25, 2.55].forEach((ix, idx) => {
+        const spire = new THREE.Mesh(
+          new THREE.ConeGeometry(0.34, 1.45 + idx * 0.35, 6),
+          new THREE.MeshPhysicalMaterial({
+            color: '#38bdf8',
+            emissive: '#0284c7',
+            emissiveIntensity: 0.3,
+            roughness: 0.15,
+            transparent: true,
+            opacity: 0.86,
+          })
+        );
+        spire.position.set(ix, -0.45, -1.55);
+        world.add(spire);
+      });
+      addGlowingArch(['#34d399', '#2dd4bf', '#38bdf8', '#a855f7'], 2.85, 0.06, -2.45);
+      break;
+    }
+
+    case 'grand_piano_stage':
+    case 'musical_symphony_park': {
+      // Walk-On 3D Giant Piano Keyboard Floor (White & Black Keys) + Golden Harp Pipes!
+      for (let k = -7; k <= 7; k++) {
+        const whiteKey = new THREE.Mesh(
+          new THREE.BoxGeometry(0.26, 0.06, 0.95),
+          new THREE.MeshStandardMaterial({ color: '#ffffff', roughness: 0.2 })
+        );
+        whiteKey.position.set(k * 0.29, -1.14, 0.45);
+        world.add(whiteKey);
+        if (k % 7 !== 2 && k % 7 !== 6 && k < 7) {
+          const blackKey = new THREE.Mesh(
+            new THREE.BoxGeometry(0.15, 0.1, 0.58),
+            new THREE.MeshStandardMaterial({ color: '#0f172a', roughness: 0.2 })
+          );
+          blackKey.position.set(k * 0.29 + 0.145, -1.1, 0.28);
+          world.add(blackKey);
+        }
+      }
+      // Golden Organ / Xylophone Chime Pipes in Back
+      for (let p = -4; p <= 4; p++) {
+        const pipe = new THREE.Mesh(
+          new THREE.CylinderGeometry(0.09, 0.09, 1.85 - Math.abs(p) * 0.18, 16),
+          new THREE.MeshStandardMaterial({
+            color: '#facc15',
+            metalness: 0.55,
+            roughness: 0.2,
+          })
+        );
+        pipe.position.set(p * 0.42, -0.25, -2.25);
+        world.add(pipe);
+      }
+      break;
+    }
+
+    case 'storybook_library_nook':
+    case 'magic_wizard_observatory':
+    case 'dino_fossil_museum': {
+      // Towering 3D Book Stacks / Museum Pillars + Brass Astronomical Telescope / Fossil Arch!
+      [-2.35, 2.35].forEach((bx) => {
+        ['#ef4444', '#3b82f6', '#10b981', '#f59e0b'].forEach((col, i) => {
+          const book = new THREE.Mesh(
+            new THREE.BoxGeometry(0.65, 0.18, 0.48),
+            new THREE.MeshStandardMaterial({ color: col, roughness: 0.35 })
+          );
+          book.position.set(bx, -1.05 + i * 0.19, -1.25);
+          book.rotation.y = i * 0.15;
+          world.add(book);
+        });
+      });
+      // Brass Telescope / Arch in Backdrop
+      const scopeTube = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.14, 0.22, 1.15, 20),
+        new THREE.MeshStandardMaterial({ color: '#f59e0b', metalness: 0.5, roughness: 0.25 })
+      );
+      scopeTube.rotation.z = -0.65;
+      scopeTube.position.set(1.55, 0.15, -1.65);
+      world.add(scopeTube);
+      addFloatingOrbs(
+        [
+          [-1.5, 1.25, -1.8],
+          [0, 1.55, -2.0],
+          [1.5, 1.25, -1.8],
+        ],
+        '#fde047',
+        true,
         0.16
       );
       break;
     }
 
-    case 'fairy_mushroom_grove':
-    case 'butterfly_sanctuary':
-    case 'sunny_farmyard':
-    case 'cherry_blossom_zen':
-    case 'teddy_picnic_park': {
-      addGlowingArch(['#f472b6', '#facc15', '#4ade80', '#38bdf8'], 2.8, 0.055, -2.45);
-      addFluffyCloud(-2.2, 1.35, -2.1, 1.0, '#fff1f2');
-      addFluffyCloud(2.2, 1.3, -2.1, 1.0, '#fef9c3');
+    case 'mega_construction_zone':
+    case 'brick_builder_land':
+    case 'cozy_playroom':
+    case 'steampunk_clockwork_tower':
+    case 'robot_invention_lab': {
+      // Giant 3D Yellow Tower Crane + Interlocking 3D Studded LEGO Bricks & Clockwork Gears!
+      const mast = new THREE.Mesh(
+        new THREE.BoxGeometry(0.28, 2.45, 0.28),
+        new THREE.MeshStandardMaterial({ color: '#facc15', roughness: 0.3 })
+      );
+      mast.position.set(-2.15, 0.05, -1.85);
+      const jib = new THREE.Mesh(
+        new THREE.BoxGeometry(2.35, 0.2, 0.22),
+        new THREE.MeshStandardMaterial({ color: '#f59e0b', roughness: 0.3 })
+      );
+      jib.position.set(-1.15, 1.18, -1.85);
+      world.add(mast, jib);
+
+      // Giant 3D Toothed Gears & Studded Bricks on Right
       [
-        { x: -2.45, z: -1.15, col: '#f43f5e' },
-        { x: -1.85, z: -1.55, col: '#facc15' },
-        { x: 2.45, z: -1.15, col: '#ec4899' },
-        { x: 1.85, z: -1.55, col: '#a855f7' },
-      ].forEach((p) => {
-        const stem = new THREE.Mesh(
-          new THREE.CylinderGeometry(0.08, 0.11, 0.85, 16),
-          new THREE.MeshStandardMaterial({ color: '#fef3c7', roughness: 0.5 })
+        { x: 2.35, y: -0.92, z: -1.1, col: '#ef4444' },
+        { x: 2.35, y: -0.52, z: -1.1, col: '#3b82f6' },
+        { x: 1.85, y: -0.92, z: -1.3, col: '#22c55e' },
+      ].forEach((b) => {
+        const brick = new THREE.Mesh(
+          new THREE.BoxGeometry(0.46, 0.38, 0.46),
+          new THREE.MeshStandardMaterial({ color: b.col, roughness: 0.28 })
         );
-        stem.position.set(p.x, -0.75, p.z);
-        world.add(stem);
-        const cap = new THREE.Mesh(
-          new THREE.SphereGeometry(0.36, 24, 20, 0, Math.PI * 2, 0, Math.PI * 0.58),
-          new THREE.MeshStandardMaterial({ color: p.col, roughness: 0.3 })
+        brick.position.set(b.x, b.y, b.z);
+        const stud = new THREE.Mesh(
+          new THREE.CylinderGeometry(0.12, 0.12, 0.09, 16),
+          new THREE.MeshStandardMaterial({ color: b.col })
         );
-        cap.position.set(p.x, -0.35, p.z);
-        world.add(cap);
+        stud.position.set(b.x, b.y + 0.23, b.z);
+        world.add(brick, stud);
       });
       break;
     }
 
-    default: {
-      // Crystal Ice Palace, Cloud Castle, Ice Cream Beach, Balloon Fiesta, Musical Park, Robot Lab, Pirate Cove, Puppy Park
-      addGlowingArch(
-        [meta.ringColor, meta.pedestalColor, '#facc15', '#38bdf8'],
-        2.82,
-        0.06,
-        -2.45
+    case 'sunny_airport_runway':
+    case 'rainbow_racetrack':
+    case 'fire_rescue_plaza': {
+      // 3D Runway / Racetrack Dashed Centerline Stripes + Control Tower & Biplane!
+      for (let s = -4; s <= 4; s++) {
+        const stripe = new THREE.Mesh(
+          new THREE.BoxGeometry(0.38, 0.02, 0.12),
+          new THREE.MeshBasicMaterial({ color: '#ffffff' })
+        );
+        stripe.position.set(s * 0.65, -1.15, 0.42);
+        world.add(stripe);
+      }
+      const towerStem = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.22, 0.3, 1.65, 18),
+        new THREE.MeshStandardMaterial({ color: '#e2e8f0' })
       );
-      addFluffyCloud(-2.25, 1.35, -2.05, 1.05, '#ffffff');
-      addFluffyCloud(2.25, 1.28, -2.05, 1.0, '#ffffff');
+      towerStem.position.set(2.25, -0.32, -1.65);
+      const towerCab = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.42, 0.32, 0.38, 18),
+        new THREE.MeshStandardMaterial({
+          color: '#38bdf8',
+          emissive: '#0284c7',
+          emissiveIntensity: 0.35,
+        })
+      );
+      towerCab.position.set(2.25, 0.65, -1.65);
+      world.add(towerStem, towerCab);
+      addGlowingArch(['#ef4444', '#facc15', '#38bdf8'], 2.82, 0.06, -2.4);
+      break;
+    }
+
+    case 'harbor_lighthouse_bay':
+    case 'pirate_treasure_cove':
+    case 'tropical_surf_island':
+    case 'rainbow_waterpark_splash': {
+      // Tall Red-and-White Striped 3D Lighthouse with Glowing Lantern + 3D Sailboat!
+      ['#ef4444', '#ffffff', '#ef4444', '#ffffff'].forEach((col, idx) => {
+        const seg = new THREE.Mesh(
+          new THREE.CylinderGeometry(0.28 - idx * 0.03, 0.31 - idx * 0.03, 0.45, 20),
+          new THREE.MeshStandardMaterial({ color: col, roughness: 0.3 })
+        );
+        seg.position.set(-2.25, -0.92 + idx * 0.45, -1.55);
+        world.add(seg);
+      });
+      const lantern = new THREE.Mesh(
+        new THREE.SphereGeometry(0.24, 18, 18),
+        new THREE.MeshStandardMaterial({
+          color: '#fef08a',
+          emissive: '#facc15',
+          emissiveIntensity: 0.85,
+        })
+      );
+      lantern.position.set(-2.25, 0.92, -1.55);
+      world.add(lantern);
+
+      // 3D Sailboat / Surfboard on the Right
+      const boatHull = new THREE.Mesh(
+        new THREE.BoxGeometry(0.85, 0.24, 0.38),
+        new THREE.MeshStandardMaterial({ color: '#92400e' })
+      );
+      boatHull.position.set(2.05, -0.98, -1.35);
+      const sail = new THREE.Mesh(
+        new THREE.ConeGeometry(0.42, 0.95, 3),
+        new THREE.MeshStandardMaterial({ color: '#ffffff' })
+      );
+      sail.position.set(2.05, -0.38, -1.35);
+      world.add(boatHull, sail);
+      break;
+    }
+
+    case 'snoezelen_sensory':
+    case 'lava_lamp_chill_zone':
+    case 'crystal_gem_cavern':
+    case 'infinity_mirror_portal':
+    case 'starlight_garden': {
+      // Concentric 3D Neon Sensory Portal Rings + Illuminated Snoezelen Bubble Columns!
+      const portalCols = ['#ec4899', '#a855f7', '#6366f1', '#22d3ee', '#34d399'];
+      portalCols.forEach((col, idx) => {
+        const ringPortal = new THREE.Mesh(
+          new THREE.TorusGeometry(2.55 - idx * 0.34, 0.055, 16, 48),
+          new THREE.MeshStandardMaterial({
+            color: col,
+            emissive: col,
+            emissiveIntensity: 0.55,
+            roughness: 0.15,
+          })
+        );
+        ringPortal.position.set(0, 0.15, -2.1 - idx * 0.18);
+        world.add(ringPortal);
+      });
       [
-        { x: -2.45, z: -1.2, col: meta.pedestalColor },
-        { x: -1.85, z: -1.55, col: meta.ringColor },
-        { x: 2.45, z: -1.2, col: meta.ringColor },
-        { x: 1.85, z: -1.55, col: meta.pedestalColor },
+        { x: -2.4, z: -1.15, col: '#a855f7' },
+        { x: 2.4, z: -1.15, col: '#22d3ee' },
+      ].forEach((tube) => {
+        const cyl = new THREE.Mesh(
+          envId === 'crystal_gem_cavern'
+            ? new THREE.ConeGeometry(0.28, 1.55, 6)
+            : new THREE.CylinderGeometry(0.22, 0.22, 1.55, 24),
+          new THREE.MeshPhysicalMaterial({
+            color: tube.col,
+            emissive: tube.col,
+            emissiveIntensity: 0.4,
+            transparent: true,
+            opacity: 0.82,
+          })
+        );
+        cyl.position.set(tube.x, -0.4, tube.z);
+        world.add(cyl);
+      });
+      break;
+    }
+
+    case 'honeybee_meadow_hive':
+    case 'butterfly_sanctuary':
+    case 'fairy_mushroom_grove':
+    case 'camping_campfire_woods':
+    case 'teddy_picnic_park':
+    case 'puppy_agility_meadow': {
+      addRollingHills();
+      // 3D A-Frame Woodland Tent / Giant Toadstools + Glowing Stone-Ring Campfire / Sunflowers!
+      const tent = new THREE.Mesh(
+        new THREE.ConeGeometry(0.72, 1.15, 4),
+        new THREE.MeshStandardMaterial({
+          color: envId === 'honeybee_meadow_hive' ? '#facc15' : '#f97316',
+          roughness: 0.45,
+        })
+      );
+      tent.rotation.y = Math.PI / 4;
+      tent.position.set(-2.05, -0.58, -1.45);
+      const fireGlow = new THREE.Mesh(
+        new THREE.ConeGeometry(0.24, 0.48, 12),
+        new THREE.MeshStandardMaterial({
+          color: '#facc15',
+          emissive: '#ef4444',
+          emissiveIntensity: 0.85,
+        })
+      );
+      fireGlow.position.set(1.95, -0.92, -1.25);
+      world.add(tent, fireGlow);
+      addFloatingOrbs(
+        [
+          [-1.5, 0.85, -1.5],
+          [1.5, 0.95, -1.5],
+          [0, 1.35, -1.9],
+        ],
+        '#fde047',
+        false,
+        0.14
+      );
+      break;
+    }
+
+    default: {
+      // Cloud Castle Kingdom & Trampoline Bounce Dome: 4 Royal Golden Turrets + Castle Wall!
+      [
+        { x: -2.45, z: -1.2, h: 1.15, col: meta.pedestalColor },
+        { x: -1.65, z: -1.75, h: 1.45, col: meta.ringColor },
+        { x: 1.65, z: -1.75, h: 1.45, col: meta.ringColor },
+        { x: 2.45, z: -1.2, h: 1.15, col: meta.pedestalColor },
       ].forEach((tower) => {
         const base = new THREE.Mesh(
-          new THREE.CylinderGeometry(0.18, 0.22, 0.95, 20),
-          new THREE.MeshStandardMaterial({ color: '#ffffff', roughness: 0.3 })
+          new THREE.CylinderGeometry(0.22, 0.26, tower.h, 20),
+          new THREE.MeshStandardMaterial({ color: '#f8fafc', roughness: 0.3 })
         );
-        base.position.set(tower.x, -0.7, tower.z);
-        world.add(base);
+        base.position.set(tower.x, -1.15 + tower.h / 2, tower.z);
         const roof = new THREE.Mesh(
-          new THREE.ConeGeometry(0.3, 0.55, 20),
+          new THREE.ConeGeometry(0.34, 0.62, 20),
           new THREE.MeshStandardMaterial({
             color: tower.col,
             emissive: tower.col,
-            emissiveIntensity: 0.22,
-            roughness: 0.25,
+            emissiveIntensity: 0.25,
           })
         );
-        roof.position.set(tower.x, -0.02, tower.z);
-        world.add(roof);
+        roof.position.set(tower.x, -1.15 + tower.h + 0.3, tower.z);
+        world.add(base, roof);
       });
-      addFloatingOrbs(
-        [
-          [-1.6, 1.25, -1.7],
-          [1.6, 1.25, -1.7],
-          [0, 1.48, -1.9],
-        ],
-        meta.ringColor,
-        false,
-        0.17
-      );
+      addFluffyCloud(-2.2, 1.35, -2.0, 1.05, '#ffffff');
+      addFluffyCloud(2.2, 1.28, -2.0, 1.0, '#ffffff');
       break;
     }
   }
