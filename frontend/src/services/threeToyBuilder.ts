@@ -3,6 +3,17 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
 import { MarchingCubes } from 'three/examples/jsm/objects/MarchingCubes.js';
 
+export type ToyCategory =
+  | 'kitty_cat'
+  | 'baby_dog'
+  | 'elephant_safari'
+  | 'soft_toy'
+  | 'farm_friends'
+  | 'dino_magic'
+  | 'bird_toy'
+  | 'car_vehicle'
+  | 'robot_toy';
+
 export type ToyArchetypeId =
   | 'teddy_plush'
   | 'puppy_plush'
@@ -23,7 +34,8 @@ export type ToyArchetypeId =
   | 'robo_dog'
   | 'michelle_doll'
   | 'rocket_toy'
-  | 'custom_plush_doll';
+  | 'custom_plush_doll'
+  | (string & {});
 
 export type ToyMotionClipType =
   | 'idle'
@@ -65,7 +77,7 @@ export type ToyMotionClipType =
 export interface ToyCatalogItem {
   id: ToyArchetypeId;
   name: string;
-  category: 'soft_toy' | 'bird_toy' | 'car_vehicle' | 'robot_toy';
+  category: ToyCategory;
   emoji: string;
   defaultColor: string;
   secondaryColor: string;
@@ -76,7 +88,622 @@ export interface ToyCatalogItem {
 }
 
 export const PREBUILT_3D_TOY_CATALOG: ToyCatalogItem[] = [
-  // ================= SOFT PLUSH TOYS & ANIMALS =================
+  // =========================================================================
+  // 1. KITTIES, CATS & BIG CAT CUBS (16 3D TOYS)
+  // =========================================================================
+  {
+    id: 'kitty_plush',
+    name: 'Mochi Pastel Plush Kitty',
+    category: 'kitty_cat',
+    emoji: '🐱',
+    defaultColor: '#fb7185',
+    secondaryColor: '#fff1f2',
+    voicePitch: 1.48,
+    greeting:
+      "Meow, purr-purr! Hi bestie, I'm Mochi the Pastel Kitty! Look at my whiskers and pink nose—wanna play together?",
+    badgeText: '3D Whiskered Kitty',
+  },
+  {
+    id: 'snowball_white_kitty',
+    name: 'Snowball Fluffy White Kitty',
+    category: 'kitty_cat',
+    emoji: '🐱',
+    defaultColor: '#f8fafc',
+    secondaryColor: '#fce7f3',
+    voicePitch: 1.52,
+    greeting:
+      "Mew-mew! Hi friend, I'm Snowball the Fluffy White Kitty! My fur is soft like a cloud—let's catch bubbles!",
+    badgeText: '3D Cloud Kitty',
+  },
+  {
+    id: 'ginger_orange_cat',
+    name: 'Marmalade Ginger Tabby Cat',
+    category: 'kitty_cat',
+    emoji: '🐈',
+    defaultColor: '#f97316',
+    secondaryColor: '#ffedd5',
+    voicePitch: 1.45,
+    greeting:
+      "Purr-hehe! I'm Marmalade the Ginger Tabby Cat! I love chasing yarn and kicking the 3D football with you!",
+    badgeText: '3D Tabby Cat',
+  },
+  {
+    id: 'midnight_black_kitty',
+    name: 'Luna Velvet Black Cat',
+    category: 'kitty_cat',
+    emoji: '🐈‍⬛',
+    defaultColor: '#334155',
+    secondaryColor: '#fbcfe8',
+    voicePitch: 1.46,
+    greeting:
+      "Meow! I'm Luna the Velvet Black Kitty! Look at my shiny eyes and golden bell—what game should we play?",
+    badgeText: '3D Velvet Cat',
+  },
+  {
+    id: 'calico_patch_kitty',
+    name: 'Patches Sweet Calico Kitty',
+    category: 'kitty_cat',
+    emoji: '🐱',
+    defaultColor: '#fb923c',
+    secondaryColor: '#fef3c7',
+    voicePitch: 1.49,
+    greeting:
+      "Meow-hehe! I'm Patches the Calico Kitten! Wanna dance, jump, or draw a cute picture together?",
+    badgeText: '3D Calico Kitten',
+  },
+  {
+    id: 'siamese_cream_cat',
+    name: 'Coco Royal Siamese Cat',
+    category: 'kitty_cat',
+    emoji: '🐱',
+    defaultColor: '#e7e5e4',
+    secondaryColor: '#78350f',
+    voicePitch: 1.47,
+    greeting:
+      "Purr-purr! Hi bestie, I'm Coco the Siamese Cat! I love singing sweet songs with you!",
+    badgeText: '3D Siamese Cat',
+  },
+  {
+    id: 'persian_cloud_cat',
+    name: 'Duchess Fluffy Persian Cat',
+    category: 'kitty_cat',
+    emoji: '🐱',
+    defaultColor: '#e2e8f0',
+    secondaryColor: '#fdf2f8',
+    voicePitch: 1.5,
+    greeting:
+      "Meow, hi friend! I'm Duchess the Fluffy Persian Kitty! Wanna give me a warm cuddle hug?",
+    badgeText: '3D Persian Kitty',
+  },
+  {
+    id: 'tuxedo_bowtie_cat',
+    name: 'Figaro Tuxedo Bowtie Cat',
+    category: 'kitty_cat',
+    emoji: '🐈‍⬛',
+    defaultColor: '#1e293b',
+    secondaryColor: '#ffffff',
+    voicePitch: 1.43,
+    greeting:
+      "Meow-ta-da! I'm Figaro the Tuxedo Cat with white paws! Let's do a happy dance together!",
+    badgeText: '3D Tuxedo Cat',
+  },
+  {
+    id: 'lavender_fairy_kitty',
+    name: 'Cupcake Lavender Fairy Kitty',
+    category: 'kitty_cat',
+    emoji: '🐱',
+    defaultColor: '#c084fc',
+    secondaryColor: '#f3e8ff',
+    voicePitch: 1.54,
+    greeting:
+      "Mew-sparkles! I'm Cupcake the Lavender Kitty! Let's jump high and pop magical bubbles!",
+    badgeText: '3D Pastel Kitty',
+  },
+  {
+    id: 'strawberry_milk_kitty',
+    name: 'Berry Strawberry Milk Kitty',
+    category: 'kitty_cat',
+    emoji: '🍓',
+    defaultColor: '#f43f5e',
+    secondaryColor: '#ffe4e6',
+    voicePitch: 1.53,
+    greeting:
+      "Purr-teehee! I'm Berry the Strawberry Kitty! I smell like sweet berries—wanna play with me?",
+    badgeText: '3D Berry Kitty',
+  },
+  {
+    id: 'mint_whisker_kitty',
+    name: 'Peppermint Whisker Kitten',
+    category: 'kitty_cat',
+    emoji: '🐱',
+    defaultColor: '#34d399',
+    secondaryColor: '#d1fae5',
+    voicePitch: 1.49,
+    greeting:
+      "Meow! I'm Peppermint the Mint Kitten! Look at my cute twitching ears—what should we do first?",
+    badgeText: '3D Mint Kitten',
+  },
+  {
+    id: 'scottish_fold_kitty',
+    name: 'Muffin Scottish Fold Kitten',
+    category: 'kitty_cat',
+    emoji: '🐱',
+    defaultColor: '#94a3b8',
+    secondaryColor: '#f1f5f9',
+    voicePitch: 1.48,
+    greeting:
+      "Mew-hehe! I'm Muffin the chubby grey kitten! I love playing peek-a-boo with you!",
+    badgeText: '3D Chubby Kitten',
+  },
+  {
+    id: 'tiger_baby_cub',
+    name: 'Rajah Baby Tiger Cub',
+    category: 'kitty_cat',
+    emoji: '🐯',
+    defaultColor: '#ea580c',
+    secondaryColor: '#fef08a',
+    voicePitch: 1.42,
+    greeting:
+      "Rawr-purr! I'm Rajah the friendly Baby Tiger Cub! Let's bounce like bouncy tigers together!",
+    badgeText: '3D Baby Tiger',
+  },
+  {
+    id: 'lion_baby_simba',
+    name: 'Leo Fluffy Baby Lion Cub',
+    category: 'kitty_cat',
+    emoji: '🦁',
+    defaultColor: '#f59e0b',
+    secondaryColor: '#b45309',
+    voicePitch: 1.41,
+    greeting:
+      "Roar-hehe! I'm Leo the Baby Lion Cub! Look at my fluffy golden mane—wanna be brave heroes together?",
+    badgeText: '3D Mane Lion Cub',
+  },
+  {
+    id: 'cheetah_spot_cub',
+    name: 'Dash Speedy Cheetah Cub',
+    category: 'kitty_cat',
+    emoji: '🐆',
+    defaultColor: '#eab308',
+    secondaryColor: '#fef9c3',
+    voicePitch: 1.46,
+    greeting:
+      "Zoom-meow! I'm Dash the Baby Cheetah! I love running fast across the 3D field with you!",
+    badgeText: '3D Cheetah Cub',
+  },
+  {
+    id: 'snow_leopard_cub',
+    name: 'Everest Baby Snow Leopard',
+    category: 'kitty_cat',
+    emoji: '🐆',
+    defaultColor: '#cbd5e1',
+    secondaryColor: '#f8fafc',
+    voicePitch: 1.45,
+    greeting:
+      "Purr! I'm Everest the fluffy Baby Snow Leopard! Look at my big soft paws—let's jump for bubbles!",
+    badgeText: '3D Snow Leopard',
+  },
+
+  // =========================================================================
+  // 2. BABY DOGS & PUPPIES (16 3D TOYS)
+  // =========================================================================
+  {
+    id: 'baby_golden_puppy',
+    name: 'Sunny Baby Golden Retriever',
+    category: 'baby_dog',
+    emoji: '🐶',
+    defaultColor: '#fbbf24',
+    secondaryColor: '#fef3c7',
+    voicePitch: 1.46,
+    greeting:
+      "Woof-woof, hehe! I'm Sunny the Baby Golden Retriever Puppy! My floppy ears and tail are wagging for you!",
+    badgeText: '3D Floppy-Ear Puppy',
+  },
+  {
+    id: 'puppy_plush',
+    name: 'Biscuit Studio Fox Puppy',
+    category: 'baby_dog',
+    emoji: '🦊',
+    defaultColor: '#f59e0b',
+    secondaryColor: '#fef3c7',
+    voicePitch: 1.45,
+    greeting:
+      "Yip-yip, hehe! Hi best friend! I'm Biscuit the little puppy fox! Look at my fluffy tail wagging for you!",
+    glbUrl: '/models/Fox.glb',
+    badgeText: 'Studio Rigged GLB',
+  },
+  {
+    id: 'baby_dalmatian_dog',
+    name: 'Spotty Baby Dalmatian Puppy',
+    category: 'baby_dog',
+    emoji: '🐶',
+    defaultColor: '#f8fafc',
+    secondaryColor: '#334155',
+    voicePitch: 1.47,
+    greeting:
+      "Arf-arf! I'm Spotty the Baby Dalmatian Dog! Count my cute spots and let's play together!",
+    badgeText: '3D Dalmatian Pup',
+  },
+  {
+    id: 'baby_pug_dog',
+    name: 'Pudge Chubby Baby Pug',
+    category: 'baby_dog',
+    emoji: '🐶',
+    defaultColor: '#d6d3d1',
+    secondaryColor: '#44403c',
+    voicePitch: 1.44,
+    greeting:
+      "Snort-giggle, woof! I'm Pudge the chubby Baby Pug! I love doing silly dances to make you smile!",
+    badgeText: '3D Chubby Pug',
+  },
+  {
+    id: 'baby_corgi_dog',
+    name: 'Waffles Happy Baby Corgi',
+    category: 'baby_dog',
+    emoji: '🐕',
+    defaultColor: '#f97316',
+    secondaryColor: '#ffffff',
+    voicePitch: 1.48,
+    greeting:
+      "Yap-yap, yay! I'm Waffles the Baby Corgi! Look at my big perky ears and wiggly paws!",
+    badgeText: '3D Royal Corgi Pup',
+  },
+  {
+    id: 'baby_poodle_pink',
+    name: 'Fifi Curly Pink Toy Poodle',
+    category: 'baby_dog',
+    emoji: '🐩',
+    defaultColor: '#f472b6',
+    secondaryColor: '#fce7f3',
+    voicePitch: 1.52,
+    greeting:
+      "Yip-teehee! I'm Fifi the fluffy Pink Toy Poodle! Wanna twirl, sing, and play dress-up together?",
+    badgeText: '3D Fluffy Poodle',
+  },
+  {
+    id: 'baby_husky_pup',
+    name: 'Koda Blue-Eyed Baby Husky',
+    category: 'baby_dog',
+    emoji: '🐺',
+    defaultColor: '#64748b',
+    secondaryColor: '#f8fafc',
+    voicePitch: 1.44,
+    greeting:
+      "Awooo-hehe! That's a friendly baby puppy howl! I'm Koda the Baby Husky—let's play in the snow!",
+    badgeText: '3D Snow Husky Pup',
+  },
+  {
+    id: 'baby_beagle_dog',
+    name: 'Snoopy-Lou Floppy Baby Beagle',
+    category: 'baby_dog',
+    emoji: '🐶',
+    defaultColor: '#b45309',
+    secondaryColor: '#ffffff',
+    voicePitch: 1.46,
+    greeting:
+      "Woof-hehe! I'm Snoopy-Lou the Baby Beagle! My long soft ears bounce when I jump with you!",
+    badgeText: '3D Beagle Puppy',
+  },
+  {
+    id: 'baby_frenchie_dog',
+    name: 'Blu Baby French Bulldog',
+    category: 'baby_dog',
+    emoji: '🐶',
+    defaultColor: '#94a3b8',
+    secondaryColor: '#e2e8f0',
+    voicePitch: 1.45,
+    greeting:
+      "Yip-woof! I'm Blu the Baby Frenchie Puppy! Look at my big bat ears listening to every word you say!",
+    badgeText: '3D Frenchie Pup',
+  },
+  {
+    id: 'baby_shiba_dog',
+    name: 'Miso Smiling Shiba Inu Puppy',
+    category: 'baby_dog',
+    emoji: '🐕',
+    defaultColor: '#ea580c',
+    secondaryColor: '#fef3c7',
+    voicePitch: 1.47,
+    greeting:
+      "Wan-wan, hehe! I'm Miso the smiling Shiba Puppy! Let's do high-fives and catch 3D bubbles!",
+    badgeText: '3D Shiba Inu Pup',
+  },
+  {
+    id: 'baby_dachshund_dog',
+    name: 'Peanut Baby Dachshund Pup',
+    category: 'baby_dog',
+    emoji: '🌭',
+    defaultColor: '#92400e',
+    secondaryColor: '#fde68a',
+    voicePitch: 1.48,
+    greeting:
+      "Woof-teehee! I'm Peanut the little brown puppy dog! I love kicking the 3D football with you!",
+    badgeText: '3D Dachshund Pup',
+  },
+  {
+    id: 'baby_chihuahua_dog',
+    name: 'Taco Tiny Teacup Puppy',
+    category: 'baby_dog',
+    emoji: '🐶',
+    defaultColor: '#fcd34d',
+    secondaryColor: '#fffbeb',
+    voicePitch: 1.55,
+    greeting:
+      "Yip-yip! I'm Taco the tiny Teacup Puppy! Even though I'm little, I can jump super high for you!",
+    badgeText: '3D Teacup Puppy',
+  },
+  {
+    id: 'baby_collie_dog',
+    name: 'Scout Smart Border Collie Pup',
+    category: 'baby_dog',
+    emoji: '🐕',
+    defaultColor: '#1e293b',
+    secondaryColor: '#f8fafc',
+    voicePitch: 1.45,
+    greeting:
+      "Woof! I'm Scout the smart Collie Puppy! Wanna count numbers or play a game together?",
+    badgeText: '3D Collie Puppy',
+  },
+  {
+    id: 'baby_bernese_dog',
+    name: 'Bruno Cuddly Mountain Puppy',
+    category: 'baby_dog',
+    emoji: '🐶',
+    defaultColor: '#451a03',
+    secondaryColor: '#fef3c7',
+    voicePitch: 1.39,
+    greeting:
+      "Woof-hug! I'm Bruno the big cuddly Teddy-Puppy! Whenever you want a warm hug, I'm right here!",
+    badgeText: '3D Mountain Pup',
+  },
+  {
+    id: 'baby_samoyed_cloud',
+    name: 'Cloudy Smiling Samoyed Pup',
+    category: 'baby_dog',
+    emoji: '🐶',
+    defaultColor: '#ffffff',
+    secondaryColor: '#e0f2fe',
+    voicePitch: 1.49,
+    greeting:
+      "Arf-hehe! I'm Cloudy the fluffy white Samoyed Puppy! Look at my big happy puppy smile!",
+    badgeText: '3D Cloud Samoyed',
+  },
+  {
+    id: 'baby_blue_heeler',
+    name: 'Bingo Blue Heeler Puppy',
+    category: 'baby_dog',
+    emoji: '🐕',
+    defaultColor: '#38bdf8',
+    secondaryColor: '#bae6fd',
+    voicePitch: 1.5,
+    greeting:
+      "Hooray! Hi bestie, I'm Bingo the Blue Heeler Puppy! Let's play pretend and dance together!",
+    badgeText: '3D Blue Heeler Pup',
+  },
+
+  // =========================================================================
+  // 3. BABY ELEPHANTS, SAFARI & JUNGLE FRIENDS (18 3D TOYS)
+  // =========================================================================
+  {
+    id: 'baby_elephant_blue',
+    name: 'Ellie Sky-Blue Baby Elephant',
+    category: 'elephant_safari',
+    emoji: '🐘',
+    defaultColor: '#60a5fa',
+    secondaryColor: '#fce7f3',
+    voicePitch: 1.46,
+    greeting:
+      "Pawoo-hehe! Hi bestie, I'm Ellie the Baby Elephant! Look at my big floppy ears and cute trunk waving at you!",
+    badgeText: '3D Trunk & Big Ears',
+  },
+  {
+    id: 'baby_elephant_pink',
+    name: 'Dumbo Rosy Pink Baby Elephant',
+    category: 'elephant_safari',
+    emoji: '🐘',
+    defaultColor: '#f472b6',
+    secondaryColor: '#ffe4e6',
+    voicePitch: 1.5,
+    greeting:
+      "Toot-toot, teehee! I'm Dumbo the Pink Baby Elephant! My giant ears can flap like wings when I jump!",
+    badgeText: '3D Pink Baby Elephant',
+  },
+  {
+    id: 'baby_elephant_grey',
+    name: 'Babar Classic Baby Elephant',
+    category: 'elephant_safari',
+    emoji: '🐘',
+    defaultColor: '#94a3b8',
+    secondaryColor: '#fecdd3',
+    voicePitch: 1.43,
+    greeting:
+      "Pawoo! Hi friend, I'm Babar the Baby Elephant! Wanna blow shiny bubbles from my little trunk?",
+    badgeText: '3D Baby Elephant',
+  },
+  {
+    id: 'baby_elephant_mint',
+    name: 'Minty Circus Baby Elephant',
+    category: 'elephant_safari',
+    emoji: '🐘',
+    defaultColor: '#34d399',
+    secondaryColor: '#fef08a',
+    voicePitch: 1.47,
+    greeting:
+      "Ta-da, pawoo! I'm Minty the Circus Baby Elephant! Watch me balance on one foot and dance for you!",
+    badgeText: '3D Circus Elephant',
+  },
+  {
+    id: 'baby_mammoth_woolly',
+    name: 'Manny Fuzzy Baby Mammoth',
+    category: 'elephant_safari',
+    emoji: '🦣',
+    defaultColor: '#92400e',
+    secondaryColor: '#fde68a',
+    voicePitch: 1.38,
+    greeting:
+      "Pawoo-hug! I'm Manny the furry Baby Mammoth! My warm fuzzy fur is great for cozy cuddles!",
+    badgeText: '3D Woolly Mammoth',
+  },
+  {
+    id: 'baby_giraffe_sunny',
+    name: 'Melman Tall Baby Giraffe',
+    category: 'elephant_safari',
+    emoji: '🦒',
+    defaultColor: '#facc15',
+    secondaryColor: '#92400e',
+    voicePitch: 1.45,
+    greeting:
+      "Hi up there! I'm Melman the Baby Giraffe with cute little horns on my head! Let's reach for the stars!",
+    badgeText: '3D Horned Giraffe',
+  },
+  {
+    id: 'baby_hippo_lilac',
+    name: 'Lulu Chubby Lilac Baby Hippo',
+    category: 'elephant_safari',
+    emoji: '🦛',
+    defaultColor: '#a855f7',
+    secondaryColor: '#f3e8ff',
+    voicePitch: 1.42,
+    greeting:
+      "Splash-hehe! I'm Lulu the Purple Baby Hippo! I love wiggling my ears and popping water bubbles!",
+    badgeText: '3D Chubby Hippo',
+  },
+  {
+    id: 'baby_rhino_horn',
+    name: 'Tank Gentle Baby Rhino',
+    category: 'elephant_safari',
+    emoji: '🦏',
+    defaultColor: '#64748b',
+    secondaryColor: '#f1f5f9',
+    voicePitch: 1.4,
+    greeting:
+      "Hi bestie! I'm Tank the gentle Baby Rhino! Look at the cute little horn on my nose—let's play soccer!",
+    badgeText: '3D Horned Rhino',
+  },
+  {
+    id: 'baby_zebra_stripes',
+    name: 'Ziggy Striped Baby Zebra',
+    category: 'elephant_safari',
+    emoji: '🦓',
+    defaultColor: '#475569',
+    secondaryColor: '#f8fafc',
+    voicePitch: 1.46,
+    greeting:
+      "Neigh-hehe! I'm Ziggy the Baby Zebra! I have cool stripes and love galloping across the meadow!",
+    badgeText: '3D Safari Zebra',
+  },
+  {
+    id: 'baby_monkey_banana',
+    name: 'Bongo Cheeky Baby Monkey',
+    category: 'elephant_safari',
+    emoji: '🐵',
+    defaultColor: '#b45309',
+    secondaryColor: '#fde68a',
+    voicePitch: 1.49,
+    greeting:
+      "Ooh-ooh, aah-aah, hehe! I'm Bongo the Baby Monkey! Wanna do silly cartwheels and laugh together?",
+    badgeText: '3D Curly-Tail Monkey',
+  },
+  {
+    id: 'baby_gorilla_hug',
+    name: 'Koko Gentle Baby Gorilla',
+    category: 'elephant_safari',
+    emoji: '🦍',
+    defaultColor: '#334155',
+    secondaryColor: '#94a3b8',
+    voicePitch: 1.38,
+    greeting:
+      "Hi friend! I'm Koko the gentle Baby Gorilla! I give the biggest, safest bear hugs in the jungle!",
+    badgeText: '3D Gentle Gorilla',
+  },
+  {
+    id: 'baby_sloth_sleepy',
+    name: 'Sid Cozy Tree Baby Sloth',
+    category: 'elephant_safari',
+    emoji: '🦥',
+    defaultColor: '#a16207',
+    secondaryColor: '#fef3c7',
+    voicePitch: 1.4,
+    greeting:
+      "Aaaah, hi bestie... I'm Sid the cozy Baby Sloth! Let's take slow, calm belly breaths and smile together!",
+    badgeText: '3D Calm Sloth',
+  },
+  {
+    id: 'baby_kangaroo_joey',
+    name: 'Roo Bouncy Baby Kangaroo',
+    category: 'elephant_safari',
+    emoji: '🦘',
+    defaultColor: '#d97706',
+    secondaryColor: '#fef3c7',
+    voicePitch: 1.48,
+    greeting:
+      "Boing, boing, boing! I'm Roo the Baby Kangaroo Joey! Nobody hops higher than us—jump with me!",
+    badgeText: '3D Bouncy Kangaroo',
+  },
+  {
+    id: 'baby_camel_oasis',
+    name: 'Sahara Golden Baby Camel',
+    category: 'elephant_safari',
+    emoji: '🐪',
+    defaultColor: '#ca8a04',
+    secondaryColor: '#fef08a',
+    voicePitch: 1.43,
+    greeting:
+      "Hi friend! I'm Sahara the Golden Baby Camel! Let's explore the pyramids and treasure oasis together!",
+    badgeText: '3D Oasis Camel',
+  },
+  {
+    id: 'baby_meerkat_scout',
+    name: 'Timon Curious Baby Meerkat',
+    category: 'elephant_safari',
+    emoji: '🦦',
+    defaultColor: '#d97706',
+    secondaryColor: '#ffedd5',
+    voicePitch: 1.5,
+    greeting:
+      "Hakuna Matata, hehe! I'm Timon the Baby Meerkat! Look how I stand up tall and wave at you!",
+    badgeText: '3D Safari Meerkat',
+  },
+  {
+    id: 'baby_flamingo_pink',
+    name: 'Peaches Baby Pink Plush Flamingo',
+    category: 'elephant_safari',
+    emoji: '🦩',
+    defaultColor: '#fb7185',
+    secondaryColor: '#ffe4e6',
+    voicePitch: 1.49,
+    greeting:
+      " Balance on one foot with me! I'm Peaches the Baby Flamingo Plush!",
+    badgeText: '3D Plush Flamingo',
+  },
+  {
+    id: 'baby_chameleon_rainbow',
+    name: 'Pascal Emerald Chameleon',
+    category: 'elephant_safari',
+    emoji: '🦎',
+    defaultColor: '#22c55e',
+    secondaryColor: '#fef08a',
+    voicePitch: 1.47,
+    greeting:
+      "Peek-a-boo! I'm Pascal the colorful Chameleon! Let's paint bright rainbows in the Art Studio!",
+    badgeText: '3D Rainbow Chameleon',
+  },
+  {
+    id: 'baby_lemur_ringtail',
+    name: 'Julien Ring-Tail Baby Lemur',
+    category: 'elephant_safari',
+    emoji: '🐒',
+    defaultColor: '#64748b',
+    secondaryColor: '#ffffff',
+    voicePitch: 1.48,
+    greeting:
+      "I like to move it, move it, hehe! I'm Julien the Baby Lemur—let's dance together!",
+    badgeText: '3D Ring-Tail Lemur',
+  },
+
+  // =========================================================================
+  // 4. TEDDY BEARS, PANDAS, BUNNIES & WOODLAND CRITTERS (20 3D TOYS)
+  // =========================================================================
   {
     id: 'teddy_plush',
     name: 'Barnaby Soft Teddy Bear',
@@ -86,34 +713,8 @@ export const PREBUILT_3D_TOY_CATALOG: ToyCatalogItem[] = [
     secondaryColor: '#fde68a',
     voicePitch: 1.42,
     greeting:
-      "Hehe, hi bestie! I'm Barnaby Bear! Look how soft and cuddly my tummy is! Wanna give me a big hug and play together? Yay!",
+      "Hehe, hi bestie! I'm Barnaby Bear! Look how soft and cuddly my tummy is! Wanna give me a big hug and play together?",
     badgeText: 'Seamless Skinned Plush',
-  },
-  {
-    id: 'puppy_plush',
-    name: 'Biscuit Studio Fox Puppy',
-    category: 'soft_toy',
-    emoji: '🦊',
-    defaultColor: '#f59e0b',
-    secondaryColor: '#fef3c7',
-    voicePitch: 1.45,
-    greeting:
-      "Yip-yip, hehe! Hi best friend! I'm Biscuit the little puppy fox! Look at my fluffy tail wagging for you! Wanna play with me?",
-    glbUrl: '/models/Fox.glb',
-    badgeText: 'Studio Rigged GLB',
-  },
-  {
-    id: 'yeti_plush',
-    name: 'Bumble Fluffy Yeti Plush',
-    category: 'soft_toy',
-    emoji: '👾',
-    defaultColor: '#38bdf8',
-    secondaryColor: '#e0f2fe',
-    voicePitch: 1.38,
-    greeting:
-      "Peekaboo, hehe! I'm Bumble the Marshmallow Yeti! I look like a big blue cotton candy! Wanna giggle and dance with me, bestie?",
-    glbUrl: '/models/YetiSmall.glb',
-    badgeText: 'Studio 6-Skin GLB',
   },
   {
     id: 'bunny_plush',
@@ -124,37 +725,370 @@ export const PREBUILT_3D_TOY_CATALOG: ToyCatalogItem[] = [
     secondaryColor: '#fce7f3',
     voicePitch: 1.48,
     greeting:
-      "Hop-hop, teehee! Hi bestie, I'm Rosie Bunny! Look at my pink floppy ears wiggling at you! Wanna sing a cute song with me?",
+      "Hop-hop, teehee! Hi bestie, I'm Rosie Bunny! Look at my pink floppy ears wiggling at you!",
     badgeText: 'Seamless Skinned Plush',
   },
   {
+    id: 'baby_panda_bamboo',
+    name: 'Bao-Bao Cuddly Baby Panda',
+    category: 'soft_toy',
+    emoji: '🐼',
+    defaultColor: '#1e293b',
+    secondaryColor: '#ffffff',
+    voicePitch: 1.46,
+    greeting:
+      "Munch-munch, hehe! I'm Bao-Bao the Baby Panda! I love rolling on the grass and cuddling with you!",
+    badgeText: '3D Bamboo Panda',
+  },
+  {
+    id: 'baby_red_panda',
+    name: 'Mei-Mei Fluffy Red Panda',
+    category: 'soft_toy',
+    emoji: '🦊',
+    defaultColor: '#ea580c',
+    secondaryColor: '#fef3c7',
+    voicePitch: 1.49,
+    greeting:
+      "Hi best friend! I'm Mei-Mei the fluffy Red Panda! Look at my big bushy tail and white ears!",
+    badgeText: '3D Red Panda',
+  },
+  {
+    id: 'baby_polar_bear',
+    name: 'Flurry Snowy Polar Bear Cub',
+    category: 'soft_toy',
+    emoji: '🐻‍❄️',
+    defaultColor: '#f8fafc',
+    secondaryColor: '#bae6fd',
+    voicePitch: 1.44,
+    greeting:
+      "Brrr-hug! I'm Flurry the Snowy Polar Bear Cub! My white plush fur is super warm and cozy!",
+    badgeText: '3D Polar Bear Cub',
+  },
+  {
+    id: 'baby_koala_gumdrop',
+    name: 'Kip Fuzzy Eucalyptus Koala',
+    category: 'soft_toy',
+    emoji: '🐨',
+    defaultColor: '#94a3b8',
+    secondaryColor: '#f1f5f9',
+    voicePitch: 1.45,
+    greeting:
+      "G'day bestie! I'm Kip the Baby Koala! Look at my big round fuzzy ears—I love giving koala hugs!",
+    badgeText: '3D Fuzzy-Ear Koala',
+  },
+  {
+    id: 'strawberry_care_bear',
+    name: 'Cheer Berry Pink Teddy Bear',
+    category: 'soft_toy',
+    emoji: '🧸',
+    defaultColor: '#ec4899',
+    secondaryColor: '#fce7f3',
+    voicePitch: 1.5,
+    greeting:
+      "Yay, rainbows and hugs! I'm Cheer Berry the Pink Teddy Bear! You make me smile so big!",
+    badgeText: '3D Pink Care Bear',
+  },
+  {
+    id: 'rainbow_sunshine_bear',
+    name: 'Sunny Gold Honey Teddy Bear',
+    category: 'soft_toy',
+    emoji: '🐻',
+    defaultColor: '#eab308',
+    secondaryColor: '#fef9c3',
+    voicePitch: 1.46,
+    greeting:
+      "Yum-yum, honey time! I'm Sunny the Golden Honey Bear! Wanna count golden stars with me?",
+    badgeText: '3D Honey Bear',
+  },
+  {
+    id: 'sleepy_bedtime_bear',
+    name: 'Starry Lavender Bedtime Bear',
+    category: 'soft_toy',
+    emoji: '🧸',
+    defaultColor: '#8b5cf6',
+    secondaryColor: '#ede9fe',
+    voicePitch: 1.41,
+    greeting:
+      "Twinkle-twinkle... I'm Starry the Lavender Bedtime Bear! I love calm lullabies and gentle breathing!",
+    badgeText: '3D Bedtime Bear',
+  },
+  {
+    id: 'snow_white_bunny',
+    name: 'Marshmallow White Lop Bunny',
+    category: 'soft_toy',
+    emoji: '🐇',
+    defaultColor: '#ffffff',
+    secondaryColor: '#ffe4e6',
+    voicePitch: 1.51,
+    greeting:
+      "Hop-skip, hehe! I'm Marshmallow the White Bunny with pink inner ears! Let's hop across the meadow!",
+    badgeText: '3D White Bunny',
+  },
+  {
+    id: 'sky_blue_bunny',
+    name: 'Bluebell Pastel Easter Bunny',
+    category: 'soft_toy',
+    emoji: '🐰',
+    defaultColor: '#38bdf8',
+    secondaryColor: '#e0f2fe',
+    voicePitch: 1.49,
+    greeting:
+      "Hippity-hop! I'm Bluebell the Sky-Blue Bunny! Wanna find colorful Easter eggs and bubbles together?",
+    badgeText: '3D Pastel Bunny',
+  },
+  {
+    id: 'cinnamon_caramel_bunny',
+    name: 'Cinnamon Caramel Bunny',
+    category: 'soft_toy',
+    emoji: '🐰',
+    defaultColor: '#b45309',
+    secondaryColor: '#fef3c7',
+    voicePitch: 1.47,
+    greeting:
+      "Twitch-twitch! My little bunny nose is twitching because I'm happy to see you! I'm Cinnamon Bunny!",
+    badgeText: '3D Caramel Bunny',
+  },
+  {
+    id: 'baby_hedgehog_pokey',
+    name: 'Pippin Cozy Baby Hedgehog',
+    category: 'soft_toy',
+    emoji: '🦔',
+    defaultColor: '#92400e',
+    secondaryColor: '#fde68a',
+    voicePitch: 1.52,
+    greeting:
+      "Sniff-sniff, teehee! I'm Pippin the soft plush Baby Hedgehog! Wanna curl up or roll around together?",
+    badgeText: '3D Plush Hedgehog',
+  },
+  {
+    id: 'baby_squirrel_acorn',
+    name: 'Nutkin Bushy-Tail Squirrel',
+    category: 'soft_toy',
+    emoji: '🐿️',
+    defaultColor: '#c2410c',
+    secondaryColor: '#ffedd5',
+    voicePitch: 1.53,
+    greeting:
+      "Chitter-chatter, yay! I'm Nutkin the Baby Squirrel with a giant fluffy tail! Let's climb the treehouse!",
+    badgeText: '3D Bushy Squirrel',
+  },
+  {
+    id: 'baby_raccoon_bandit',
+    name: 'Rascal Friendly Baby Raccoon',
+    category: 'soft_toy',
+    emoji: '🦝',
+    defaultColor: '#475569',
+    secondaryColor: '#e2e8f0',
+    voicePitch: 1.46,
+    greeting:
+      "Peek-a-boo! I'm Rascal the Baby Raccoon! I love washing my little paws and playing hide-and-seek!",
+    badgeText: '3D Baby Raccoon',
+  },
+  {
+    id: 'baby_deer_bambi',
+    name: 'Willow Spotted Baby Fawn Deer',
+    category: 'soft_toy',
+    emoji: '🦌',
+    defaultColor: '#d97706',
+    secondaryColor: '#fef3c7',
+    voicePitch: 1.48,
+    greeting:
+      "Hi gentle friend! I'm Willow the Baby Fawn Deer with little woodland antlers! Let's skip in the forest!",
+    badgeText: '3D Antler Fawn',
+  },
+  {
+    id: 'baby_reindeer_rudolph',
+    name: 'Comet Red-Nosed Baby Reindeer',
+    category: 'soft_toy',
+    emoji: '🦌',
+    defaultColor: '#92400e',
+    secondaryColor: '#ef4444',
+    voicePitch: 1.47,
+    greeting:
+      "Jingle-jingle, wheee! I'm Comet the Baby Reindeer! Look how my bright red nose glows when you smile!",
+    badgeText: '3D Red-Nose Reindeer',
+  },
+  {
+    id: 'baby_hamster_cheeks',
+    name: 'Nibble Chubby-Cheek Hamster',
+    category: 'soft_toy',
+    emoji: '🐹',
+    defaultColor: '#fb923c',
+    secondaryColor: '#fff7ed',
+    voicePitch: 1.55,
+    greeting:
+      "Squeak-hehe! I'm Nibble the Golden Hamster with big puffy cheeks! Wanna munch healthy snacks together?",
+    badgeText: '3D Chubby Hamster',
+  },
+  {
+    id: 'baby_capybara_chill',
+    name: 'Capy Gentle Chill Capybara',
+    category: 'soft_toy',
+    emoji: '🦫',
+    defaultColor: '#a16207',
+    secondaryColor: '#fde68a',
+    voicePitch: 1.4,
+    greeting:
+      "Ahhh, so peaceful! I'm Capy the friendly Capybara—everyone's calmest best friend!",
+    badgeText: '3D Chill Capybara',
+  },
+  {
+    id: 'baby_mouse_cheddar',
+    name: 'Pip Big-Ear Cheese Mouse',
+    category: 'soft_toy',
+    emoji: '🐭',
+    defaultColor: '#94a3b8',
+    secondaryColor: '#fce7f3',
+    voicePitch: 1.56,
+    greeting:
+      "Squeak-squeak! Hi bestie, I'm Pip the little Mouse with giant pink ears! I can hear your sweet voice!",
+    badgeText: '3D Big-Ear Mouse',
+  },
+
+  // =========================================================================
+  // 5. FARMYARD & COUNTRY BABY ANIMALS (10 3D TOYS)
+  // =========================================================================
+  {
+    id: 'baby_piglet_pink',
+    name: 'Hamlet Rosy Baby Piglet',
+    category: 'farm_friends',
+    emoji: '🐷',
+    defaultColor: '#f472b6',
+    secondaryColor: '#fce7f3',
+    voicePitch: 1.5,
+    greeting:
+      "Oink-oink, teehee! I'm Hamlet the rosy pink Baby Piglet! Look at my cute piggy snout and curly tail!",
+    badgeText: '3D Snout Piglet',
+  },
+  {
+    id: 'baby_cow_daisy',
+    name: 'Daisy Milky Baby Calf',
+    category: 'farm_friends',
+    emoji: '🐮',
+    defaultColor: '#f8fafc',
+    secondaryColor: '#fda4af',
+    voicePitch: 1.44,
+    greeting:
+      "Moooo-hehe! Hi friend, I'm Daisy the Baby Calf with a golden farm bell! Let's play in the sunflower farm!",
+    badgeText: '3D Bell Baby Calf',
+  },
+  {
+    id: 'baby_highland_calf',
+    name: 'Fergus Fluffy Highland Calf',
+    category: 'farm_friends',
+    emoji: '🐄',
+    defaultColor: '#d97706',
+    secondaryColor: '#fde68a',
+    voicePitch: 1.43,
+    greeting:
+      "Moo-hug! I'm Fergus the fluffy caramel Highland Calf with cute little horns! Wanna cuddle?",
+    badgeText: '3D Highland Calf',
+  },
+  {
+    id: 'baby_lamb_woolly',
+    name: 'Woolly Cotton-Cloud Baby Lamb',
+    category: 'farm_friends',
+    emoji: '🐑',
+    defaultColor: '#f8fafc',
+    secondaryColor: '#fce7f3',
+    voicePitch: 1.51,
+    greeting:
+      "Baaa-baaa, teehee! I'm Woolly the fluffy white Baby Lamb! Let's count clouds and jump over fences!",
+    badgeText: '3D Fluffy Baby Lamb',
+  },
+  {
+    id: 'baby_goat_billy',
+    name: 'Clover Bouncy Baby Goat Kid',
+    category: 'farm_friends',
+    emoji: '🐐',
+    defaultColor: '#d6d3d1',
+    secondaryColor: '#fef3c7',
+    voicePitch: 1.49,
+    greeting:
+      "Meh-eh-eh, yay! I'm Clover the bouncy Baby Goat! I love jumping up high and kicking the ball!",
+    badgeText: '3D Bouncy Goat Kid',
+  },
+  {
+    id: 'baby_alpaca_cloud',
+    name: 'Lolly Pastel Rainbow Alpaca',
+    category: 'farm_friends',
+    emoji: '🦙',
+    defaultColor: '#f9a8d4',
+    secondaryColor: '#fef08a',
+    voicePitch: 1.48,
+    greeting:
+      "Hum-hehe! I'm Lolly the fluffy pink Baby Alpaca! My fleece is softer than cotton candy!",
+    badgeText: '3D Pastel Alpaca',
+  },
+  {
+    id: 'baby_pony_caramel',
+    name: 'Buttercup Little Farm Pony',
+    category: 'farm_friends',
+    emoji: '🐴',
+    defaultColor: '#b45309',
+    secondaryColor: '#fef3c7',
+    voicePitch: 1.45,
+    greeting:
+      "Neigh-wheee! I'm Buttercup the little Farm Pony! Hop on and let's gallop across the meadow!",
+    glbUrl: '/models/Horse.glb',
+    badgeText: 'Studio Pony GLB',
+  },
+  {
+    id: 'baby_chick_peep',
+    name: 'Peep Fluffy Yellow Baby Chick',
+    category: 'farm_friends',
+    emoji: '🐥',
+    defaultColor: '#facc15',
+    secondaryColor: '#f97316',
+    voicePitch: 1.56,
+    greeting:
+      "Peep-peep-peep! Hi bestie, I'm Peep the tiny yellow Baby Chick! Look at my little orange beak!",
+    badgeText: '3D Beaked Baby Chick',
+  },
+  {
+    id: 'baby_donkey_eeyore',
+    name: 'Bluebell Sweet Baby Donkey',
+    category: 'farm_friends',
+    emoji: '🫏',
+    defaultColor: '#64748b',
+    secondaryColor: '#fce7f3',
+    voicePitch: 1.41,
+    greeting:
+      "Hee-haw, hehe! I'm Bluebell the sweet Baby Donkey with big floppy ears! Thanks for noticing me, bestie!",
+    badgeText: '3D Floppy Donkey',
+  },
+  {
+    id: 'baby_frog_ribbit',
+    name: 'Hoppy Lilypad Baby Frog',
+    category: 'farm_friends',
+    emoji: '🐸',
+    defaultColor: '#22c55e',
+    secondaryColor: '#bbf7d0',
+    voicePitch: 1.49,
+    greeting:
+      "Ribbit-ribbit, boing! I'm Hoppy the green Baby Frog! Let's leap from lilypad to lilypad together!",
+    badgeText: '3D Lilypad Frog',
+  },
+
+  // =========================================================================
+  // 6. DINOSAURS, DRAGONS, UNICORNS & MAGICAL PLUSH (14 3D TOYS)
+  // =========================================================================
+  {
     id: 'dino_plush',
     name: 'Rexy Chubby Dino Plush',
-    category: 'soft_toy',
+    category: 'dino_magic',
     emoji: '🦖',
     defaultColor: '#10b981',
     secondaryColor: '#fde047',
     voicePitch: 1.4,
     greeting:
-      "Rawr-hehe! That's a happy baby dino giggle! I'm Rexy! Wanna stomp our little feet and pop shiny bubbles together?",
-    badgeText: 'Seamless Skinned Plush',
-  },
-  {
-    id: 'kitty_plush',
-    name: 'Mochi Pastel Plush Kitty',
-    category: 'soft_toy',
-    emoji: '🐱',
-    defaultColor: '#fb7185',
-    secondaryColor: '#fff1f2',
-    voicePitch: 1.48,
-    greeting:
-      "Meow, purr-purr! Hi bestie, I'm Mochi Kitty! You're so cute! Wanna draw a pretty picture or cuddle with me?",
+      "Rawr-hehe! That's a happy baby dino giggle! I'm Rexy! Wanna stomp our little feet and pop shiny bubbles?",
     badgeText: 'Seamless Skinned Plush',
   },
   {
     id: 'unicorn_plush',
     name: 'Luna Galloping Unicorn',
-    category: 'soft_toy',
+    category: 'dino_magic',
     emoji: '🦄',
     defaultColor: '#e879f9',
     secondaryColor: '#fef08a',
@@ -164,8 +1098,155 @@ export const PREBUILT_3D_TOY_CATALOG: ToyCatalogItem[] = [
     glbUrl: '/models/Horse.glb',
     badgeText: 'Studio Morph GLB',
   },
+  {
+    id: 'yeti_plush',
+    name: 'Bumble Fluffy Yeti Plush',
+    category: 'dino_magic',
+    emoji: '👾',
+    defaultColor: '#38bdf8',
+    secondaryColor: '#e0f2fe',
+    voicePitch: 1.38,
+    greeting:
+      "Peekaboo, hehe! I'm Bumble the Marshmallow Yeti! I look like a big blue cotton candy!",
+    glbUrl: '/models/YetiSmall.glb',
+    badgeText: 'Studio 6-Skin GLB',
+  },
+  {
+    id: 'baby_triceratops_tops',
+    name: 'Trixie Three-Horn Baby Dino',
+    category: 'dino_magic',
+    emoji: '🦕',
+    defaultColor: '#38bdf8',
+    secondaryColor: '#fde047',
+    voicePitch: 1.46,
+    greeting:
+      "Dino-giggle! I'm Trixie the Baby Triceratops! Count the 1, 2, 3 cute horns on my head!",
+    badgeText: '3D 3-Horn Dino',
+  },
+  {
+    id: 'baby_brachiosaurus_dippy',
+    name: 'Dippy Friendly Leaf Baby Dino',
+    category: 'dino_magic',
+    emoji: '🦕',
+    defaultColor: '#34d399',
+    secondaryColor: '#a7f3d0',
+    voicePitch: 1.43,
+    greeting:
+      "Munch-rawr! I'm Dippy the gentle plant-eating Baby Dino! Let's explore Volcano Dino Island!",
+    badgeText: '3D Gentle Sauropod',
+  },
+  {
+    id: 'baby_stegosaurus_spike',
+    name: 'Spike Back-Plate Baby Dino',
+    category: 'dino_magic',
+    emoji: '🦖',
+    defaultColor: '#84cc16',
+    secondaryColor: '#f97316',
+    voicePitch: 1.42,
+    greeting:
+      "Stomp-stomp, hehe! I'm Spike the Baby Stegosaurus with colorful plates on my back!",
+    badgeText: '3D Plated Dino',
+  },
+  {
+    id: 'baby_pterodactyl_sky',
+    name: 'Petrie Winged Baby Sky Dino',
+    category: 'dino_magic',
+    emoji: '🦖',
+    defaultColor: '#a855f7',
+    secondaryColor: '#fbcfe8',
+    voicePitch: 1.5,
+    greeting:
+      "Flap-flap, wheee! I'm Petrie the flying Baby Dino with 3D wings on my back!",
+    badgeText: '3D Winged Dino',
+  },
+  {
+    id: 'baby_dragon_spark',
+    name: 'Sparky Friendly Fire Dragon',
+    category: 'dino_magic',
+    emoji: '🐉',
+    defaultColor: '#ef4444',
+    secondaryColor: '#facc15',
+    voicePitch: 1.44,
+    greeting:
+      "Puff-sparkles! I'm Sparky the Baby Dragon! Instead of fire, I puff shiny rainbow bubbles for you!",
+    badgeText: '3D Winged Dragon',
+  },
+  {
+    id: 'baby_ice_dragon',
+    name: 'Crystal Shimmer Ice Dragon',
+    category: 'dino_magic',
+    emoji: '🐉',
+    defaultColor: '#06b6d4',
+    secondaryColor: '#e0f2fe',
+    voicePitch: 1.47,
+    greeting:
+      "Shimmer-whoosh! I'm Crystal the Baby Ice Dragon! Look at my snowy wings and crystal crest!",
+    badgeText: '3D Ice Dragon',
+  },
+  {
+    id: 'baby_pegasus_wings',
+    name: 'Celeste Winged Cloud Pegasus',
+    category: 'dino_magic',
+    emoji: '🦄',
+    defaultColor: '#818cf8',
+    secondaryColor: '#fef08a',
+    voicePitch: 1.49,
+    greeting:
+      "Flutter-neigh! I'm Celeste the Baby Pegasus with feathered 3D wings! Let's fly in the Cloud Kingdom!",
+    badgeText: '3D Winged Pegasus',
+  },
+  {
+    id: 'rainbow_alicorn_royal',
+    name: 'Starlight Princess Alicorn',
+    category: 'dino_magic',
+    emoji: '🦄',
+    defaultColor: '#ec4899',
+    secondaryColor: '#fde047',
+    voicePitch: 1.52,
+    greeting:
+      "Magic sparkles! I'm Starlight the Princess Alicorn—I have both a golden horn and fairy wings!",
+    badgeText: '3D Horn & Wings Alicorn',
+  },
+  {
+    id: 'baby_phoenix_feather',
+    name: 'Sunny Golden Baby Phoenix',
+    category: 'dino_magic',
+    emoji: '🐦‍🔥',
+    defaultColor: '#f97316',
+    secondaryColor: '#fef08a',
+    voicePitch: 1.5,
+    greeting:
+      "Tweet-glow! I'm Sunny the Baby Phoenix Bird! My golden wings shine bright when you laugh!",
+    badgeText: '3D Winged Phoenix',
+  },
+  {
+    id: 'baby_griffin_gold',
+    name: 'Gryph Friendly Baby Griffin',
+    category: 'dino_magic',
+    emoji: '🦅',
+    defaultColor: '#eab308',
+    secondaryColor: '#fef3c7',
+    voicePitch: 1.45,
+    greeting:
+      "Chirp-roar! I'm Gryph—half cute eagle, half cuddly lion cub, with 3D wings!",
+    badgeText: '3D Winged Griffin',
+  },
+  {
+    id: 'cuddly_pastel_monster',
+    name: 'Giggles Rainbow Fuzz Monster',
+    category: 'dino_magic',
+    emoji: '👾',
+    defaultColor: '#a855f7',
+    secondaryColor: '#67e8f9',
+    voicePitch: 1.46,
+    greeting:
+      "Booga-booga-teehee! I'm Giggles the super-friendly Cuddle Monster! I only do silly dances and tickles!",
+    badgeText: '3D Horned Cuddle Monster',
+  },
 
-  // ================= 3D BIRDS =================
+  // =========================================================================
+  // 7. OCEAN CREATURES & 3D BIRDS (14 3D TOYS)
+  // =========================================================================
   {
     id: 'parrot_bird',
     name: 'Rio Flying Macaw Parrot',
@@ -175,7 +1256,7 @@ export const PREBUILT_3D_TOY_CATALOG: ToyCatalogItem[] = [
     secondaryColor: '#3b82f6',
     voicePitch: 1.46,
     greeting:
-      "Tweet-tweet, hehe! Hi best friend! I'm Rio the rainbow birdie! Look at my wings flapping for you! Wanna fly with me?",
+      "Tweet-tweet, hehe! Hi best friend! I'm Rio the rainbow birdie! Look at my wings flapping for you!",
     glbUrl: '/models/Parrot.glb',
     badgeText: 'Studio Flight GLB',
   },
@@ -188,7 +1269,7 @@ export const PREBUILT_3D_TOY_CATALOG: ToyCatalogItem[] = [
     secondaryColor: '#fecdd3',
     voicePitch: 1.44,
     greeting:
-      "Flutter-flutter, teehee! I'm Coral the pink Flamingo! I love pink so much! Wanna count shiny bubbles with me, bestie?",
+      "Flutter-flutter, teehee! I'm Coral the pink Flamingo! Wanna count shiny bubbles with me, bestie?",
     glbUrl: '/models/Flamingo.glb',
     badgeText: 'Studio Flight GLB',
   },
@@ -227,12 +1308,122 @@ export const PREBUILT_3D_TOY_CATALOG: ToyCatalogItem[] = [
     secondaryColor: '#f97316',
     voicePitch: 1.48,
     greeting:
-      "Quack-quack, teehee! I'm Sunny the baby yellow Ducky! Splash-splash! Smile at me and let's play bubbles together!",
+      "Quack-quack, teehee! I'm Sunny the baby yellow Ducky! Splash-splash! Smile at me and let's play!",
     glbUrl: '/models/Duck.glb',
     badgeText: 'Studio Sculpt GLB',
   },
+  {
+    id: 'baby_penguin_pip',
+    name: 'Pip Waddling Baby Penguin',
+    category: 'bird_toy',
+    emoji: '🐧',
+    defaultColor: '#1e293b',
+    secondaryColor: '#ffffff',
+    voicePitch: 1.5,
+    greeting:
+      "Waddle-waddle, peep! I'm Pip the Baby Penguin! Let's slide on the icebergs and do happy hops!",
+    badgeText: '3D Tuxedo Penguin',
+  },
+  {
+    id: 'baby_owl_hoot',
+    name: 'Hootie Big-Eye Baby Owl',
+    category: 'bird_toy',
+    emoji: '🦉',
+    defaultColor: '#8b5cf6',
+    secondaryColor: '#fde68a',
+    voicePitch: 1.47,
+    greeting:
+      "Hoo-hoo, teehee! I'm Hootie the wise little Baby Owl! What smart game should we play today?",
+    badgeText: '3D Feathered Owl',
+  },
+  {
+    id: 'baby_axolotl_pink',
+    name: 'Lottie Smiling Pink Axolotl',
+    category: 'bird_toy',
+    emoji: '🦎',
+    defaultColor: '#f472b6',
+    secondaryColor: '#ffe4e6',
+    voicePitch: 1.53,
+    greeting:
+      "Bloop-bloop, hehe! I'm Lottie the Pink Axolotl with fluffy gill frills on my head! You're awesome!",
+    badgeText: '3D Frilled Axolotl',
+  },
+  {
+    id: 'baby_dolphin_splash',
+    name: 'Flipper Happy Baby Dolphin',
+    category: 'bird_toy',
+    emoji: '🐬',
+    defaultColor: '#0ea5e9',
+    secondaryColor: '#e0f2fe',
+    voicePitch: 1.49,
+    greeting:
+      "Click-whistle, splash! I'm Flipper the Baby Dolphin! Watch me leap high in the air for bubbles!",
+    badgeText: '3D Finned Dolphin',
+  },
+  {
+    id: 'baby_whale_blue',
+    name: 'Bubbles Gentle Baby Whale',
+    category: 'bird_toy',
+    emoji: '🐳',
+    defaultColor: '#3b82f6',
+    secondaryColor: '#bae6fd',
+    voicePitch: 1.41,
+    greeting:
+      "Whoooosh! I'm Bubbles the smiling Baby Blue Whale! Let's swim in the Coral Reef Aquarium!",
+    badgeText: '3D Baby Blue Whale',
+  },
+  {
+    id: 'baby_narwhal_star',
+    name: 'Nori Unicorn-of-the-Sea Narwhal',
+    category: 'bird_toy',
+    emoji: '🐳',
+    defaultColor: '#06b6d4',
+    secondaryColor: '#fef08a',
+    voicePitch: 1.5,
+    greeting:
+      "Splash-sparkle! I'm Nori the Baby Narwhal with a golden spiral tusk on my forehead!",
+    badgeText: '3D Tusked Narwhal',
+  },
+  {
+    id: 'baby_seal_harp',
+    name: 'Snowdrop White Baby Seal Pup',
+    category: 'bird_toy',
+    emoji: '🦭',
+    defaultColor: '#f8fafc',
+    secondaryColor: '#e0f2fe',
+    voicePitch: 1.51,
+    greeting:
+      "Arf-clap-clap! I'm Snowdrop the fluffy white Baby Seal! I love clapping my flippers for you!",
+    badgeText: '3D Whiskered Seal',
+  },
+  {
+    id: 'baby_sea_turtle',
+    name: 'Shelly Emerald Baby Sea Turtle',
+    category: 'bird_toy',
+    emoji: '🐢',
+    defaultColor: '#10b981',
+    secondaryColor: '#bbf7d0',
+    voicePitch: 1.43,
+    greeting:
+      "Cowabunga, friend! I'm Shelly the Baby Sea Turtle with a shiny 3D shell on my back!",
+    badgeText: '3D Shelled Turtle',
+  },
+  {
+    id: 'baby_octopus_squish',
+    name: 'Ollie Smiley Pink Octopus',
+    category: 'bird_toy',
+    emoji: '🐙',
+    defaultColor: '#fb7185',
+    secondaryColor: '#fde68a',
+    voicePitch: 1.49,
+    greeting:
+      "Squish-bloop! I'm Ollie the friendly Pink Octopus! I give the best wiggly ocean high-fives!",
+    badgeText: '3D Ocean Octopus',
+  },
 
-  // ================= 3D TOY CARS, TRUCKS & PLANES =================
+  // =========================================================================
+  // 8. 3D TOY CARS, TRUCKS, BUSES & PLANES (6 3D TOYS)
+  // =========================================================================
   {
     id: 'racecar_toy',
     name: 'Turbo Studio Toy Car',
@@ -242,7 +1433,7 @@ export const PREBUILT_3D_TOY_CATALOG: ToyCatalogItem[] = [
     secondaryColor: '#facc15',
     voicePitch: 1.42,
     greeting:
-      "Zoom-zoom, beep-beep! Hehe, hi bestie! I'm Turbo the little red Toy Car! Wanna go on a fun adventure together?",
+      "Zoom-zoom, beep-beep! Hehe, hi bestie! I'm Turbo the little red Toy Car! Wanna go on a fun adventure?",
     glbUrl: '/models/ToyCar.glb',
     badgeText: 'Studio PBR GLB',
   },
@@ -268,12 +1459,53 @@ export const PREBUILT_3D_TOY_CATALOG: ToyCatalogItem[] = [
     secondaryColor: '#fde047',
     voicePitch: 1.44,
     greeting:
-      "Neee-oww, teehee! I'm SkyLoop the baby Toy Plane! Look how my little propeller spins when you smile at me!",
+      "Neee-oww, teehee! I'm SkyLoop the baby Toy Plane! Look how my little propeller spins when you smile!",
     glbUrl: '/models/AerobaticPlane.glb',
     badgeText: 'Studio Flight GLB',
   },
+  {
+    id: 'police_cruiser_car',
+    name: 'Chase Rescue Police Toy Car',
+    category: 'car_vehicle',
+    emoji: '🚓',
+    defaultColor: '#2563eb',
+    secondaryColor: '#ef4444',
+    voicePitch: 1.43,
+    greeting:
+      "Wee-ooo, beep-beep! Chase is on the case! I'm your friendly Rescue Police Toy Car with roof lights!",
+    glbUrl: '/models/ToyCar.glb',
+    badgeText: '3D Police Cruiser GLB',
+  },
+  {
+    id: 'fire_engine_truck',
+    name: 'Blaze Hero Fire Rescue Truck',
+    category: 'car_vehicle',
+    emoji: '🚒',
+    defaultColor: '#dc2626',
+    secondaryColor: '#facc15',
+    voicePitch: 1.4,
+    greeting:
+      "Ding-ding, hero time! I'm Blaze the Red Fire Rescue Truck! Let's help everyone in Fire Rescue Plaza!",
+    glbUrl: '/models/CesiumMilkTruck.glb',
+    badgeText: '3D Fire Truck GLB',
+  },
+  {
+    id: 'sunshine_school_bus',
+    name: 'Buster Yellow School Toy Bus',
+    category: 'car_vehicle',
+    emoji: '🚌',
+    defaultColor: '#eab308',
+    secondaryColor: '#fef08a',
+    voicePitch: 1.42,
+    greeting:
+      "Beep-beep! The wheels on the bus go round and round! Hop aboard Buster the Yellow Toy Bus!",
+    glbUrl: '/models/CesiumMilkTruck.glb',
+    badgeText: '3D Yellow Bus GLB',
+  },
 
-  // ================= 3D ROBOTS & EXPRESSIVE CHARACTERS =================
+  // =========================================================================
+  // 9. 3D ROBOTS, DOLLS, FAIRIES & SUPERHEROES (6 3D TOYS)
+  // =========================================================================
   {
     id: 'robot_buddy',
     name: 'Beeper Expressive Robot',
@@ -283,7 +1515,7 @@ export const PREBUILT_3D_TOY_CATALOG: ToyCatalogItem[] = [
     secondaryColor: '#38bdf8',
     voicePitch: 1.45,
     greeting:
-      "Beep-boop, teehee! Hi bestie, I'm Beeper your cute little robot friend! Look, I'm waving my hand at you! Wanna dance with me?",
+      "Beep-boop, teehee! Hi bestie, I'm Beeper your cute little robot friend! Look, I'm waving my hand at you!",
     glbUrl: '/models/RobotExpressive.glb',
     badgeText: '14-Clip Rigged GLB',
   },
@@ -296,7 +1528,7 @@ export const PREBUILT_3D_TOY_CATALOG: ToyCatalogItem[] = [
     secondaryColor: '#c4b5fd',
     voicePitch: 1.42,
     greeting:
-      "Yay, hi best friend! I'm Astro! I love doing happy little robot dances with you! Wanna play a game together?",
+      "Yay, hi best friend! I'm Astro! I love doing happy little robot dances with you!",
     glbUrl: '/models/Xbot.glb',
     badgeText: '7-Clip Rigged GLB',
   },
@@ -309,7 +1541,7 @@ export const PREBUILT_3D_TOY_CATALOG: ToyCatalogItem[] = [
     secondaryColor: '#fbcfe8',
     voicePitch: 1.46,
     greeting:
-      "Hi bestie, hehe! I'm Maya! I love twirling, singing, and drawing cute pictures with you! What should we play first?",
+      "Hi bestie, hehe! I'm Maya! I love twirling, singing, and drawing cute pictures with you!",
     glbUrl: '/models/Michelle.glb',
     badgeText: 'MoCap Dance GLB',
   },
@@ -322,9 +1554,33 @@ export const PREBUILT_3D_TOY_CATALOG: ToyCatalogItem[] = [
     secondaryColor: '#38bdf8',
     voicePitch: 1.43,
     greeting:
-      "Three, two, one, wheee! Hehe, hi bestie! I'm Cosmo the little space friend! Let's catch twinkling stars together!",
+      "Three, two, one, wheee! Hehe, hi bestie! I'm Cosmo the little space friend! Let's catch twinkling stars!",
     glbUrl: '/models/Astronaut.glb',
     badgeText: 'Studio Sculpt GLB',
+  },
+  {
+    id: 'fairy_sparkle_doll',
+    name: 'Twinkle Crowned Fairy Doll',
+    category: 'robot_toy',
+    emoji: '🧚‍♀️',
+    defaultColor: '#f472b6',
+    secondaryColor: '#fef08a',
+    voicePitch: 1.54,
+    greeting:
+      "bibbidi-bobbidi-wheee! I'm Twinkle the Fairy Doll with a golden crown and 3D fairy wings!",
+    badgeText: '3D Crown & Wings Doll',
+  },
+  {
+    id: 'superhero_kid_doll',
+    name: 'Captain Star Superhero Buddy',
+    category: 'robot_toy',
+    emoji: '🦸‍♀️',
+    defaultColor: '#3b82f6',
+    secondaryColor: '#ef4444',
+    voicePitch: 1.47,
+    greeting:
+      "Super power pose! I'm Captain Star with a 3D red superhero cape! Together we can do anything!",
+    badgeText: '3D Caped Hero Buddy',
   },
 ];
 
@@ -556,11 +1812,79 @@ function buildSeamlessSculptedPlushGeometry(
         const dTummy = ellipsoidSDF(fx, fy, fz, 0, -0.15, 0.08, 0.23, 0.25, 0.21);
         let dBody = smin(dTorso, dTummy, 0.11);
 
+        const idLow = archetype.toLowerCase();
+        const isDinoOrDragon =
+          idLow.includes('dino') ||
+          idLow.includes('triceratops') ||
+          idLow.includes('brachiosaurus') ||
+          idLow.includes('stegosaurus') ||
+          idLow.includes('pterodactyl') ||
+          idLow.includes('dragon') ||
+          idLow.includes('chameleon');
+        const isElephant = idLow.includes('elephant') || idLow.includes('mammoth');
+        const isKittyOrCat =
+          idLow.includes('kitty') ||
+          idLow.includes('cat') ||
+          idLow.includes('tiger') ||
+          idLow.includes('cheetah') ||
+          idLow.includes('leopard');
+        const isLion = idLow.includes('lion') || idLow.includes('griffin');
+        const isFloppyDog =
+          idLow.includes('golden') ||
+          idLow.includes('dalmatian') ||
+          idLow.includes('pug') ||
+          idLow.includes('poodle') ||
+          idLow.includes('beagle') ||
+          idLow.includes('dachshund') ||
+          idLow.includes('bernese') ||
+          idLow.includes('donkey');
+        const isPerkyDog =
+          idLow.includes('corgi') ||
+          idLow.includes('husky') ||
+          idLow.includes('frenchie') ||
+          idLow.includes('shiba') ||
+          idLow.includes('chihuahua') ||
+          idLow.includes('collie') ||
+          idLow.includes('samoyed') ||
+          idLow.includes('heeler') ||
+          idLow.includes('puppy') ||
+          idLow.includes('red_panda');
+        const isBunny = idLow.includes('bunny') || idLow.includes('rabbit');
+        const isBigSideEar =
+          idLow.includes('monkey') ||
+          idLow.includes('gorilla') ||
+          idLow.includes('lemur') ||
+          idLow.includes('koala') ||
+          idLow.includes('mouse') ||
+          idLow.includes('hamster');
+        const isBushyTail =
+          idLow.includes('squirrel') ||
+          idLow.includes('raccoon') ||
+          idLow.includes('hedgehog') ||
+          idLow.includes('kangaroo');
+        const isWideSnoutFarm =
+          idLow.includes('piglet') ||
+          idLow.includes('hippo') ||
+          idLow.includes('rhino') ||
+          idLow.includes('cow') ||
+          idLow.includes('calf') ||
+          idLow.includes('lamb') ||
+          idLow.includes('goat') ||
+          idLow.includes('giraffe') ||
+          idLow.includes('deer') ||
+          idLow.includes('reindeer') ||
+          idLow.includes('zebra') ||
+          idLow.includes('alpaca') ||
+          idLow.includes('camel') ||
+          idLow.includes('pegasus') ||
+          idLow.includes('alicorn');
+
         // 2. Seamless Organic Head + Chubby Cheeks + Plush Snout
         const dHead = ellipsoidSDF(fx, fy, fz, 0, 0.39, 0.02, 0.3, 0.27, 0.26);
         const dCheeks = ellipsoidSDF(ax, fy, fz, 0.15, 0.33, 0.15, 0.13, 0.11, 0.12);
-        const snoutLen = archetype === 'dino_plush' ? 0.2 : 0.14;
-        const dSnout = ellipsoidSDF(fx, fy, fz, 0, 0.33, 0.23, 0.14, 0.11, snoutLen);
+        const snoutLen = isDinoOrDragon ? 0.2 : isWideSnoutFarm || isFloppyDog || isPerkyDog ? 0.165 : 0.14;
+        const snoutRx = isWideSnoutFarm ? 0.175 : 0.14;
+        const dSnout = ellipsoidSDF(fx, fy, fz, 0, 0.33, 0.23, snoutRx, 0.11, snoutLen);
 
         let dHeadFull = smin(dHead, dCheeks, 0.08);
         dHeadFull = smin(dHeadFull, dSnout, 0.075);
@@ -580,31 +1904,65 @@ function buildSeamlessSculptedPlushGeometry(
         const dLegFull = smin(dLeg, dFoot, 0.065);
         dBody = smin(dBody, dLegFull, 0.095);
 
-        // 5. Archetype-Specific Seamless Ears, Crest & Tail
+        // 5. Archetype-Specific Seamless Ears, Trunk, Mane, Crest & Tail
         let dEar = 999.0;
         let dTail = 999.0;
         let dCrest = 999.0;
+        let dTrunk = 999.0;
 
-        if (archetype === 'bunny_plush') {
-          dEar = capsuleSDF(ax, fy, fz, 0.13, 0.6, 0.0, 0.18, 0.9, -0.02, 0.075);
+        if (isElephant) {
+          // Giant floppy fan-shaped Baby Elephant ears + curved 3D Elephant Trunk!
+          dEar = ellipsoidSDF(ax, fy, fz, 0.37, 0.43, -0.02, 0.21, 0.25, 0.068);
+          const t1 = capsuleSDF(fx, fy, fz, 0, 0.34, 0.22, 0, 0.14, 0.49, 0.072);
+          const t2 = capsuleSDF(fx, fy, fz, 0, 0.14, 0.49, 0, 0.23, 0.57, 0.06);
+          dTrunk = smin(t1, t2, 0.045);
+          dTail = capsuleSDF(fx, fy, fz, 0, -0.28, -0.24, 0, -0.44, -0.42, 0.048);
+        } else if (isBunny) {
+          dEar = capsuleSDF(ax, fy, fz, 0.13, 0.6, 0.0, 0.18, 0.91, -0.02, 0.076);
           dTail = ellipsoidSDF(fx, fy, fz, 0, -0.28, -0.27, 0.1, 0.1, 0.1);
-        } else if (archetype === 'dino_plush') {
+        } else if (isDinoOrDragon) {
           dTail = capsuleSDF(fx, fy, fz, 0, -0.25, -0.2, 0, -0.36, -0.58, 0.115);
           const c1 = ellipsoidSDF(fx, fy, fz, 0, 0.67, -0.05, 0.055, 0.09, 0.09);
           const c2 = ellipsoidSDF(fx, fy, fz, 0, 0.5, -0.22, 0.055, 0.09, 0.09);
           const c3 = ellipsoidSDF(fx, fy, fz, 0, 0.2, -0.28, 0.055, 0.09, 0.09);
           const c4 = ellipsoidSDF(fx, fy, fz, 0, -0.08, -0.29, 0.055, 0.085, 0.085);
           dCrest = Math.min(c1, c2, c3, c4);
-        } else if (archetype === 'kitty_plush') {
-          dEar = capsuleSDF(ax, fy, fz, 0.18, 0.58, 0.01, 0.25, 0.74, 0.01, 0.068);
-          dTail = capsuleSDF(fx, fy, fz, 0, -0.28, -0.23, 0.16, -0.06, -0.45, 0.058);
+        } else if (isKittyOrCat) {
+          dEar = capsuleSDF(ax, fy, fz, 0.18, 0.58, 0.01, 0.26, 0.76, 0.01, 0.068);
+          dTail = capsuleSDF(fx, fy, fz, 0, -0.28, -0.23, 0.16, -0.04, -0.47, 0.058);
+        } else if (isLion) {
+          dEar = ellipsoidSDF(ax, fy, fz, 0.25, 0.63, 0.01, 0.1, 0.1, 0.065);
+          // Fluffy 3D Lion Mane ring around the head
+          dCrest = ellipsoidSDF(fx, fy, fz, 0, 0.41, -0.04, 0.4, 0.37, 0.24);
+          dTail = capsuleSDF(fx, fy, fz, 0, -0.28, -0.23, 0.14, -0.08, -0.48, 0.06);
+        } else if (isFloppyDog) {
+          // Soft droopy floppy Baby Dog ears hanging beside the cheeks + wagging puppy tail
+          dEar = capsuleSDF(ax, fy, fz, 0.26, 0.54, 0.02, 0.33, 0.23, 0.07, 0.082);
+          dTail = capsuleSDF(fx, fy, fz, 0, -0.25, -0.23, 0, -0.02, -0.5, 0.07);
+        } else if (isPerkyDog) {
+          // Perky upright Baby Puppy ears + fluffy curved puppy tail
+          dEar = capsuleSDF(ax, fy, fz, 0.18, 0.57, 0.01, 0.25, 0.81, 0.02, 0.075);
+          dTail = capsuleSDF(fx, fy, fz, 0, -0.26, -0.23, 0.08, -0.03, -0.51, 0.082);
+        } else if (isBigSideEar) {
+          // Wide round side ears (Monkey, Koala, Mouse, Lemur) + curling tail
+          dEar = ellipsoidSDF(ax, fy, fz, 0.31, 0.47, 0.02, 0.135, 0.135, 0.068);
+          dTail = capsuleSDF(fx, fy, fz, 0, -0.28, -0.24, 0.18, 0.02, -0.5, 0.055);
+        } else if (isBushyTail) {
+          dEar = capsuleSDF(ax, fy, fz, 0.18, 0.58, 0.01, 0.24, 0.74, 0.01, 0.068);
+          // Big bushy upright Squirrel / Raccoon / Kangaroo tail
+          dTail = ellipsoidSDF(fx, fy, fz, 0, -0.1, -0.37, 0.16, 0.28, 0.16);
+        } else if (isWideSnoutFarm) {
+          // Horizontal side farm/safari ears
+          dEar = capsuleSDF(ax, fy, fz, 0.22, 0.57, 0.0, 0.36, 0.54, -0.02, 0.065);
+          dTail = capsuleSDF(fx, fy, fz, 0, -0.28, -0.24, 0, -0.38, -0.44, 0.055);
         } else {
-          // Teddy Bear & Custom Plush Doll round ears + cute pom tail
+          // Teddy Bear, Panda, Polar Bear & Dolls: round ears + cute pom tail
           dEar = ellipsoidSDF(ax, fy, fz, 0.24, 0.62, 0.01, 0.115, 0.115, 0.07);
           dTail = ellipsoidSDF(fx, fy, fz, 0, -0.28, -0.27, 0.09, 0.09, 0.09);
         }
 
         if (dEar < 10) dBody = smin(dBody, dEar, 0.065);
+        if (dTrunk < 10) dBody = smin(dBody, dTrunk, 0.06);
         if (dTail < 10) dBody = smin(dBody, dTail, 0.085);
         if (dCrest < 10) dBody = smin(dBody, dCrest, 0.06);
 
@@ -2320,8 +3678,25 @@ function buildPlushSkeletalAnimationClips(): THREE.AnimationClip[] {
 function attachPlushFacialDetailsToHeadBone(
   headBone: THREE.Bone,
   jawBone: THREE.Bone,
-  archetype: ToyArchetypeId
+  chestBone: THREE.Bone,
+  archetype: ToyArchetypeId,
+  secondaryHex = '#fef08a'
 ): THREE.Object3D[] {
+  const idLow = archetype.toLowerCase();
+
+  // For Baby Panda, attach dark velvet eye patches right behind the glossy eyes
+  if (idLow.includes('panda') && !idLow.includes('red_panda')) {
+    const patchGeo = new THREE.SphereGeometry(0.115, 18, 18);
+    patchGeo.scale(1.15, 1.25, 0.45);
+    const patchMat = new THREE.MeshStandardMaterial({ color: '#0f172a', roughness: 0.7 });
+    [-0.175, 0.175].forEach((px) => {
+      const patch = new THREE.Mesh(patchGeo, patchMat);
+      patch.position.set(px, 0.16, 0.31);
+      patch.rotation.z = px < 0 ? 0.25 : -0.25;
+      headBone.add(patch);
+    });
+  }
+
   const eyeWhiteGeo = new THREE.SphereGeometry(0.088, 24, 24);
   eyeWhiteGeo.scale(1, 1.12, 0.65);
   const eyeWhiteMat = new THREE.MeshPhysicalMaterial({
@@ -2358,19 +3733,311 @@ function attachPlushFacialDetailsToHeadBone(
     eyeGroups.push(eyeGrp);
   });
 
-  // Soft Velvet Sculpted Nose on Snout
-  const noseGeo = new THREE.SphereGeometry(0.068, 24, 24);
-  noseGeo.scale(1.3, 0.88, 0.85);
-  const noseColor =
-    archetype === 'bunny_plush' || archetype === 'kitty_plush' ? '#f43f5e' : '#291509';
-  const noseMat = new THREE.MeshPhysicalMaterial({
-    color: noseColor,
-    roughness: 0.35,
-    sheen: 0.8,
-  });
-  const nose = new THREE.Mesh(noseGeo, noseMat);
-  nose.position.set(0, 0.08, archetype === 'dino_plush' ? 0.56 : 0.49);
-  headBone.add(nose);
+  const isBeaked =
+    idLow.includes('penguin') ||
+    idLow.includes('owl') ||
+    idLow.includes('chick') ||
+    idLow.includes('phoenix') ||
+    idLow.includes('griffin');
+  const isKittyOrCat =
+    idLow.includes('kitty') ||
+    idLow.includes('cat') ||
+    idLow.includes('tiger') ||
+    idLow.includes('lion') ||
+    idLow.includes('cheetah') ||
+    idLow.includes('leopard');
+  const isDogOrPuppy =
+    idLow.includes('dog') ||
+    idLow.includes('puppy') ||
+    idLow.includes('corgi') ||
+    idLow.includes('pug') ||
+    idLow.includes('poodle') ||
+    idLow.includes('husky') ||
+    idLow.includes('beagle') ||
+    idLow.includes('frenchie') ||
+    idLow.includes('shiba') ||
+    idLow.includes('dachshund') ||
+    idLow.includes('chihuahua') ||
+    idLow.includes('collie') ||
+    idLow.includes('bernese') ||
+    idLow.includes('samoyed') ||
+    idLow.includes('heeler');
+  const isElephant = idLow.includes('elephant') || idLow.includes('mammoth');
+  const isPiglet = idLow.includes('piglet');
+  const isRudolph = idLow.includes('reindeer') || idLow.includes('rudolph');
+
+  // 1. Nose or Beak
+  if (isBeaked) {
+    const beakGeo = new THREE.ConeGeometry(0.085, 0.22, 20);
+    const beakMat = new THREE.MeshPhysicalMaterial({
+      color: '#f59e0b',
+      roughness: 0.25,
+      clearcoat: 0.8,
+    });
+    const beak = new THREE.Mesh(beakGeo, beakMat);
+    beak.rotation.x = Math.PI * 0.5;
+    beak.position.set(0, 0.08, 0.52);
+    headBone.add(beak);
+  } else if (isPiglet) {
+    const snoutDiskGeo = new THREE.CylinderGeometry(0.11, 0.11, 0.06, 24);
+    const snoutDiskMat = new THREE.MeshStandardMaterial({ color: '#fb7185', roughness: 0.4 });
+    const snoutDisk = new THREE.Mesh(snoutDiskGeo, snoutDiskMat);
+    snoutDisk.rotation.x = Math.PI * 0.5;
+    snoutDisk.position.set(0, 0.08, 0.5);
+    headBone.add(snoutDisk);
+    const nostrilGeo = new THREE.SphereGeometry(0.022, 12, 12);
+    const nostrilMat = new THREE.MeshBasicMaterial({ color: '#881337' });
+    [-0.04, 0.04].forEach((nx) => {
+      const n = new THREE.Mesh(nostrilGeo, nostrilMat);
+      n.position.set(nx, 0.08, 0.53);
+      headBone.add(n);
+    });
+  } else if (!isElephant) {
+    const noseGeo = new THREE.SphereGeometry(isRudolph ? 0.085 : 0.068, 24, 24);
+    noseGeo.scale(1.3, 0.88, 0.85);
+    const noseColor = isRudolph
+      ? '#ef4444'
+      : isKittyOrCat || idLow.includes('bunny') || idLow.includes('mouse') || idLow.includes('hamster')
+      ? '#f43f5e'
+      : '#291509';
+    const noseMat = new THREE.MeshPhysicalMaterial({
+      color: noseColor,
+      emissive: isRudolph ? new THREE.Color('#dc2626') : new THREE.Color('#000000'),
+      emissiveIntensity: isRudolph ? 0.45 : 0,
+      roughness: 0.3,
+      sheen: 0.8,
+    });
+    const nose = new THREE.Mesh(noseGeo, noseMat);
+    nose.position.set(0, 0.08, idLow.includes('dino') || idLow.includes('dragon') ? 0.56 : 0.49);
+    headBone.add(nose);
+  }
+
+  // 2. 6 3D Whiskers for Kitties, Cats, Big Cats, Mice, Hamsters, Seals & Bunnies
+  if (
+    isKittyOrCat ||
+    idLow.includes('bunny') ||
+    idLow.includes('mouse') ||
+    idLow.includes('hamster') ||
+    idLow.includes('seal')
+  ) {
+    const whiskerGeo = new THREE.CylinderGeometry(0.006, 0.004, 0.24, 8);
+    const whiskerMat = new THREE.MeshStandardMaterial({ color: '#f8fafc', roughness: 0.3 });
+    [-1, 1].forEach((side) => {
+      [-0.14, 0, 0.14].forEach((angleOffset, idx) => {
+        const w = new THREE.Mesh(whiskerGeo, whiskerMat);
+        w.position.set(side * 0.25, 0.04 + (idx - 1) * 0.032, 0.38);
+        w.rotation.z = side * (Math.PI * 0.5 + angleOffset);
+        w.rotation.y = side * -0.22;
+        headBone.add(w);
+      });
+    });
+  }
+
+  // 3. Baby Elephant & Mammoth 3D Ivory Tusks
+  if (isElephant) {
+    const tuskGeo = new THREE.ConeGeometry(0.034, 0.18, 16);
+    const tuskMat = new THREE.MeshPhysicalMaterial({
+      color: '#fffbeb',
+      roughness: 0.2,
+      clearcoat: 0.9,
+    });
+    [-0.12, 0.12].forEach((tx) => {
+      const tusk = new THREE.Mesh(tuskGeo, tuskMat);
+      tusk.position.set(tx, -0.02, 0.44);
+      tusk.rotation.x = Math.PI * 0.38;
+      tusk.rotation.z = tx < 0 ? 0.2 : -0.2;
+      headBone.add(tusk);
+    });
+  }
+
+  // 4. Baby Dog & Puppy Happy Pink Tongue + Collar & Golden Tag
+  if (isDogOrPuppy) {
+    const tongueGeo = new THREE.SphereGeometry(0.055, 16, 16);
+    tongueGeo.scale(1.1, 0.35, 1.45);
+    const tongueMat = new THREE.MeshStandardMaterial({ color: '#fb7185', roughness: 0.35 });
+    const tongue = new THREE.Mesh(tongueGeo, tongueMat);
+    tongue.position.set(0, -0.075, 0.25);
+    tongue.rotation.x = 0.35;
+    jawBone.add(tongue);
+  }
+
+  if (isDogOrPuppy || isKittyOrCat || idLow.includes('cow') || idLow.includes('calf')) {
+    const collarGeo = new THREE.TorusGeometry(0.24, 0.028, 14, 32);
+    const collarMat = new THREE.MeshStandardMaterial({
+      color: isKittyOrCat ? '#ec4899' : '#ef4444',
+      roughness: 0.35,
+    });
+    const collar = new THREE.Mesh(collarGeo, collarMat);
+    collar.rotation.x = Math.PI * 0.52;
+    collar.position.set(0, 0.22, 0.03);
+    chestBone.add(collar);
+
+    const bellGeo = new THREE.SphereGeometry(0.048, 16, 16);
+    const bellMat = new THREE.MeshStandardMaterial({
+      color: '#facc15',
+      metalness: 0.75,
+      roughness: 0.2,
+    });
+    const bell = new THREE.Mesh(bellGeo, bellMat);
+    bell.position.set(0, 0.19, 0.28);
+    chestBone.add(bell);
+  }
+
+  // 5. 3D Horns, Ossicones, Antlers, Spiral Unicorn Horns & Crowns on Head
+  if (
+    idLow.includes('unicorn') ||
+    idLow.includes('alicorn') ||
+    idLow.includes('narwhal')
+  ) {
+    const hornGeo = new THREE.ConeGeometry(0.068, 0.36, 20);
+    const hornMat = new THREE.MeshPhysicalMaterial({
+      color: '#facc15',
+      roughness: 0.15,
+      metalness: 0.65,
+      clearcoat: 1.0,
+    });
+    const horn = new THREE.Mesh(hornGeo, hornMat);
+    horn.position.set(0, 0.45, 0.25);
+    horn.rotation.x = 0.42;
+    headBone.add(horn);
+  } else if (idLow.includes('giraffe')) {
+    const stalkGeo = new THREE.CylinderGeometry(0.028, 0.032, 0.22, 12);
+    const stalkMat = new THREE.MeshStandardMaterial({ color: '#facc15', roughness: 0.5 });
+    const tipGeo = new THREE.SphereGeometry(0.052, 14, 14);
+    const tipMat = new THREE.MeshStandardMaterial({ color: '#78350f', roughness: 0.6 });
+    [-0.12, 0.12].forEach((gx) => {
+      const stalk = new THREE.Mesh(stalkGeo, stalkMat);
+      stalk.position.set(gx, 0.48, 0.02);
+      const tip = new THREE.Mesh(tipGeo, tipMat);
+      tip.position.set(gx, 0.6, 0.02);
+      headBone.add(stalk, tip);
+    });
+  } else if (idLow.includes('deer') || idLow.includes('reindeer')) {
+    const antlerMat = new THREE.MeshStandardMaterial({ color: '#fde68a', roughness: 0.45 });
+    const mainBranchGeo = new THREE.CylinderGeometry(0.022, 0.03, 0.28, 12);
+    const subBranchGeo = new THREE.CylinderGeometry(0.016, 0.022, 0.14, 10);
+    [-1, 1].forEach((side) => {
+      const b1 = new THREE.Mesh(mainBranchGeo, antlerMat);
+      b1.position.set(side * 0.16, 0.5, 0.0);
+      b1.rotation.z = side * -0.32;
+      const b2 = new THREE.Mesh(subBranchGeo, antlerMat);
+      b2.position.set(side * 0.22, 0.56, 0.04);
+      b2.rotation.z = side * -0.78;
+      headBone.add(b1, b2);
+    });
+  } else if (idLow.includes('triceratops') || idLow.includes('rhino')) {
+    const hornMat = new THREE.MeshStandardMaterial({ color: '#fef3c7', roughness: 0.3 });
+    const noseHornGeo = new THREE.ConeGeometry(0.048, 0.16, 16);
+    const noseHorn = new THREE.Mesh(noseHornGeo, hornMat);
+    noseHorn.position.set(0, 0.17, 0.48);
+    noseHorn.rotation.x = 0.5;
+    headBone.add(noseHorn);
+    if (idLow.includes('triceratops')) {
+      const browHornGeo = new THREE.ConeGeometry(0.04, 0.22, 16);
+      [-0.14, 0.14].forEach((bx) => {
+        const bh = new THREE.Mesh(browHornGeo, hornMat);
+        bh.position.set(bx, 0.36, 0.26);
+        bh.rotation.x = 0.45;
+        bh.rotation.z = bx < 0 ? 0.2 : -0.2;
+        headBone.add(bh);
+      });
+    }
+  } else if (
+    idLow.includes('cow') ||
+    idLow.includes('calf') ||
+    idLow.includes('goat') ||
+    idLow.includes('monster')
+  ) {
+    const budGeo = new THREE.ConeGeometry(0.045, 0.16, 14);
+    const budMat = new THREE.MeshStandardMaterial({ color: secondaryHex, roughness: 0.35 });
+    [-0.16, 0.16].forEach((bx) => {
+      const bud = new THREE.Mesh(budGeo, budMat);
+      bud.position.set(bx, 0.46, 0.04);
+      bud.rotation.z = bx < 0 ? 0.35 : -0.35;
+      headBone.add(bud);
+    });
+  }
+
+  // 6. 3D Axolotl External Feathery Gill Frills
+  if (idLow.includes('axolotl')) {
+    const frillGeo = new THREE.CapsuleGeometry(0.028, 0.14, 8, 12);
+    const frillMat = new THREE.MeshStandardMaterial({ color: '#e11d48', roughness: 0.4 });
+    [-1, 1].forEach((side) => {
+      [-0.25, 0.05, 0.35].forEach((ang, idx) => {
+        const frill = new THREE.Mesh(frillGeo, frillMat);
+        frill.position.set(side * 0.34, 0.18 + idx * 0.09, 0.02);
+        frill.rotation.z = side * (Math.PI * 0.38 + ang * 0.4);
+        headBone.add(frill);
+      });
+    });
+  }
+
+  // 7. 3D Golden Crown for Fairy Doll & Princess Alicorn
+  if (idLow.includes('fairy') || idLow.includes('alicorn')) {
+    const crownGeo = new THREE.CylinderGeometry(0.13, 0.1, 0.11, 16);
+    const crownMat = new THREE.MeshStandardMaterial({
+      color: '#facc15',
+      metalness: 0.7,
+      roughness: 0.2,
+    });
+    const crown = new THREE.Mesh(crownGeo, crownMat);
+    crown.position.set(0, 0.47, 0.04);
+    headBone.add(crown);
+  }
+
+  // 8. 3D Sculpted Back Wings, Turtle Shell, Dorsal Fin & Superhero Cape on ChestBone
+  if (
+    idLow.includes('dragon') ||
+    idLow.includes('pegasus') ||
+    idLow.includes('alicorn') ||
+    idLow.includes('pterodactyl') ||
+    idLow.includes('phoenix') ||
+    idLow.includes('griffin') ||
+    idLow.includes('fairy')
+  ) {
+    const wingGeo = new THREE.SphereGeometry(0.24, 18, 18);
+    wingGeo.scale(1.35, 0.75, 0.18);
+    const wingMat = new THREE.MeshPhysicalMaterial({
+      color: secondaryHex,
+      roughness: 0.25,
+      transmission: idLow.includes('fairy') ? 0.45 : 0.0,
+      transparent: idLow.includes('fairy'),
+      opacity: idLow.includes('fairy') ? 0.88 : 1.0,
+      clearcoat: 0.8,
+    });
+    [-1, 1].forEach((side) => {
+      const wing = new THREE.Mesh(wingGeo, wingMat);
+      wing.position.set(side * 0.32, 0.12, -0.24);
+      wing.rotation.y = side * -0.42;
+      wing.rotation.z = side * 0.28;
+      chestBone.add(wing);
+    });
+  } else if (idLow.includes('turtle')) {
+    const shellGeo = new THREE.SphereGeometry(0.34, 24, 24);
+    shellGeo.scale(0.95, 1.15, 0.55);
+    const shellMat = new THREE.MeshPhysicalMaterial({
+      color: '#047857',
+      roughness: 0.3,
+      clearcoat: 0.7,
+    });
+    const shell = new THREE.Mesh(shellGeo, shellMat);
+    shell.position.set(0, -0.08, -0.22);
+    chestBone.add(shell);
+  } else if (idLow.includes('dolphin') || idLow.includes('whale') || idLow.includes('narwhal')) {
+    const finGeo = new THREE.ConeGeometry(0.11, 0.28, 16);
+    const finMat = new THREE.MeshStandardMaterial({ color: secondaryHex, roughness: 0.3 });
+    const fin = new THREE.Mesh(finGeo, finMat);
+    fin.position.set(0, 0.05, -0.32);
+    fin.rotation.x = -Math.PI * 0.38;
+    chestBone.add(fin);
+  } else if (idLow.includes('superhero')) {
+    const capeGeo = new THREE.BoxGeometry(0.56, 0.68, 0.03);
+    const capeMat = new THREE.MeshStandardMaterial({ color: '#dc2626', roughness: 0.4 });
+    const cape = new THREE.Mesh(capeGeo, capeMat);
+    cape.position.set(0, -0.14, -0.28);
+    cape.rotation.x = 0.18;
+    chestBone.add(cape);
+  }
 
   // Expressive Mouth attached to Jaw Bone for real lip-sync
   const mouthGeo = new THREE.SphereGeometry(0.075, 20, 20);
@@ -2380,7 +4047,7 @@ function attachPlushFacialDetailsToHeadBone(
     roughness: 0.4,
   });
   const mouth = new THREE.Mesh(mouthGeo, mouthMat);
-  mouth.position.set(0, -0.04, archetype === 'dino_plush' ? 0.24 : 0.18);
+  mouth.position.set(0, -0.04, idLow.includes('dino') || idLow.includes('dragon') ? 0.24 : 0.18);
   jawBone.add(mouth);
 
   return eyeGroups;
@@ -2411,7 +4078,12 @@ export function buildSmooth3DToyRig(
     archetype === 'train_toy';
 
   const isVehicleToy =
-    archetype === 'racecar_toy' || archetype === 'truck_toy' || archetype === 'train_toy';
+    archetype === 'racecar_toy' ||
+    archetype === 'truck_toy' ||
+    archetype === 'train_toy' ||
+    archetype === 'police_cruiser_car' ||
+    archetype === 'fire_engine_truck' ||
+    archetype === 'sunshine_school_bus';
 
   // Always build the immediate seamless organic SkinnedMesh first (for plush toys, or as an instant
   // zero-latency stand-in during the 15ms async GLB parse for studio GLB toys)
@@ -2441,7 +4113,13 @@ export function buildSmooth3DToyRig(
   skinnedMesh.add(bones[0]);
   skinnedMesh.bind(skeleton);
 
-  const eyeMeshes = attachPlushFacialDetailsToHeadBone(bones[3], bones[4], archetype);
+  const eyeMeshes = attachPlushFacialDetailsToHeadBone(
+    bones[3],
+    bones[4],
+    bones[2],
+    archetype,
+    secondaryHex
+  );
   innerModel.add(skinnedMesh);
 
   // Set up AnimationMixer & register all 35 skeletal clips
@@ -2508,7 +4186,7 @@ export function buildSmooth3DToyRig(
         const maxDim = Math.max(size.x, size.y, size.z) || 1;
         let targetSpan = 2.15;
         if (archetype === 'robot_buddy') targetSpan = 2.35;
-        if (archetype === 'racecar_toy' || archetype === 'truck_toy') targetSpan = 2.45;
+        if (isVehicleToy && archetype !== 'train_toy') targetSpan = 2.45;
         if (isFlyingToy) targetSpan = 2.05;
 
         const normScale = targetSpan / maxDim;
@@ -2528,13 +4206,24 @@ export function buildSmooth3DToyRig(
         }
 
         // Orient models that naturally face +X or -Z so they greet the child (+Z)
-        if (archetype === 'truck_toy') {
+        if (
+          archetype === 'truck_toy' ||
+          archetype === 'fire_engine_truck' ||
+          archetype === 'sunshine_school_bus'
+        ) {
           model.rotation.y = Math.PI * 0.35;
-        } else if (archetype === 'racecar_toy') {
+        } else if (archetype === 'racecar_toy' || archetype === 'police_cruiser_car') {
           model.rotation.y = Math.PI * 0.22;
         } else if (archetype === 'duck_toy') {
           model.rotation.y = -Math.PI * 0.35;
         }
+
+        const isTintedVariant =
+          archetype === 'police_cruiser_car' ||
+          archetype === 'fire_engine_truck' ||
+          archetype === 'sunshine_school_bus' ||
+          archetype === 'baby_pony_caramel';
+        const tintCol = new THREE.Color(primaryHex);
 
         // Enhance materials with soft plush sheen / clearcoat & discover bones/morphs/wheels
         const morphMeshes: THREE.Mesh[] = [];
@@ -2602,6 +4291,11 @@ export function buildSmooth3DToyRig(
             const mesh = node as THREE.Mesh;
             mesh.castShadow = true;
             mesh.receiveShadow = true;
+            if (isTintedVariant && mesh.material && (mesh.material as THREE.MeshStandardMaterial).color) {
+              const clonedMat = (mesh.material as THREE.MeshStandardMaterial).clone();
+              clonedMat.color.lerp(tintCol, 0.58);
+              mesh.material = clonedMat;
+            }
             if (mesh.morphTargetInfluences && mesh.morphTargetInfluences.length > 0) {
               morphMeshes.push(mesh);
             }
@@ -2621,6 +4315,19 @@ export function buildSmooth3DToyRig(
           horn.position.set(0, 0.95, 0.72);
           horn.rotation.x = 0.45;
           innerModel.add(horn);
+        } else if (archetype === 'police_cruiser_car' || archetype === 'fire_engine_truck') {
+          // 3D Red & Blue Emergency Rescue Light Bar on Roof!
+          const barLeft = new THREE.Mesh(
+            new THREE.BoxGeometry(0.22, 0.1, 0.12),
+            new THREE.MeshBasicMaterial({ color: '#ef4444' })
+          );
+          barLeft.position.set(-0.12, 0.35, 0);
+          const barRight = new THREE.Mesh(
+            new THREE.BoxGeometry(0.22, 0.1, 0.12),
+            new THREE.MeshBasicMaterial({ color: '#3b82f6' })
+          );
+          barRight.position.set(0.12, 0.35, 0);
+          innerModel.add(barLeft, barRight);
         }
 
         // If user uploaded a custom toy photo onto a GLB archetype, display a floating 3D badge

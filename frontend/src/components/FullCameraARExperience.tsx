@@ -27,6 +27,7 @@ import {
   PREBUILT_3D_TOY_CATALOG,
   ToyArchetypeId,
   ToyCatalogItem,
+  ToyCategory,
   ToyMotionClipType,
   update3DThoughtCloudSprite,
 } from '../services/threeToyBuilder';
@@ -406,10 +407,9 @@ export const FullCameraARExperience: React.FC = () => {
   const [toyDrawingTitle, setToyDrawingTitle] = useState<string | null>(null);
   const autoDrawTimerRef = useRef<number | null>(null);
 
-  // Active Toy Category Filter & Selected Pre-Built or Uploaded 3D Toy
-  const [categoryFilter, setCategoryFilter] = useState<
-    'all' | 'soft_toy' | 'bird_toy' | 'car_vehicle' | 'robot_toy'
-  >('all');
+  // Active Toy Category Filter & Selected Pre-Built or Uploaded 3D Toy (120+ Toys)
+  const [categoryFilter, setCategoryFilter] = useState<'all' | ToyCategory>('all');
+  const [toySearchQuery, setToySearchQuery] = useState<string>('');
   const [activeToyItem, setActiveToyItem] = useState<ToyCatalogItem>(PREBUILT_3D_TOY_CATALOG[0]);
   const [customUploadedToys, setCustomUploadedToys] = useState<CustomUploaded3DToy[]>([]);
   const [activeCustomToy, setActiveCustomToy] = useState<CustomUploaded3DToy | null>(null);
@@ -3702,7 +3702,54 @@ export const FullCameraARExperience: React.FC = () => {
       return;
     }
 
-    // A) Did the child ask the toy to change the Cartoon World / Stage Environment (All 30 3D Stage Worlds)?
+    // A0) Did the child ask to switch or play with one of the 120 3D Toy Characters (e.g. "baby elephant", "kitty", "baby dog", "next toy")?
+    if (hasWord(/\b(next toy|surprise toy|random toy|different toy|another toy)\b/i)) {
+      const currIdx = PREBUILT_3D_TOY_CATALOG.findIndex((t) => t.id === activeToyItem.id);
+      const nextToy = PREBUILT_3D_TOY_CATALOG[(currIdx + 1) % PREBUILT_3D_TOY_CATALOG.length];
+      handleSelectPrebuiltToy(nextToy);
+      return;
+    }
+
+    if (!hasWord(/\b(draw|paint|sketch|world|stage)\b/i)) {
+      const matchedToy = PREBUILT_3D_TOY_CATALOG.find((t) => {
+        const tNameLow = t.name.toLowerCase();
+        const tIdWords = t.id.toLowerCase().replace(/_/g, ' ');
+        if (lowUtt.includes(tNameLow) || lowUtt.includes(tIdWords)) return true;
+        if (hasWord(/\b(switch|change|play with|want|choose|show me|be a|turn into)\b/i)) {
+          if (hasWord(/\b(baby elephant|elephant)\b/i) && t.id === 'baby_elephant_blue') return true;
+          if (hasWord(/\b(pink elephant|dumbo)\b/i) && t.id === 'baby_elephant_pink') return true;
+          if (hasWord(/\b(baby dog|puppy|doggy|golden puppy|retriever)\b/i) && t.id === 'baby_golden_puppy') return true;
+          if (hasWord(/\b(dalmatian)\b/i) && t.id === 'baby_dalmatian_dog') return true;
+          if (hasWord(/\b(corgi)\b/i) && t.id === 'baby_corgi_dog') return true;
+          if (hasWord(/\b(pug)\b/i) && t.id === 'baby_pug_dog') return true;
+          if (hasWord(/\b(poodle)\b/i) && t.id === 'baby_poodle_pink') return true;
+          if (hasWord(/\b(husky)\b/i) && t.id === 'baby_husky_pup') return true;
+          if (hasWord(/\b(kitty|kitten|cat)\b/i) && t.id === 'kitty_plush') return true;
+          if (hasWord(/\b(white kitty|white cat|snowball)\b/i) && t.id === 'snowball_white_kitty') return true;
+          if (hasWord(/\b(orange cat|ginger cat|tabby)\b/i) && t.id === 'ginger_orange_cat') return true;
+          if (hasWord(/\b(lion|simba)\b/i) && t.id === 'lion_baby_simba') return true;
+          if (hasWord(/\b(tiger)\b/i) && t.id === 'tiger_baby_cub') return true;
+          if (hasWord(/\b(giraffe)\b/i) && t.id === 'baby_giraffe_sunny') return true;
+          if (hasWord(/\b(panda)\b/i) && t.id === 'baby_panda_bamboo') return true;
+          if (hasWord(/\b(koala)\b/i) && t.id === 'baby_koala_gumdrop') return true;
+          if (hasWord(/\b(monkey)\b/i) && t.id === 'baby_monkey_banana') return true;
+          if (hasWord(/\b(piglet|piggy)\b/i) && t.id === 'baby_piglet_pink') return true;
+          if (hasWord(/\b(penguin)\b/i) && t.id === 'baby_penguin_pip') return true;
+          if (hasWord(/\b(dolphin)\b/i) && t.id === 'baby_dolphin_splash') return true;
+          if (hasWord(/\b(axolotl)\b/i) && t.id === 'baby_axolotl_pink') return true;
+          if (hasWord(/\b(dragon)\b/i) && t.id === 'baby_dragon_spark') return true;
+          if (hasWord(/\b(unicorn)\b/i) && t.id === 'unicorn_plush') return true;
+          if (hasWord(/\b(triceratops)\b/i) && t.id === 'baby_triceratops_tops') return true;
+        }
+        return false;
+      });
+      if (matchedToy) {
+        handleSelectPrebuiltToy(matchedToy);
+        return;
+      }
+    }
+
+    // A) Did the child ask the toy to change the Cartoon World / Stage Environment (All 60 3D Stage Worlds)?
     if (hasWord(/\b(next world|surprise world|change world|new stage|random world)\b/i)) {
       const currIdx = CARTOON_STAGE_ENVIRONMENTS.findIndex((e) => e.id === stageEnv);
       const nextEnv = CARTOON_STAGE_ENVIRONMENTS[(currIdx + 1) % CARTOON_STAGE_ENVIRONMENTS.length];
@@ -4399,9 +4446,16 @@ export const FullCameraARExperience: React.FC = () => {
     isDrawingRef.current = false;
   };
 
-  const filteredCatalog = PREBUILT_3D_TOY_CATALOG.filter((item) =>
-    categoryFilter === 'all' ? true : item.category === categoryFilter
-  );
+  const filteredCatalog = PREBUILT_3D_TOY_CATALOG.filter((item) => {
+    const matchesCat = categoryFilter === 'all' ? true : item.category === categoryFilter;
+    const q = toySearchQuery.trim().toLowerCase();
+    const matchesSearch =
+      !q ||
+      item.name.toLowerCase().includes(q) ||
+      item.id.toLowerCase().replace(/_/g, ' ').includes(q) ||
+      item.badgeText.toLowerCase().includes(q);
+    return matchesCat && matchesSearch;
+  });
 
   const filtered20Games = INTELLIGENT_20_GAMES_CATALOG.filter((g) =>
     skillDomainFilter === 'all' ? true : g.domain === skillDomainFilter
@@ -4443,7 +4497,7 @@ export const FullCameraARExperience: React.FC = () => {
          ===================================================================== */}
       {topBarExpanded && (
         <header className="studio-top-bar">
-          {/* ZONE 1: Brand + Active Child + Active 3D Stage Pill */}
+          {/* ZONE 1: Brand + Active Child + Active 3D Toy + Active 3D Stage Pill */}
           <div className="studio-brand-block">
             <span className="studio-logo-badge">🧸🌈</span>
             <div style={{ minWidth: 0 }}>
@@ -4452,6 +4506,25 @@ export const FullCameraARExperience: React.FC = () => {
                 <span className="top-meta-badge">
                   👶 {childName} ({childAge}y)
                 </span>
+                <button
+                  type="button"
+                  className="top-meta-badge"
+                  style={{ cursor: 'pointer' }}
+                  onClick={() => {
+                    const currIdx = PREBUILT_3D_TOY_CATALOG.findIndex(
+                      (t) => t.id === activeToyItem.id
+                    );
+                    const nextToy =
+                      PREBUILT_3D_TOY_CATALOG[(currIdx + 1) % PREBUILT_3D_TOY_CATALOG.length];
+                    handleSelectPrebuiltToy(nextToy);
+                  }}
+                  title="Click to cycle through all 120 3D Toy Characters!"
+                >
+                  {activeCustomToy
+                    ? `🌟 ${activeCustomToy.name}`
+                    : `${activeToyItem.emoji} ${activeToyItem.name}`}{' '}
+                  🎲
+                </button>
                 <button
                   type="button"
                   className="top-meta-badge stage-badge"
@@ -4977,10 +5050,14 @@ export const FullCameraARExperience: React.FC = () => {
                 onChange={(e) => setUploadArchetype(e.target.value as ToyArchetypeId)}
                 className="sidebar-text-input"
               >
-                <option value="teddy_plush">🧸 Seamless Plush Teddy</option>
+                <option value="kitty_plush">🐱 3D Whiskered Kitty / Cat</option>
+                <option value="baby_golden_puppy">🐶 3D Floppy-Ear Baby Dog / Puppy</option>
+                <option value="baby_elephant_blue">🐘 3D Baby Elephant (Trunk &amp; Big Ears)</option>
+                <option value="teddy_plush">🧸 Seamless Plush Teddy Bear</option>
                 <option value="bunny_plush">🐰 Seamless Plush Bunny</option>
                 <option value="dino_plush">🦖 Seamless Plush Dino</option>
-                <option value="kitty_plush">🐱 Seamless Plush Kitty</option>
+                <option value="lion_baby_simba">🦁 3D Mane Lion Cub</option>
+                <option value="baby_panda_bamboo">🐼 3D Baby Panda</option>
                 <option value="puppy_plush">🦊 Studio Fox / Puppy (GLB)</option>
                 <option value="yeti_plush">👾 Studio Fluffy Yeti (GLB)</option>
                 <option value="parrot_bird">🦜 Studio Flying Macaw (GLB)</option>
@@ -5027,22 +5104,81 @@ export const FullCameraARExperience: React.FC = () => {
               )}
             </div>
 
-            {/* 5. PRE-BUILT 3D TOY FRIENDS */}
+            {/* 5. 120 PRE-BUILT 3D TOY FRIENDS (CATS, BABY DOGS, BABY ELEPHANTS, SAFARI, BEARS, FARM, DINOS, BIRDS, CARS, ROBOTS) */}
             <div className="sidebar-card">
               <div className="sidebar-card-top-row">
-                <span className="sidebar-tag">🧸 19 Pre-Built 3D Toys</span>
+                <span className="sidebar-tag">
+                  🧸 {PREBUILT_3D_TOY_CATALOG.length} Pre-Built 3D Toys
+                </span>
+                <button
+                  type="button"
+                  onClick={() => {
+                    const currIdx = PREBUILT_3D_TOY_CATALOG.findIndex(
+                      (t) => t.id === activeToyItem.id
+                    );
+                    const nextToy =
+                      PREBUILT_3D_TOY_CATALOG[(currIdx + 1) % PREBUILT_3D_TOY_CATALOG.length];
+                    handleSelectPrebuiltToy(nextToy);
+                  }}
+                  className="preset-mini-btn"
+                  title="Switch to the next 3D Toy Character"
+                >
+                  🎲 Next Toy
+                </button>
               </div>
               <h3 className="sidebar-subheading">
-                Choose 3D Toy Friend ({PREBUILT_3D_TOY_CATALOG.length})
+                Choose 3D Toy ({activeToyItem.emoji} {activeToyItem.name})
               </h3>
-              <div className="preset-mini-row">
+
+              <input
+                type="text"
+                placeholder="🔍 Search 120 toys: kitty, elephant, dog, panda..."
+                value={toySearchQuery}
+                onChange={(e) => setToySearchQuery(e.target.value)}
+                className="sidebar-text-input"
+                style={{ marginBottom: 4, fontSize: 11.5 }}
+              />
+
+              <div className="preset-mini-row" style={{ flexWrap: 'wrap', gap: 4 }}>
                 {(
                   [
-                    { id: 'all', label: 'All' },
-                    { id: 'soft_toy', label: '🧸 Plush' },
-                    { id: 'bird_toy', label: '🦜 Birds' },
-                    { id: 'car_vehicle', label: '🏎️ Cars' },
-                    { id: 'robot_toy', label: '🤖 Robots' },
+                    { id: 'all', label: `🌟 All (${PREBUILT_3D_TOY_CATALOG.length})` },
+                    {
+                      id: 'kitty_cat',
+                      label: `🐱 Cats (${PREBUILT_3D_TOY_CATALOG.filter((t) => t.category === 'kitty_cat').length})`,
+                    },
+                    {
+                      id: 'baby_dog',
+                      label: `🐶 Dogs (${PREBUILT_3D_TOY_CATALOG.filter((t) => t.category === 'baby_dog').length})`,
+                    },
+                    {
+                      id: 'elephant_safari',
+                      label: `🐘 Elephant/Safari (${PREBUILT_3D_TOY_CATALOG.filter((t) => t.category === 'elephant_safari').length})`,
+                    },
+                    {
+                      id: 'soft_toy',
+                      label: `🧸 Bears/Bunnies (${PREBUILT_3D_TOY_CATALOG.filter((t) => t.category === 'soft_toy').length})`,
+                    },
+                    {
+                      id: 'farm_friends',
+                      label: `🐮 Farm (${PREBUILT_3D_TOY_CATALOG.filter((t) => t.category === 'farm_friends').length})`,
+                    },
+                    {
+                      id: 'dino_magic',
+                      label: `🦖🦄 Dino/Magic (${PREBUILT_3D_TOY_CATALOG.filter((t) => t.category === 'dino_magic').length})`,
+                    },
+                    {
+                      id: 'bird_toy',
+                      label: `🐬🦜 Ocean/Birds (${PREBUILT_3D_TOY_CATALOG.filter((t) => t.category === 'bird_toy').length})`,
+                    },
+                    {
+                      id: 'car_vehicle',
+                      label: `🏎️ Cars (${PREBUILT_3D_TOY_CATALOG.filter((t) => t.category === 'car_vehicle').length})`,
+                    },
+                    {
+                      id: 'robot_toy',
+                      label: `🤖💃 Robots/Dolls (${PREBUILT_3D_TOY_CATALOG.filter((t) => t.category === 'robot_toy').length})`,
+                    },
                   ] as const
                 ).map((tab) => (
                   <button
@@ -5050,13 +5186,14 @@ export const FullCameraARExperience: React.FC = () => {
                     type="button"
                     onClick={() => setCategoryFilter(tab.id)}
                     className={`preset-mini-btn ${categoryFilter === tab.id ? 'active-cat' : ''}`}
+                    style={{ fontSize: 10, padding: '3px 7px' }}
                   >
                     {tab.label}
                   </button>
                 ))}
               </div>
 
-              <div className="character-list" style={{ marginTop: 4 }}>
+              <div className="character-list" style={{ marginTop: 4, maxHeight: 300 }}>
                 {filteredCatalog.map((item) => {
                   const isSelected = !activeCustomToy && activeToyItem.id === item.id;
                   return (
