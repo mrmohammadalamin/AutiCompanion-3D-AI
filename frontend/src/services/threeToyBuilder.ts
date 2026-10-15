@@ -1807,20 +1807,7 @@ function buildSeamlessSculptedPlushGeometry(
         const fx = (x - half) / half;
         const ax = Math.abs(fx);
 
-        // 1. Chubby Pear-Shaped Plush Torso & Soft Lower Tummy
-        const dTorso = ellipsoidSDF(fx, fy, fz, 0, -0.1, 0, 0.31, 0.35, 0.26);
-        const dTummy = ellipsoidSDF(fx, fy, fz, 0, -0.15, 0.08, 0.23, 0.25, 0.21);
-        let dBody = smin(dTorso, dTummy, 0.11);
-
         const idLow = archetype.toLowerCase();
-        const isDinoOrDragon =
-          idLow.includes('dino') ||
-          idLow.includes('triceratops') ||
-          idLow.includes('brachiosaurus') ||
-          idLow.includes('stegosaurus') ||
-          idLow.includes('pterodactyl') ||
-          idLow.includes('dragon') ||
-          idLow.includes('chameleon');
         const isElephant = idLow.includes('elephant') || idLow.includes('mammoth');
         const isKittyOrCat =
           idLow.includes('kitty') ||
@@ -1847,135 +1834,288 @@ function buildSeamlessSculptedPlushGeometry(
           idLow.includes('collie') ||
           idLow.includes('samoyed') ||
           idLow.includes('heeler') ||
-          idLow.includes('puppy') ||
-          idLow.includes('red_panda');
+          idLow.includes('puppy');
+        const isDogOrPuppy = isFloppyDog || isPerkyDog;
         const isBunny = idLow.includes('bunny') || idLow.includes('rabbit');
+        const isLongNeck =
+          idLow.includes('giraffe') ||
+          idLow.includes('brachiosaurus') ||
+          idLow.includes('alpaca') ||
+          idLow.includes('camel');
+        const isChubbyHippoRhino =
+          idLow.includes('hippo') ||
+          idLow.includes('rhino') ||
+          idLow.includes('piglet') ||
+          idLow.includes('cow') ||
+          idLow.includes('calf');
+        const isDinoOrDragon =
+          idLow.includes('dino') ||
+          idLow.includes('triceratops') ||
+          idLow.includes('brachiosaurus') ||
+          idLow.includes('stegosaurus') ||
+          idLow.includes('pterodactyl') ||
+          idLow.includes('dragon') ||
+          idLow.includes('chameleon');
+        const isMarineFin =
+          idLow.includes('dolphin') ||
+          idLow.includes('whale') ||
+          idLow.includes('narwhal') ||
+          idLow.includes('seal') ||
+          idLow.includes('otter');
+        const isOctopus = idLow.includes('octopus');
+        const isTurtle = idLow.includes('turtle');
+        const isBirdOrFrog =
+          idLow.includes('penguin') ||
+          idLow.includes('owl') ||
+          idLow.includes('chick') ||
+          idLow.includes('phoenix') ||
+          idLow.includes('frog') ||
+          idLow.includes('axolotl');
         const isBigSideEar =
           idLow.includes('monkey') ||
           idLow.includes('gorilla') ||
           idLow.includes('lemur') ||
           idLow.includes('koala') ||
           idLow.includes('mouse') ||
-          idLow.includes('hamster');
+          idLow.includes('hamster') ||
+          idLow.includes('sloth');
         const isBushyTail =
           idLow.includes('squirrel') ||
           idLow.includes('raccoon') ||
+          idLow.includes('red_panda') ||
           idLow.includes('hedgehog') ||
           idLow.includes('kangaroo');
-        const isWideSnoutFarm =
-          idLow.includes('piglet') ||
-          idLow.includes('hippo') ||
-          idLow.includes('rhino') ||
-          idLow.includes('cow') ||
-          idLow.includes('calf') ||
-          idLow.includes('lamb') ||
-          idLow.includes('goat') ||
-          idLow.includes('giraffe') ||
+        const isEquineOrDeer =
+          idLow.includes('zebra') ||
           idLow.includes('deer') ||
           idLow.includes('reindeer') ||
-          idLow.includes('zebra') ||
-          idLow.includes('alpaca') ||
-          idLow.includes('camel') ||
           idLow.includes('pegasus') ||
-          idLow.includes('alicorn');
+          idLow.includes('alicorn') ||
+          idLow.includes('lamb') ||
+          idLow.includes('goat');
 
-        // 2. Seamless Organic Head + Chubby Cheeks + Plush Snout
-        const dHead = ellipsoidSDF(fx, fy, fz, 0, 0.39, 0.02, 0.3, 0.27, 0.26);
-        const dCheeks = ellipsoidSDF(ax, fy, fz, 0.15, 0.33, 0.15, 0.13, 0.11, 0.12);
-        const snoutLen = isDinoOrDragon ? 0.2 : isWideSnoutFarm || isFloppyDog || isPerkyDog ? 0.165 : 0.14;
-        const snoutRx = isWideSnoutFarm ? 0.175 : 0.14;
-        const dSnout = ellipsoidSDF(fx, fy, fz, 0, 0.33, 0.23, snoutRx, 0.11, snoutLen);
+        // 1. Species-Specific 3D Torso & Tummy Silhouette
+        const torsoRx = isElephant || isChubbyHippoRhino
+          ? 0.37
+          : isKittyOrCat || isEquineOrDeer
+          ? 0.25
+          : isLongNeck
+          ? 0.24
+          : isBirdOrFrog || isOctopus
+          ? 0.34
+          : 0.3;
+        const torsoRy = isLongNeck
+          ? 0.31
+          : isBirdOrFrog || isTurtle
+          ? 0.38
+          : isOctopus
+          ? 0.28
+          : 0.35;
+        const torsoRz = isElephant || isChubbyHippoRhino
+          ? 0.32
+          : isTurtle
+          ? 0.35
+          : isKittyOrCat
+          ? 0.22
+          : 0.26;
 
-        let dHeadFull = smin(dHead, dCheeks, 0.08);
-        dHeadFull = smin(dHeadFull, dSnout, 0.075);
+        const dTorso = ellipsoidSDF(fx, fy, fz, 0, -0.1, 0, torsoRx, torsoRy, torsoRz);
+        const dTummy = ellipsoidSDF(
+          fx,
+          fy,
+          fz,
+          0,
+          -0.15,
+          0.09,
+          torsoRx * 0.78,
+          torsoRy * 0.72,
+          torsoRz * 0.82
+        );
+        let dBody = smin(dTorso, dTummy, 0.1);
 
-        // Smooth neck fillet connecting Head and Torso into ONE continuous skin
-        dBody = smin(dBody, dHeadFull, 0.105);
+        // Long sculpted neck for Giraffe, Brachiosaurus, Alpaca & Camel
+        if (isLongNeck) {
+          const dNeck = capsuleSDF(fx, fy, fz, 0, 0.12, 0.02, 0, 0.44, 0.06, 0.115);
+          dBody = smin(dBody, dNeck, 0.08);
+        }
 
-        // 3. Seamless Sculpted Arms & Chubby Paws (Symmetrical via ax = |fx|)
-        const dArm = capsuleSDF(ax, fy, fz, 0.23, 0.13, 0.01, 0.54, -0.06, 0.11, 0.098);
-        const dPaw = ellipsoidSDF(ax, fy, fz, 0.56, -0.07, 0.12, 0.11, 0.1, 0.11);
-        const dArmFull = smin(dArm, dPaw, 0.06);
-        dBody = smin(dBody, dArmFull, 0.095);
+        // 2. Species-Specific 3D Head, Cheeks & Muzzle/Snout Shape
+        const headY = isLongNeck ? 0.52 : isOctopus ? 0.24 : 0.39;
+        const headRx = isKittyOrCat
+          ? 0.32
+          : isOctopus
+          ? 0.38
+          : isLongNeck
+          ? 0.22
+          : isElephant
+          ? 0.33
+          : 0.29;
+        const headRy = isKittyOrCat
+          ? 0.24
+          : isOctopus
+          ? 0.36
+          : isLongNeck
+          ? 0.21
+          : 0.27;
+        const headRz = isDinoOrDragon ? 0.31 : isKittyOrCat ? 0.24 : 0.26;
 
-        // 4. Seamless Sculpted Legs & Plush Feet
-        const dLeg = capsuleSDF(ax, fy, fz, 0.16, -0.34, 0.0, 0.19, -0.68, 0.03, 0.115);
-        const dFoot = ellipsoidSDF(ax, fy, fz, 0.2, -0.71, 0.1, 0.125, 0.085, 0.155);
-        const dLegFull = smin(dLeg, dFoot, 0.065);
-        dBody = smin(dBody, dLegFull, 0.095);
+        const dHead = ellipsoidSDF(fx, fy, fz, 0, headY, 0.02, headRx, headRy, headRz);
+        const dCheeks = ellipsoidSDF(
+          ax,
+          fy,
+          fz,
+          isKittyOrCat ? 0.19 : 0.15,
+          headY - 0.06,
+          0.14,
+          isKittyOrCat || isBigSideEar ? 0.15 : 0.12,
+          0.11,
+          0.12
+        );
 
-        // 5. Archetype-Specific Seamless Ears, Trunk, Mane, Crest & Tail
+        let dSnout = 999.0;
+        if (isDinoOrDragon) {
+          // Bold boxy reptile/dragon jaw snout
+          dSnout = ellipsoidSDF(fx, fy, fz, 0, headY - 0.05, 0.28, 0.17, 0.13, 0.24);
+        } else if (isChubbyHippoRhino) {
+          // Huge wide barrel snout for Hippo, Rhino, Piglet & Cow
+          dSnout = ellipsoidSDF(fx, fy, fz, 0, headY - 0.06, 0.27, 0.23, 0.14, 0.21);
+        } else if (isDogOrPuppy) {
+          // Prominent sculpted canine muzzle for Baby Dogs & Puppies
+          const mLen = idLow.includes('pug') || idLow.includes('frenchie') ? 0.15 : 0.23;
+          dSnout = capsuleSDF(fx, fy, fz, 0, headY - 0.06, 0.14, 0, headY - 0.07, 0.14 + mLen, 0.125);
+        } else if (isEquineOrDeer || isLongNeck) {
+          // Tapering equine/deer/giraffe muzzle
+          dSnout = capsuleSDF(fx, fy, fz, 0, headY - 0.04, 0.14, 0, headY - 0.07, 0.36, 0.11);
+        } else if (isKittyOrCat) {
+          // Dainty twin feline whisker pads
+          dSnout = ellipsoidSDF(ax, fy, fz, 0.055, headY - 0.06, 0.22, 0.085, 0.075, 0.11);
+        } else if (!isBirdOrFrog && !isOctopus && !isElephant) {
+          dSnout = ellipsoidSDF(fx, fy, fz, 0, headY - 0.06, 0.23, 0.14, 0.11, 0.15);
+        }
+
+        let dHeadFull = smin(dHead, dCheeks, 0.075);
+        if (dSnout < 10) {
+          dHeadFull = smin(dHeadFull, dSnout, 0.065);
+        }
+        dBody = smin(dBody, dHeadFull, 0.095);
+
+        // 3. Species-Specific Arms, Wings, or Marine Flippers
+        let dPaw = 999.0;
+        if (isMarineFin || idLow.includes('penguin') || isTurtle) {
+          // Flat hydrodynamic side flippers!
+          const dFlipper = ellipsoidSDF(ax, fy, fz, 0.44, 0.02, 0.05, 0.22, 0.065, 0.14);
+          dBody = smin(dBody, dFlipper, 0.075);
+        } else {
+          const armR = isElephant || isChubbyHippoRhino ? 0.115 : isKittyOrCat ? 0.082 : 0.096;
+          const dArm = capsuleSDF(ax, fy, fz, 0.23, 0.13, 0.01, 0.54, -0.06, 0.11, armR);
+          dPaw = ellipsoidSDF(ax, fy, fz, 0.56, -0.07, 0.12, armR * 1.12, armR * 1.02, armR * 1.12);
+          const dArmFull = smin(dArm, dPaw, 0.055);
+          dBody = smin(dBody, dArmFull, 0.085);
+        }
+
+        // 4. Species-Specific Legs, Tentacles, or Marine Tail Fluke
+        let dFoot = 999.0;
+        if (isOctopus) {
+          // 6 sculpted Octopus tentacles splaying around the base!
+          const tFront = capsuleSDF(ax, fy, fz, 0.15, -0.28, 0.12, 0.34, -0.66, 0.32, 0.085);
+          const tMid = capsuleSDF(ax, fy, fz, 0.22, -0.28, 0.0, 0.46, -0.66, 0.02, 0.085);
+          const tBack = capsuleSDF(ax, fy, fz, 0.15, -0.28, -0.12, 0.34, -0.66, -0.28, 0.085);
+          dFoot = Math.min(tFront, tMid, tBack);
+          dBody = smin(dBody, dFoot, 0.075);
+        } else if (isMarineFin) {
+          // Tapering marine lower body + wide horizontal whale/dolphin tail flukes!
+          const dTailCone = capsuleSDF(fx, fy, fz, 0, -0.25, 0.0, 0, -0.62, -0.22, 0.15);
+          const dFlukes = ellipsoidSDF(ax, fy, fz, 0.2, -0.66, -0.28, 0.22, 0.055, 0.12);
+          dFoot = smin(dTailCone, dFlukes, 0.07);
+          dBody = smin(dBody, dFoot, 0.09);
+        } else {
+          const legR = isElephant || isChubbyHippoRhino ? 0.135 : isKittyOrCat ? 0.098 : 0.112;
+          const dLeg = capsuleSDF(ax, fy, fz, 0.16, -0.34, 0.0, 0.19, -0.68, 0.03, legR);
+          dFoot = ellipsoidSDF(ax, fy, fz, 0.2, -0.71, 0.1, legR * 1.12, 0.085, 0.155);
+          const dLegFull = smin(dLeg, dFoot, 0.06);
+          dBody = smin(dBody, dLegFull, 0.085);
+        }
+
+        // 5. Crisp Species-Specific Ears, Trunk, Mane, Crest & Tail
         let dEar = 999.0;
         let dTail = 999.0;
         let dCrest = 999.0;
         let dTrunk = 999.0;
 
         if (isElephant) {
-          // Giant floppy fan-shaped Baby Elephant ears + curved 3D Elephant Trunk!
-          dEar = ellipsoidSDF(ax, fy, fz, 0.37, 0.43, -0.02, 0.21, 0.25, 0.068);
-          const t1 = capsuleSDF(fx, fy, fz, 0, 0.34, 0.22, 0, 0.14, 0.49, 0.072);
-          const t2 = capsuleSDF(fx, fy, fz, 0, 0.14, 0.49, 0, 0.23, 0.57, 0.06);
+          // Huge wide fan-shaped Baby Elephant ears + long S-curved 3D Trunk!
+          dEar = ellipsoidSDF(ax, fy, fz, 0.45, 0.42, -0.03, 0.25, 0.29, 0.065);
+          const t1 = capsuleSDF(fx, fy, fz, 0, 0.35, 0.2, 0, 0.08, 0.54, 0.082);
+          const t2 = capsuleSDF(fx, fy, fz, 0, 0.08, 0.54, 0, 0.22, 0.66, 0.066);
           dTrunk = smin(t1, t2, 0.045);
-          dTail = capsuleSDF(fx, fy, fz, 0, -0.28, -0.24, 0, -0.44, -0.42, 0.048);
+          dTail = capsuleSDF(fx, fy, fz, 0, -0.28, -0.28, 0, -0.46, -0.46, 0.048);
         } else if (isBunny) {
-          dEar = capsuleSDF(ax, fy, fz, 0.13, 0.6, 0.0, 0.18, 0.91, -0.02, 0.076);
-          dTail = ellipsoidSDF(fx, fy, fz, 0, -0.28, -0.27, 0.1, 0.1, 0.1);
-        } else if (isDinoOrDragon) {
-          dTail = capsuleSDF(fx, fy, fz, 0, -0.25, -0.2, 0, -0.36, -0.58, 0.115);
-          const c1 = ellipsoidSDF(fx, fy, fz, 0, 0.67, -0.05, 0.055, 0.09, 0.09);
-          const c2 = ellipsoidSDF(fx, fy, fz, 0, 0.5, -0.22, 0.055, 0.09, 0.09);
-          const c3 = ellipsoidSDF(fx, fy, fz, 0, 0.2, -0.28, 0.055, 0.09, 0.09);
-          const c4 = ellipsoidSDF(fx, fy, fz, 0, -0.08, -0.29, 0.055, 0.085, 0.085);
-          dCrest = Math.min(c1, c2, c3, c4);
+          // Extra-long tall Bunny ears + round cotton tail
+          dEar = capsuleSDF(ax, fy, fz, 0.13, 0.58, 0.0, 0.19, 0.96, -0.02, 0.078);
+          dTail = ellipsoidSDF(fx, fy, fz, 0, -0.28, -0.29, 0.115, 0.115, 0.115);
         } else if (isKittyOrCat) {
-          dEar = capsuleSDF(ax, fy, fz, 0.18, 0.58, 0.01, 0.26, 0.76, 0.01, 0.068);
-          dTail = capsuleSDF(fx, fy, fz, 0, -0.28, -0.23, 0.16, -0.04, -0.47, 0.058);
-        } else if (isLion) {
-          dEar = ellipsoidSDF(ax, fy, fz, 0.25, 0.63, 0.01, 0.1, 0.1, 0.065);
-          // Fluffy 3D Lion Mane ring around the head
-          dCrest = ellipsoidSDF(fx, fy, fz, 0, 0.41, -0.04, 0.4, 0.37, 0.24);
-          dTail = capsuleSDF(fx, fy, fz, 0, -0.28, -0.23, 0.14, -0.08, -0.48, 0.06);
+          // Sharp pointed triangular Kitty/Cat ears + high S-curved feline tail
+          const earBase = capsuleSDF(ax, fy, fz, 0.18, 0.54, 0.02, 0.31, 0.84, 0.02, 0.072);
+          const earTip = ellipsoidSDF(ax, fy, fz, 0.33, 0.87, 0.02, 0.042, 0.055, 0.042);
+          dEar = smin(earBase, earTip, 0.04);
+          const ct1 = capsuleSDF(fx, fy, fz, 0, -0.26, -0.22, 0.12, -0.04, -0.48, 0.056);
+          const ct2 = capsuleSDF(fx, fy, fz, 0.12, -0.04, -0.48, 0.22, 0.24, -0.45, 0.052);
+          dTail = smin(ct1, ct2, 0.04);
         } else if (isFloppyDog) {
-          // Soft droopy floppy Baby Dog ears hanging beside the cheeks + wagging puppy tail
-          dEar = capsuleSDF(ax, fy, fz, 0.26, 0.54, 0.02, 0.33, 0.23, 0.07, 0.082);
-          dTail = capsuleSDF(fx, fy, fz, 0, -0.25, -0.23, 0, -0.02, -0.5, 0.07);
+          // Long hanging floppy Baby Dog ears framing the cheeks + happy wagging puppy tail
+          dEar = capsuleSDF(ax, fy, fz, 0.28, 0.5, 0.04, 0.37, 0.12, 0.09, 0.088);
+          dTail = capsuleSDF(fx, fy, fz, 0, -0.24, -0.24, 0, 0.06, -0.54, 0.072);
         } else if (isPerkyDog) {
-          // Perky upright Baby Puppy ears + fluffy curved puppy tail
-          dEar = capsuleSDF(ax, fy, fz, 0.18, 0.57, 0.01, 0.25, 0.81, 0.02, 0.075);
-          dTail = capsuleSDF(fx, fy, fz, 0, -0.26, -0.23, 0.08, -0.03, -0.51, 0.082);
+          // Tall perky Corgi / Husky / Frenchie puppy ears + curled fluffy puppy tail
+          dEar = capsuleSDF(ax, fy, fz, 0.18, 0.56, 0.02, 0.28, 0.88, 0.03, 0.078);
+          dTail = capsuleSDF(fx, fy, fz, 0, -0.24, -0.24, 0.09, 0.05, -0.52, 0.085);
+        } else if (isLion) {
+          dEar = ellipsoidSDF(ax, fy, fz, 0.27, 0.66, 0.02, 0.095, 0.095, 0.065);
+          // Thick 3D Lion Mane collar framing the entire head
+          dCrest = ellipsoidSDF(fx, fy, fz, 0, 0.4, -0.04, 0.44, 0.41, 0.26);
+          dTail = capsuleSDF(fx, fy, fz, 0, -0.28, -0.24, 0.16, -0.06, -0.52, 0.06);
+        } else if (isDinoOrDragon) {
+          // Thick sweeping dinosaur/dragon tail + dorsal ridge plates
+          dTail = capsuleSDF(fx, fy, fz, 0, -0.24, -0.2, 0, -0.34, -0.64, 0.13);
+          const c1 = ellipsoidSDF(fx, fy, fz, 0, headY + 0.28, -0.05, 0.055, 0.095, 0.095);
+          const c2 = ellipsoidSDF(fx, fy, fz, 0, 0.48, -0.24, 0.055, 0.095, 0.095);
+          const c3 = ellipsoidSDF(fx, fy, fz, 0, 0.18, -0.3, 0.055, 0.095, 0.095);
+          const c4 = ellipsoidSDF(fx, fy, fz, 0, -0.1, -0.31, 0.055, 0.09, 0.09);
+          dCrest = Math.min(c1, c2, c3, c4);
         } else if (isBigSideEar) {
-          // Wide round side ears (Monkey, Koala, Mouse, Lemur) + curling tail
-          dEar = ellipsoidSDF(ax, fy, fz, 0.31, 0.47, 0.02, 0.135, 0.135, 0.068);
-          dTail = capsuleSDF(fx, fy, fz, 0, -0.28, -0.24, 0.18, 0.02, -0.5, 0.055);
+          // Huge round Monkey / Koala / Lemur / Mouse side ears
+          dEar = ellipsoidSDF(ax, fy, fz, 0.36, 0.46, 0.02, 0.165, 0.165, 0.07);
+          if (!idLow.includes('koala') && !idLow.includes('sloth') && !idLow.includes('hamster')) {
+            dTail = capsuleSDF(fx, fy, fz, 0, -0.28, -0.24, 0.22, 0.08, -0.54, 0.056);
+          }
         } else if (isBushyTail) {
-          dEar = capsuleSDF(ax, fy, fz, 0.18, 0.58, 0.01, 0.24, 0.74, 0.01, 0.068);
-          // Big bushy upright Squirrel / Raccoon / Kangaroo tail
-          dTail = ellipsoidSDF(fx, fy, fz, 0, -0.1, -0.37, 0.16, 0.28, 0.16);
-        } else if (isWideSnoutFarm) {
-          // Horizontal side farm/safari ears
-          dEar = capsuleSDF(ax, fy, fz, 0.22, 0.57, 0.0, 0.36, 0.54, -0.02, 0.065);
-          dTail = capsuleSDF(fx, fy, fz, 0, -0.28, -0.24, 0, -0.38, -0.44, 0.055);
-        } else {
-          // Teddy Bear, Panda, Polar Bear & Dolls: round ears + cute pom tail
-          dEar = ellipsoidSDF(ax, fy, fz, 0.24, 0.62, 0.01, 0.115, 0.115, 0.07);
-          dTail = ellipsoidSDF(fx, fy, fz, 0, -0.28, -0.27, 0.09, 0.09, 0.09);
+          dEar = capsuleSDF(ax, fy, fz, 0.18, 0.56, 0.01, 0.25, 0.78, 0.01, 0.07);
+          // Giant upright Squirrel / Red Panda / Raccoon plume tail
+          dTail = ellipsoidSDF(fx, fy, fz, 0, -0.04, -0.4, 0.18, 0.32, 0.18);
+        } else if (isChubbyHippoRhino || isEquineOrDeer || isLongNeck) {
+          // Outward-flicked farm & safari ears
+          dEar = capsuleSDF(ax, fy, fz, 0.21, headY + 0.17, 0.0, 0.37, headY + 0.15, -0.02, 0.068);
+          dTail = capsuleSDF(fx, fy, fz, 0, -0.28, -0.25, 0, -0.4, -0.46, 0.058);
+        } else if (!isBirdOrFrog && !isOctopus && !isMarineFin && !isTurtle) {
+          // Classic round Teddy Bear / Panda / Polar Bear ears + pom tail
+          dEar = ellipsoidSDF(ax, fy, fz, 0.25, 0.63, 0.01, 0.12, 0.12, 0.07);
+          dTail = ellipsoidSDF(fx, fy, fz, 0, -0.28, -0.28, 0.095, 0.095, 0.095);
         }
 
-        if (dEar < 10) dBody = smin(dBody, dEar, 0.065);
-        if (dTrunk < 10) dBody = smin(dBody, dTrunk, 0.06);
-        if (dTail < 10) dBody = smin(dBody, dTail, 0.085);
-        if (dCrest < 10) dBody = smin(dBody, dCrest, 0.06);
+        if (dEar < 10) dBody = smin(dBody, dEar, 0.05);
+        if (dTrunk < 10) dBody = smin(dBody, dTrunk, 0.05);
+        if (dTail < 10) dBody = smin(dBody, dTail, 0.065);
+        if (dCrest < 10) dBody = smin(dBody, dCrest, 0.05);
 
         const q = yOff + x;
         field[q] = -dBody * 100.0;
 
-        // Smooth Vertex Color Zones (Belly patch, Snout, Inner Ears, Cheeks, Paw Pads)
+        // 6. Species-Specific 3D Vertex Color Markings (Stripes, Spots, Patches, Masks & Tuxedos!)
         if (dBody < 0.12) {
           let r = colPrimary.r;
           let g = colPrimary.g;
           let b = colPrimary.b;
 
-          // Belly & Snout cream/pastel blend
           const bellyMask =
             fz > 0.08 && ax < 0.21 && fy > -0.35 && fy < 0.14
               ? Math.min(1, (0.21 - ax) * 7.5 * Math.min(1, (fz - 0.08) * 8))
@@ -1992,9 +2132,87 @@ function buildSeamlessSculptedPlushGeometry(
             b = b * (1 - secWeight) + colSecondary.b * secWeight;
           }
 
+          // A. Bold 3D Stripes for Tiger, Ginger Tabby, Zebra, Raccoon, Red Panda & Lemur
+          const isStriped =
+            idLow.includes('tiger') ||
+            idLow.includes('tabby') ||
+            idLow.includes('zebra') ||
+            idLow.includes('raccoon') ||
+            idLow.includes('red_panda') ||
+            idLow.includes('lemur');
+          if (isStriped && bellyMask < 0.35) {
+            const wave = Math.sin(fy * 26.0 + fz * 14.0);
+            if (wave > 0.42) {
+              const sw = Math.min(1, (wave - 0.42) * 3.0) * 0.85;
+              const stripeR = idLow.includes('tabby') ? 0.62 : 0.11;
+              const stripeG = idLow.includes('tabby') ? 0.24 : 0.11;
+              const stripeB = idLow.includes('tabby') ? 0.05 : 0.14;
+              r = r * (1 - sw) + stripeR * sw;
+              g = g * (1 - sw) + stripeG * sw;
+              b = b * (1 - sw) + stripeB * sw;
+            }
+          }
+
+          // B. Bold 3D Spots/Patches for Dalmatian, Giraffe, Cheetah, Snow Leopard, Calico Cat, Cow & Deer
+          const isSpotted =
+            idLow.includes('dalmatian') ||
+            idLow.includes('giraffe') ||
+            idLow.includes('cheetah') ||
+            idLow.includes('leopard') ||
+            idLow.includes('calico') ||
+            idLow.includes('cow') ||
+            idLow.includes('calf') ||
+            idLow.includes('deer') ||
+            idLow.includes('monster') ||
+            idLow.includes('frog');
+          if (isSpotted && bellyMask < 0.4 && dSnout > 0.03) {
+            const freq = idLow.includes('cow') || idLow.includes('calico') ? 9.5 : 15.5;
+            const sp = Math.sin(fx * freq) * Math.sin(fy * freq) * Math.sin(fz * freq);
+            if (sp > 0.26) {
+              const pw = Math.min(1, (sp - 0.26) * 4.0) * 0.88;
+              let spotR = colSecondary.r;
+              let spotG = colSecondary.g;
+              let spotB = colSecondary.b;
+              if (idLow.includes('dalmatian') || idLow.includes('cheetah') || idLow.includes('leopard')) {
+                spotR = 0.09;
+                spotG = 0.09;
+                spotB = 0.12;
+              } else if (idLow.includes('calico') && fx < 0) {
+                spotR = 0.15;
+                spotG = 0.15;
+                spotB = 0.18;
+              }
+              r = r * (1 - pw) + spotR * pw;
+              g = g * (1 - pw) + spotG * pw;
+              b = b * (1 - pw) + spotB * pw;
+            }
+          }
+
+          // C. Giant Panda & Penguin & Tuxedo/Siamese Cat & Pug/Husky/Raccoon Distinct Face/Limb Masks
+          if (idLow.includes('panda') && !idLow.includes('red_panda')) {
+            // Black Panda ears, arms, legs & shoulder band on snowy white body
+            if (dEar < 0.05 || ax > 0.24 || fy < -0.32 || (fy > 0.0 && fy < 0.16 && fz < 0.18)) {
+              r = 0.08;
+              g = 0.09;
+              b = 0.12;
+            }
+          } else if (
+            idLow.includes('siamese') ||
+            idLow.includes('pug') ||
+            idLow.includes('raccoon') ||
+            idLow.includes('sloth')
+          ) {
+            // Dark facial mask & ear tips
+            if ((fy > 0.26 && fy < 0.48 && fz > 0.16) || dEar < 0.04) {
+              r = r * 0.3 + colSecondary.r * 0.7;
+              g = g * 0.3 + colSecondary.g * 0.7;
+              b = b * 0.3 + colSecondary.b * 0.7;
+            }
+          }
+
           // Rosy Plush Cheek Blush
           const dCheekCenter = Math.sqrt(
-            (ax - 0.18) * (ax - 0.18) + (fy - 0.33) * (fy - 0.33) + (fz - 0.22) * (fz - 0.22)
+            (ax - 0.18) * (ax - 0.18) + (fy - (headY - 0.05)) * (fy - (headY - 0.05)) + (fz - 0.22) * (fz - 0.22)
           );
           if (dCheekCenter < 0.095) {
             const cw = (1 - dCheekCenter / 0.095) * 0.55;
@@ -2005,9 +2223,9 @@ function buildSeamlessSculptedPlushGeometry(
 
           // Soft Paw & Foot Pads
           if ((dPaw < 0.03 || dFoot < 0.03) && fz > 0.1) {
-            r = r * 0.4 + colPaw.r * 0.6;
-            g = g * 0.4 + colPaw.g * 0.6;
-            b = b * 0.4 + colPaw.b * 0.6;
+            r = r * 0.35 + colPaw.r * 0.65;
+            g = g * 0.35 + colPaw.g * 0.65;
+            b = b * 0.35 + colPaw.b * 0.65;
           }
 
           const q3 = q * 3;
@@ -2022,7 +2240,7 @@ function buildSeamlessSculptedPlushGeometry(
   mc.update();
 
   // Weld coincident MarchingCubes vertices into an indexed topology and apply
-  // 5 passes of Taubin/Laplacian surface smoothing (zero shrinkage, Pixar-smooth skin)
+  // 3 gentle passes of Taubin surface relaxation so sculpted ears, trunks, and tails stay crisp
   const rawTriVertCount = mc.count;
   const srcPos = mc.geometry.getAttribute('position').array as Float32Array;
   const srcCol = mc.geometry.getAttribute('color').array as Float32Array;
@@ -2073,7 +2291,7 @@ function buildSeamlessSculptedPlushGeometry(
   }
 
   const tmpPos = new Float32Array(posArr.length);
-  const taubinFactors = [0.46, -0.48, 0.46, -0.48, 0.42, -0.44, 0.35];
+  const taubinFactors = [0.38, -0.4, 0.28];
   for (const factor of taubinFactors) {
     for (let u = 0; u < numUnique; u++) {
       const nbrs = adj[u];
@@ -3680,58 +3898,21 @@ function attachPlushFacialDetailsToHeadBone(
   jawBone: THREE.Bone,
   chestBone: THREE.Bone,
   archetype: ToyArchetypeId,
+  primaryHex = '#f59e0b',
   secondaryHex = '#fef08a'
 ): THREE.Object3D[] {
   const idLow = archetype.toLowerCase();
 
-  // For Baby Panda, attach dark velvet eye patches right behind the glossy eyes
-  if (idLow.includes('panda') && !idLow.includes('red_panda')) {
-    const patchGeo = new THREE.SphereGeometry(0.115, 18, 18);
-    patchGeo.scale(1.15, 1.25, 0.45);
-    const patchMat = new THREE.MeshStandardMaterial({ color: '#0f172a', roughness: 0.7 });
-    [-0.175, 0.175].forEach((px) => {
-      const patch = new THREE.Mesh(patchGeo, patchMat);
-      patch.position.set(px, 0.16, 0.31);
-      patch.rotation.z = px < 0 ? 0.25 : -0.25;
-      headBone.add(patch);
-    });
-  }
-
-  const eyeWhiteGeo = new THREE.SphereGeometry(0.088, 24, 24);
-  eyeWhiteGeo.scale(1, 1.12, 0.65);
-  const eyeWhiteMat = new THREE.MeshPhysicalMaterial({
-    color: '#ffffff',
-    roughness: 0.12,
-    clearcoat: 1.0,
-  });
-
-  const pupilGeo = new THREE.SphereGeometry(0.062, 24, 24);
-  pupilGeo.scale(1, 1.12, 0.72);
-  const pupilMat = new THREE.MeshPhysicalMaterial({
-    color: '#0f172a',
-    roughness: 0.05,
-    clearcoat: 1.0,
-  });
-
-  const sparkGeo = new THREE.SphereGeometry(0.022, 16, 16);
-  const sparkMat = new THREE.MeshBasicMaterial({ color: '#ffffff' });
-
-  const eyeGroups: THREE.Object3D[] = [];
-  [-0.175, 0.175].forEach((ex) => {
-    const eyeGrp = new THREE.Group();
-    eyeGrp.position.set(ex, 0.16, 0.34);
-
-    const ew = new THREE.Mesh(eyeWhiteGeo, eyeWhiteMat);
-    const pupil = new THREE.Mesh(pupilGeo, pupilMat);
-    pupil.position.set(0, 0, 0.035);
-
-    const spark = new THREE.Mesh(sparkGeo, sparkMat);
-    spark.position.set(0.022, 0.03, 0.08);
-
-    eyeGrp.add(ew, pupil, spark);
-    headBone.add(eyeGrp);
-    eyeGroups.push(eyeGrp);
-  });
+  // NOTE ON SCALE: MarchingCubes vertices are multiplied by scaleFactor = 1.42!
+  // Relative to headBone (at y=0.44, z=0.02):
+  //   - Front face surface is z = +0.36 to +0.42
+  //   - Snout tip is z = +0.52 to +0.64
+  //   - Top of head is y = +0.50 to +0.56
+  //   - Sides of head are x = ±0.42 to ±0.46
+  // Relative to chestBone (at y=0.22, z=0):
+  //   - Neck collar ring is y = +0.18, radius = 0.36
+  //   - Front belly surface is z = +0.38 to +0.44
+  //   - Back spine surface is z = -0.36 to -0.40
 
   const isBeaked =
     idLow.includes('penguin') ||
@@ -3762,183 +3943,440 @@ function attachPlushFacialDetailsToHeadBone(
     idLow.includes('bernese') ||
     idLow.includes('samoyed') ||
     idLow.includes('heeler');
+  const isFloppyDog =
+    idLow.includes('golden') ||
+    idLow.includes('dalmatian') ||
+    idLow.includes('pug') ||
+    idLow.includes('poodle') ||
+    idLow.includes('beagle') ||
+    idLow.includes('dachshund') ||
+    idLow.includes('bernese');
   const isElephant = idLow.includes('elephant') || idLow.includes('mammoth');
   const isPiglet = idLow.includes('piglet');
   const isRudolph = idLow.includes('reindeer') || idLow.includes('rudolph');
+  const isFrog = idLow.includes('frog');
+  const isOwl = idLow.includes('owl');
+  const isPenguin = idLow.includes('penguin');
+  const isMonster = idLow.includes('monster');
 
-  // 1. Nose or Beak
-  if (isBeaked) {
-    const beakGeo = new THREE.ConeGeometry(0.085, 0.22, 20);
-    const beakMat = new THREE.MeshPhysicalMaterial({
-      color: '#f59e0b',
+  // Eye patches for Giant Panda, Raccoon, Bandit & Owl facial discs
+  if (idLow.includes('panda') && !idLow.includes('red_panda')) {
+    const patchGeo = new THREE.SphereGeometry(0.135, 18, 18);
+    patchGeo.scale(1.15, 1.3, 0.45);
+    const patchMat = new THREE.MeshStandardMaterial({ color: '#0f172a', roughness: 0.65 });
+    [-0.19, 0.19].forEach((px) => {
+      const patch = new THREE.Mesh(patchGeo, patchMat);
+      patch.position.set(px, 0.16, 0.35);
+      patch.rotation.z = px < 0 ? 0.28 : -0.28;
+      headBone.add(patch);
+    });
+  } else if (isOwl) {
+    const discGeo = new THREE.CylinderGeometry(0.16, 0.16, 0.04, 24);
+    const discMat = new THREE.MeshStandardMaterial({ color: secondaryHex, roughness: 0.5 });
+    [-0.18, 0.18].forEach((ox) => {
+      const disc = new THREE.Mesh(discGeo, discMat);
+      disc.rotation.x = Math.PI * 0.5;
+      disc.position.set(ox, 0.17, 0.36);
+      headBone.add(disc);
+    });
+  } else if (idLow.includes('raccoon')) {
+    const maskGeo = new THREE.BoxGeometry(0.62, 0.18, 0.14);
+    const maskMat = new THREE.MeshStandardMaterial({ color: '#1e293b', roughness: 0.6 });
+    const mask = new THREE.Mesh(maskGeo, maskMat);
+    mask.position.set(0, 0.16, 0.33);
+    headBone.add(mask);
+  }
+
+  // Glossy 3D Eyes (Frog has giant top-mounted amphibious eye domes; Monster has 3 eyes!)
+  const eyeScale = isOwl ? 1.32 : isFrog ? 1.25 : 1.0;
+  const eyeWhiteGeo = new THREE.SphereGeometry(0.095 * eyeScale, 24, 24);
+  eyeWhiteGeo.scale(1, 1.12, 0.68);
+  const eyeWhiteMat = new THREE.MeshPhysicalMaterial({
+    color: '#ffffff',
+    roughness: 0.1,
+    clearcoat: 1.0,
+  });
+
+  const pupilGeo = new THREE.SphereGeometry(0.068 * eyeScale, 24, 24);
+  pupilGeo.scale(isKittyOrCat ? 0.72 : 1, 1.15, 0.75);
+  const pupilMat = new THREE.MeshPhysicalMaterial({
+    color: idLow.includes('husky') || idLow.includes('siamese') ? '#0284c7' : '#0f172a',
+    roughness: 0.05,
+    clearcoat: 1.0,
+  });
+
+  const sparkGeo = new THREE.SphereGeometry(0.025 * eyeScale, 16, 16);
+  const sparkMat = new THREE.MeshBasicMaterial({ color: '#ffffff' });
+
+  const eyeGroups: THREE.Object3D[] = [];
+  const eyePositions: [number, number, number][] = isFrog
+    ? [
+        [-0.22, 0.46, 0.24],
+        [0.22, 0.46, 0.24],
+      ]
+    : isMonster
+    ? [
+        [-0.21, 0.17, 0.38],
+        [0, 0.31, 0.39],
+        [0.21, 0.17, 0.38],
+      ]
+    : [
+        [-0.19, 0.17, 0.39],
+        [0.19, 0.17, 0.39],
+      ];
+
+  if (isFrog) {
+    const domeGeo = new THREE.SphereGeometry(0.15, 20, 20);
+    const domeMat = new THREE.MeshStandardMaterial({ color: primaryHex, roughness: 0.45 });
+    [-0.22, 0.22].forEach((fx) => {
+      const dome = new THREE.Mesh(domeGeo, domeMat);
+      dome.position.set(fx, 0.44, 0.18);
+      headBone.add(dome);
+    });
+  }
+
+  eyePositions.forEach(([ex, ey, ez]) => {
+    const eyeGrp = new THREE.Group();
+    eyeGrp.position.set(ex, ey, ez);
+
+    const ew = new THREE.Mesh(eyeWhiteGeo, eyeWhiteMat);
+    const pupil = new THREE.Mesh(pupilGeo, pupilMat);
+    pupil.position.set(0, 0, 0.038 * eyeScale);
+
+    const spark = new THREE.Mesh(sparkGeo, sparkMat);
+    spark.position.set(0.024 * eyeScale, 0.032 * eyeScale, 0.085 * eyeScale);
+
+    eyeGrp.add(ew, pupil, spark);
+    headBone.add(eyeGrp);
+    eyeGroups.push(eyeGrp);
+  });
+
+  // ==========================================================================
+  // 1. DISTINCT EXTERIOR 3D EARS, SNOUTS, TRUNKS, TUSKS & NOSES BY SPECIES
+  // ==========================================================================
+  if (isElephant) {
+    // Giant Unmistakable Exterior 3D Fan Ears + Articulated Multi-Ring 3D Elephant Trunk + Ivory Tusks!
+    const outerEarGeo = new THREE.SphereGeometry(0.38, 24, 24);
+    outerEarGeo.scale(0.95, 1.25, 0.22);
+    const outerEarMat = new THREE.MeshStandardMaterial({ color: primaryHex, roughness: 0.55 });
+
+    const innerEarGeo = new THREE.SphereGeometry(0.29, 20, 20);
+    innerEarGeo.scale(0.9, 1.18, 0.18);
+    const innerEarMat = new THREE.MeshStandardMaterial({ color: secondaryHex, roughness: 0.5 });
+
+    [-1, 1].forEach((side) => {
+      const earGroup = new THREE.Group();
+      earGroup.position.set(side * 0.54, 0.18, -0.02);
+      earGroup.rotation.y = side * -0.28;
+      earGroup.rotation.z = side * -0.12;
+      const outer = new THREE.Mesh(outerEarGeo, outerEarMat);
+      const inner = new THREE.Mesh(innerEarGeo, innerEarMat);
+      inner.position.set(0, -0.02, 0.045);
+      earGroup.add(outer, inner);
+      headBone.add(earGroup);
+    });
+
+    // 5-Segment Curved 3D Elephant Trunk extending clearly in front of the face!
+    const trunkMat = new THREE.MeshStandardMaterial({ color: primaryHex, roughness: 0.5 });
+    const trunkSegments: [number, number, number, number][] = [
+      [0, 0.06, 0.44, 0.135],
+      [0, -0.06, 0.58, 0.118],
+      [0, -0.16, 0.7, 0.102],
+      [0, -0.14, 0.82, 0.09],
+      [0, -0.02, 0.9, 0.082],
+    ];
+    trunkSegments.forEach(([tx, ty, tz, tr]) => {
+      const seg = new THREE.Mesh(new THREE.SphereGeometry(tr, 20, 20), trunkMat);
+      seg.scale.set(1.0, 0.95, 1.25);
+      seg.position.set(tx, ty, tz);
+      headBone.add(seg);
+    });
+    // Pink nostrils at tip of trunk
+    const tipDisk = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.065, 0.065, 0.03, 18),
+      new THREE.MeshStandardMaterial({ color: '#fda4af', roughness: 0.4 })
+    );
+    tipDisk.position.set(0, 0.03, 0.94);
+    tipDisk.rotation.x = Math.PI * 0.25;
+    headBone.add(tipDisk);
+
+    // 2 Prominent Curved Ivory Tusks!
+    const tuskLen = idLow.includes('mammoth') ? 0.38 : 0.24;
+    const tuskGeo = new THREE.ConeGeometry(0.048, tuskLen, 18);
+    const tuskMat = new THREE.MeshPhysicalMaterial({
+      color: '#fffbeb',
+      roughness: 0.18,
+      clearcoat: 0.9,
+    });
+    [-0.17, 0.17].forEach((tx) => {
+      const tusk = new THREE.Mesh(tuskGeo, tuskMat);
+      tusk.position.set(tx, -0.04, 0.54);
+      tusk.rotation.x = Math.PI * 0.36;
+      tusk.rotation.z = tx < 0 ? 0.24 : -0.24;
+      headBone.add(tusk);
+    });
+  } else if (isKittyOrCat && !idLow.includes('lion')) {
+    // Sharp Tall 3D Triangular Kitty/Cat Ears + Pink Inner Triangles + Plump Whisker Pads + Pink Triangle Nose!
+    const catEarOuterGeo = new THREE.ConeGeometry(0.18, 0.38, 4);
+    const catEarOuterMat = new THREE.MeshStandardMaterial({ color: primaryHex, roughness: 0.5 });
+    const catEarInnerGeo = new THREE.ConeGeometry(0.11, 0.26, 4);
+    const catEarInnerMat = new THREE.MeshStandardMaterial({ color: '#fda4af', roughness: 0.4 });
+
+    [-1, 1].forEach((side) => {
+      const earGrp = new THREE.Group();
+      earGrp.position.set(side * 0.28, 0.54, 0.04);
+      earGrp.rotation.z = side * -0.32;
+      earGrp.rotation.y = side * 0.25 + Math.PI * 0.25;
+      const outer = new THREE.Mesh(catEarOuterGeo, catEarOuterMat);
+      const inner = new THREE.Mesh(catEarInnerGeo, catEarInnerMat);
+      inner.position.set(0.02, -0.02, 0.035);
+      earGrp.add(outer, inner);
+      headBone.add(earGrp);
+    });
+
+    // Twin Plump White/Cream Cat Whisker Muzzle Puffs (ω shape)
+    const padGeo = new THREE.SphereGeometry(0.11, 18, 18);
+    padGeo.scale(1.15, 0.88, 0.95);
+    const padMat = new THREE.MeshStandardMaterial({ color: '#ffffff', roughness: 0.45 });
+    [-0.085, 0.085].forEach((px) => {
+      const pad = new THREE.Mesh(padGeo, padMat);
+      pad.position.set(px, 0.01, 0.46);
+      headBone.add(pad);
+    });
+
+    // Cute Pink 3D Triangle Kitty Nose
+    const catNoseGeo = new THREE.ConeGeometry(0.068, 0.075, 3);
+    const catNoseMat = new THREE.MeshPhysicalMaterial({
+      color: '#f43f5e',
       roughness: 0.25,
       clearcoat: 0.8,
     });
+    const catNose = new THREE.Mesh(catNoseGeo, catNoseMat);
+    catNose.rotation.z = Math.PI;
+    catNose.rotation.x = Math.PI * 0.15;
+    catNose.position.set(0, 0.07, 0.55);
+    headBone.add(catNose);
+  } else if (isDogOrPuppy) {
+    // Distinct 3D Canine Muzzle Box + Big Glossy Black Dog Nose + Long Floppy OR Perky Puppy Ears!
+    const muzzleLen = idLow.includes('pug') || idLow.includes('frenchie') ? 0.16 : 0.26;
+    const muzzleGeo = new THREE.SphereGeometry(0.18, 22, 22);
+    muzzleGeo.scale(1.15, 0.85, muzzleLen / 0.16);
+    const muzzleColor =
+      idLow.includes('pug') || idLow.includes('german') ? '#1e293b' : secondaryHex;
+    const muzzleMat = new THREE.MeshStandardMaterial({ color: muzzleColor, roughness: 0.5 });
+    const muzzle = new THREE.Mesh(muzzleGeo, muzzleMat);
+    muzzle.position.set(0, 0.02, 0.44);
+    headBone.add(muzzle);
+
+    // Big Glossy Black 3D Dog Nose at the front tip of the muzzle!
+    const dogNoseGeo = new THREE.SphereGeometry(0.085, 22, 22);
+    dogNoseGeo.scale(1.3, 0.95, 0.9);
+    const dogNoseMat = new THREE.MeshPhysicalMaterial({
+      color: '#0f172a',
+      roughness: 0.12,
+      clearcoat: 1.0,
+    });
+    const dogNose = new THREE.Mesh(dogNoseGeo, dogNoseMat);
+    dogNose.position.set(0, 0.08, 0.46 + muzzleLen * 0.65);
+    headBone.add(dogNose);
+
+    // Breed-Specific Exterior 3D Dog Ears!
+    const earColor =
+      idLow.includes('dalmatian') || idLow.includes('beagle') || idLow.includes('bernese')
+        ? '#1e293b'
+        : primaryHex;
+    const dogEarMat = new THREE.MeshStandardMaterial({ color: earColor, roughness: 0.55 });
+
+    if (isFloppyDog) {
+      // Long Droopy Floppy Puppy Ears hanging down the sides of the head
+      const flopGeo = new THREE.CapsuleGeometry(0.11, 0.34, 12, 18);
+      flopGeo.scale(0.65, 1.0, 1.15);
+      [-1, 1].forEach((side) => {
+        const ear = new THREE.Mesh(flopGeo, dogEarMat);
+        ear.position.set(side * 0.42, 0.12, 0.08);
+        ear.rotation.z = side * 0.18;
+        ear.rotation.x = 0.15;
+        headBone.add(ear);
+      });
+    } else {
+      // Tall Perky Corgi / Husky / Frenchie / Shiba / Puppy Ears!
+      const perkGeo = new THREE.ConeGeometry(0.16, 0.4, 16);
+      perkGeo.scale(1.0, 1.0, 0.55);
+      const innerPerkGeo = new THREE.ConeGeometry(0.1, 0.28, 14);
+      innerPerkGeo.scale(1.0, 1.0, 0.4);
+      const innerPerkMat = new THREE.MeshStandardMaterial({ color: '#fda4af', roughness: 0.45 });
+      [-1, 1].forEach((side) => {
+        const earGrp = new THREE.Group();
+        earGrp.position.set(side * 0.27, 0.56, 0.04);
+        earGrp.rotation.z = side * -0.25;
+        const outer = new THREE.Mesh(perkGeo, dogEarMat);
+        const inner = new THREE.Mesh(innerPerkGeo, innerPerkMat);
+        inner.position.set(0, -0.02, 0.045);
+        earGrp.add(outer, inner);
+        headBone.add(earGrp);
+      });
+    }
+
+    // Poodle Fluffy 3D Pom-Pom Crown & Ear Puffs!
+    if (idLow.includes('poodle')) {
+      const pomMat = new THREE.MeshStandardMaterial({ color: secondaryHex, roughness: 0.65 });
+      const topPom = new THREE.Mesh(new THREE.SphereGeometry(0.22, 18, 18), pomMat);
+      topPom.position.set(0, 0.54, 0.05);
+      headBone.add(topPom);
+    }
+  } else if (isBeaked) {
+    // Large Bright Orange/Gold 3D Bird Beak
+    const beakGeo = new THREE.ConeGeometry(0.12, 0.28, 22);
+    const beakMat = new THREE.MeshPhysicalMaterial({
+      color: '#f59e0b',
+      roughness: 0.2,
+      clearcoat: 0.85,
+    });
     const beak = new THREE.Mesh(beakGeo, beakMat);
     beak.rotation.x = Math.PI * 0.5;
-    beak.position.set(0, 0.08, 0.52);
+    beak.position.set(0, 0.08, 0.54);
     headBone.add(beak);
   } else if (isPiglet) {
-    const snoutDiskGeo = new THREE.CylinderGeometry(0.11, 0.11, 0.06, 24);
-    const snoutDiskMat = new THREE.MeshStandardMaterial({ color: '#fb7185', roughness: 0.4 });
+    // Iconic Flat Pink 3D Piglet Snout Disk + Twin Nostrils
+    const snoutDiskGeo = new THREE.CylinderGeometry(0.16, 0.16, 0.1, 24);
+    const snoutDiskMat = new THREE.MeshStandardMaterial({ color: '#fb7185', roughness: 0.35 });
     const snoutDisk = new THREE.Mesh(snoutDiskGeo, snoutDiskMat);
     snoutDisk.rotation.x = Math.PI * 0.5;
-    snoutDisk.position.set(0, 0.08, 0.5);
+    snoutDisk.position.set(0, 0.06, 0.54);
     headBone.add(snoutDisk);
-    const nostrilGeo = new THREE.SphereGeometry(0.022, 12, 12);
+    const nostrilGeo = new THREE.SphereGeometry(0.032, 12, 12);
     const nostrilMat = new THREE.MeshBasicMaterial({ color: '#881337' });
-    [-0.04, 0.04].forEach((nx) => {
+    [-0.055, 0.055].forEach((nx) => {
       const n = new THREE.Mesh(nostrilGeo, nostrilMat);
-      n.position.set(nx, 0.08, 0.53);
+      n.position.set(nx, 0.06, 0.59);
       headBone.add(n);
     });
-  } else if (!isElephant) {
-    const noseGeo = new THREE.SphereGeometry(isRudolph ? 0.085 : 0.068, 24, 24);
-    noseGeo.scale(1.3, 0.88, 0.85);
+  } else {
+    // Classic Velvet Plush Nose on exterior snout surface
+    const noseGeo = new THREE.SphereGeometry(isRudolph ? 0.1 : 0.082, 24, 24);
+    noseGeo.scale(1.3, 0.9, 0.9);
     const noseColor = isRudolph
       ? '#ef4444'
-      : isKittyOrCat || idLow.includes('bunny') || idLow.includes('mouse') || idLow.includes('hamster')
+      : idLow.includes('bunny') || idLow.includes('mouse') || idLow.includes('hamster')
       ? '#f43f5e'
       : '#291509';
     const noseMat = new THREE.MeshPhysicalMaterial({
       color: noseColor,
       emissive: isRudolph ? new THREE.Color('#dc2626') : new THREE.Color('#000000'),
-      emissiveIntensity: isRudolph ? 0.45 : 0,
-      roughness: 0.3,
+      emissiveIntensity: isRudolph ? 0.55 : 0,
+      roughness: 0.25,
       sheen: 0.8,
     });
     const nose = new THREE.Mesh(noseGeo, noseMat);
-    nose.position.set(0, 0.08, idLow.includes('dino') || idLow.includes('dragon') ? 0.56 : 0.49);
+    nose.position.set(0, 0.08, idLow.includes('dino') || idLow.includes('dragon') ? 0.64 : 0.56);
     headBone.add(nose);
   }
 
-  // 2. 6 3D Whiskers for Kitties, Cats, Big Cats, Mice, Hamsters, Seals & Bunnies
+  // ==========================================================================
+  // 2. LONG EXTERIOR 3D WHISKERS (Kitties, Cats, Big Cats, Bunnies, Mice, Seals)
+  // ==========================================================================
   if (
     isKittyOrCat ||
     idLow.includes('bunny') ||
     idLow.includes('mouse') ||
     idLow.includes('hamster') ||
-    idLow.includes('seal')
+    idLow.includes('seal') ||
+    idLow.includes('otter')
   ) {
-    const whiskerGeo = new THREE.CylinderGeometry(0.006, 0.004, 0.24, 8);
-    const whiskerMat = new THREE.MeshStandardMaterial({ color: '#f8fafc', roughness: 0.3 });
+    const whiskerGeo = new THREE.CylinderGeometry(0.008, 0.005, 0.34, 8);
+    const whiskerMat = new THREE.MeshStandardMaterial({ color: '#ffffff', roughness: 0.2 });
     [-1, 1].forEach((side) => {
-      [-0.14, 0, 0.14].forEach((angleOffset, idx) => {
+      [-0.16, 0, 0.16].forEach((angleOffset, idx) => {
         const w = new THREE.Mesh(whiskerGeo, whiskerMat);
-        w.position.set(side * 0.25, 0.04 + (idx - 1) * 0.032, 0.38);
+        w.position.set(side * 0.42, 0.02 + (idx - 1) * 0.04, 0.44);
         w.rotation.z = side * (Math.PI * 0.5 + angleOffset);
-        w.rotation.y = side * -0.22;
+        w.rotation.y = side * -0.18;
         headBone.add(w);
       });
     });
   }
 
-  // 3. Baby Elephant & Mammoth 3D Ivory Tusks
-  if (isElephant) {
-    const tuskGeo = new THREE.ConeGeometry(0.034, 0.18, 16);
-    const tuskMat = new THREE.MeshPhysicalMaterial({
-      color: '#fffbeb',
-      roughness: 0.2,
-      clearcoat: 0.9,
-    });
-    [-0.12, 0.12].forEach((tx) => {
-      const tusk = new THREE.Mesh(tuskGeo, tuskMat);
-      tusk.position.set(tx, -0.02, 0.44);
-      tusk.rotation.x = Math.PI * 0.38;
-      tusk.rotation.z = tx < 0 ? 0.2 : -0.2;
-      headBone.add(tusk);
-    });
+  // ==========================================================================
+  // 3. LION MANE RING, GIRAFFE OSSICONES, DEER ANTLERS, DINO FRILLS & HORNS
+  // ==========================================================================
+  if (idLow.includes('lion') || idLow.includes('griffin')) {
+    // 14-Petal Fluffy 3D Lion Mane Ring framing the entire head!
+    const manePetalGeo = new THREE.SphereGeometry(0.17, 16, 16);
+    const maneMat = new THREE.MeshStandardMaterial({ color: secondaryHex, roughness: 0.65 });
+    for (let m = 0; m < 14; m++) {
+      const ang = (m / 14) * Math.PI * 2;
+      const petal = new THREE.Mesh(manePetalGeo, maneMat);
+      petal.position.set(Math.cos(ang) * 0.46, 0.18 + Math.sin(ang) * 0.44, -0.02);
+      headBone.add(petal);
+    }
   }
 
-  // 4. Baby Dog & Puppy Happy Pink Tongue + Collar & Golden Tag
-  if (isDogOrPuppy) {
-    const tongueGeo = new THREE.SphereGeometry(0.055, 16, 16);
-    tongueGeo.scale(1.1, 0.35, 1.45);
-    const tongueMat = new THREE.MeshStandardMaterial({ color: '#fb7185', roughness: 0.35 });
-    const tongue = new THREE.Mesh(tongueGeo, tongueMat);
-    tongue.position.set(0, -0.075, 0.25);
-    tongue.rotation.x = 0.35;
-    jawBone.add(tongue);
-  }
-
-  if (isDogOrPuppy || isKittyOrCat || idLow.includes('cow') || idLow.includes('calf')) {
-    const collarGeo = new THREE.TorusGeometry(0.24, 0.028, 14, 32);
-    const collarMat = new THREE.MeshStandardMaterial({
-      color: isKittyOrCat ? '#ec4899' : '#ef4444',
-      roughness: 0.35,
-    });
-    const collar = new THREE.Mesh(collarGeo, collarMat);
-    collar.rotation.x = Math.PI * 0.52;
-    collar.position.set(0, 0.22, 0.03);
-    chestBone.add(collar);
-
-    const bellGeo = new THREE.SphereGeometry(0.048, 16, 16);
-    const bellMat = new THREE.MeshStandardMaterial({
-      color: '#facc15',
-      metalness: 0.75,
-      roughness: 0.2,
-    });
-    const bell = new THREE.Mesh(bellGeo, bellMat);
-    bell.position.set(0, 0.19, 0.28);
-    chestBone.add(bell);
-  }
-
-  // 5. 3D Horns, Ossicones, Antlers, Spiral Unicorn Horns & Crowns on Head
   if (
     idLow.includes('unicorn') ||
     idLow.includes('alicorn') ||
     idLow.includes('narwhal')
   ) {
-    const hornGeo = new THREE.ConeGeometry(0.068, 0.36, 20);
+    const hornGeo = new THREE.ConeGeometry(0.085, 0.48, 24);
     const hornMat = new THREE.MeshPhysicalMaterial({
       color: '#facc15',
-      roughness: 0.15,
+      roughness: 0.12,
       metalness: 0.65,
       clearcoat: 1.0,
     });
     const horn = new THREE.Mesh(hornGeo, hornMat);
-    horn.position.set(0, 0.45, 0.25);
+    horn.position.set(0, 0.62, 0.28);
     horn.rotation.x = 0.42;
     headBone.add(horn);
   } else if (idLow.includes('giraffe')) {
-    const stalkGeo = new THREE.CylinderGeometry(0.028, 0.032, 0.22, 12);
-    const stalkMat = new THREE.MeshStandardMaterial({ color: '#facc15', roughness: 0.5 });
-    const tipGeo = new THREE.SphereGeometry(0.052, 14, 14);
-    const tipMat = new THREE.MeshStandardMaterial({ color: '#78350f', roughness: 0.6 });
-    [-0.12, 0.12].forEach((gx) => {
+    const stalkGeo = new THREE.CylinderGeometry(0.036, 0.042, 0.28, 14);
+    const stalkMat = new THREE.MeshStandardMaterial({ color: primaryHex, roughness: 0.45 });
+    const tipGeo = new THREE.SphereGeometry(0.068, 16, 16);
+    const tipMat = new THREE.MeshStandardMaterial({ color: '#78350f', roughness: 0.55 });
+    [-0.15, 0.15].forEach((gx) => {
       const stalk = new THREE.Mesh(stalkGeo, stalkMat);
-      stalk.position.set(gx, 0.48, 0.02);
+      stalk.position.set(gx, 0.62, 0.04);
       const tip = new THREE.Mesh(tipGeo, tipMat);
-      tip.position.set(gx, 0.6, 0.02);
+      tip.position.set(gx, 0.77, 0.04);
       headBone.add(stalk, tip);
     });
   } else if (idLow.includes('deer') || idLow.includes('reindeer')) {
-    const antlerMat = new THREE.MeshStandardMaterial({ color: '#fde68a', roughness: 0.45 });
-    const mainBranchGeo = new THREE.CylinderGeometry(0.022, 0.03, 0.28, 12);
-    const subBranchGeo = new THREE.CylinderGeometry(0.016, 0.022, 0.14, 10);
+    const antlerMat = new THREE.MeshStandardMaterial({ color: '#fde68a', roughness: 0.4 });
+    const mainBranchGeo = new THREE.CylinderGeometry(0.028, 0.038, 0.38, 12);
+    const subBranchGeo = new THREE.CylinderGeometry(0.02, 0.028, 0.2, 10);
     [-1, 1].forEach((side) => {
       const b1 = new THREE.Mesh(mainBranchGeo, antlerMat);
-      b1.position.set(side * 0.16, 0.5, 0.0);
-      b1.rotation.z = side * -0.32;
+      b1.position.set(side * 0.22, 0.64, 0.02);
+      b1.rotation.z = side * -0.35;
       const b2 = new THREE.Mesh(subBranchGeo, antlerMat);
-      b2.position.set(side * 0.22, 0.56, 0.04);
-      b2.rotation.z = side * -0.78;
-      headBone.add(b1, b2);
+      b2.position.set(side * 0.32, 0.7, 0.05);
+      b2.rotation.z = side * -0.85;
+      const b3 = new THREE.Mesh(subBranchGeo, antlerMat);
+      b3.position.set(side * 0.18, 0.76, 0.05);
+      b3.rotation.z = side * 0.35;
+      headBone.add(b1, b2, b3);
     });
   } else if (idLow.includes('triceratops') || idLow.includes('rhino')) {
-    const hornMat = new THREE.MeshStandardMaterial({ color: '#fef3c7', roughness: 0.3 });
-    const noseHornGeo = new THREE.ConeGeometry(0.048, 0.16, 16);
+    const hornMat = new THREE.MeshStandardMaterial({ color: '#fef3c7', roughness: 0.25 });
+    const noseHornGeo = new THREE.ConeGeometry(0.065, 0.24, 18);
     const noseHorn = new THREE.Mesh(noseHornGeo, hornMat);
-    noseHorn.position.set(0, 0.17, 0.48);
-    noseHorn.rotation.x = 0.5;
+    noseHorn.position.set(0, 0.2, 0.58);
+    noseHorn.rotation.x = 0.55;
     headBone.add(noseHorn);
     if (idLow.includes('triceratops')) {
-      const browHornGeo = new THREE.ConeGeometry(0.04, 0.22, 16);
-      [-0.14, 0.14].forEach((bx) => {
+      // Wide Sculpted Triceratops Crown Shield Frill + 2 Long Brow Horns!
+      const frillGeo = new THREE.CylinderGeometry(0.52, 0.42, 0.08, 24);
+      const frillMat = new THREE.MeshStandardMaterial({ color: secondaryHex, roughness: 0.45 });
+      const frill = new THREE.Mesh(frillGeo, frillMat);
+      frill.rotation.x = Math.PI * 0.38;
+      frill.position.set(0, 0.38, -0.14);
+      headBone.add(frill);
+
+      const browHornGeo = new THREE.ConeGeometry(0.052, 0.32, 16);
+      [-0.18, 0.18].forEach((bx) => {
         const bh = new THREE.Mesh(browHornGeo, hornMat);
-        bh.position.set(bx, 0.36, 0.26);
-        bh.rotation.x = 0.45;
-        bh.rotation.z = bx < 0 ? 0.2 : -0.2;
+        bh.position.set(bx, 0.44, 0.34);
+        bh.rotation.x = 0.48;
+        bh.rotation.z = bx < 0 ? 0.22 : -0.22;
         headBone.add(bh);
       });
     }
@@ -3946,46 +4384,145 @@ function attachPlushFacialDetailsToHeadBone(
     idLow.includes('cow') ||
     idLow.includes('calf') ||
     idLow.includes('goat') ||
-    idLow.includes('monster')
+    idLow.includes('dragon') ||
+    isMonster
   ) {
-    const budGeo = new THREE.ConeGeometry(0.045, 0.16, 14);
-    const budMat = new THREE.MeshStandardMaterial({ color: secondaryHex, roughness: 0.35 });
-    [-0.16, 0.16].forEach((bx) => {
+    const budGeo = new THREE.ConeGeometry(0.06, 0.24, 16);
+    const budMat = new THREE.MeshStandardMaterial({ color: '#fef08a', roughness: 0.3 });
+    [-0.22, 0.22].forEach((bx) => {
       const bud = new THREE.Mesh(budGeo, budMat);
-      bud.position.set(bx, 0.46, 0.04);
-      bud.rotation.z = bx < 0 ? 0.35 : -0.35;
+      bud.position.set(bx, 0.58, 0.06);
+      bud.rotation.z = bx < 0 ? 0.38 : -0.38;
       headBone.add(bud);
     });
   }
 
-  // 6. 3D Axolotl External Feathery Gill Frills
+  // 6. 3D Axolotl External Feathery Gill Frills (on exterior head sides x = ±0.46)
   if (idLow.includes('axolotl')) {
-    const frillGeo = new THREE.CapsuleGeometry(0.028, 0.14, 8, 12);
-    const frillMat = new THREE.MeshStandardMaterial({ color: '#e11d48', roughness: 0.4 });
+    const frillGeo = new THREE.CapsuleGeometry(0.038, 0.22, 8, 12);
+    const frillMat = new THREE.MeshStandardMaterial({ color: '#e11d48', roughness: 0.35 });
     [-1, 1].forEach((side) => {
-      [-0.25, 0.05, 0.35].forEach((ang, idx) => {
+      [-0.28, 0.04, 0.36].forEach((ang, idx) => {
         const frill = new THREE.Mesh(frillGeo, frillMat);
-        frill.position.set(side * 0.34, 0.18 + idx * 0.09, 0.02);
-        frill.rotation.z = side * (Math.PI * 0.38 + ang * 0.4);
+        frill.position.set(side * 0.46, 0.16 + idx * 0.12, 0.04);
+        frill.rotation.z = side * (Math.PI * 0.38 + ang * 0.45);
         headBone.add(frill);
       });
     });
   }
 
-  // 7. 3D Golden Crown for Fairy Doll & Princess Alicorn
+  // 7. 3D Golden Crown & Superhero Eye Mask
   if (idLow.includes('fairy') || idLow.includes('alicorn')) {
-    const crownGeo = new THREE.CylinderGeometry(0.13, 0.1, 0.11, 16);
+    const crownGeo = new THREE.CylinderGeometry(0.16, 0.12, 0.14, 18);
     const crownMat = new THREE.MeshStandardMaterial({
       color: '#facc15',
-      metalness: 0.7,
-      roughness: 0.2,
+      metalness: 0.75,
+      roughness: 0.18,
     });
     const crown = new THREE.Mesh(crownGeo, crownMat);
-    crown.position.set(0, 0.47, 0.04);
+    crown.position.set(0, 0.58, 0.06);
     headBone.add(crown);
+  } else if (idLow.includes('superhero')) {
+    const maskGeo = new THREE.BoxGeometry(0.64, 0.18, 0.14);
+    const maskMat = new THREE.MeshStandardMaterial({ color: '#1d4ed8', roughness: 0.3 });
+    const mask = new THREE.Mesh(maskGeo, maskMat);
+    mask.position.set(0, 0.17, 0.36);
+    headBone.add(mask);
   }
 
-  // 8. 3D Sculpted Back Wings, Turtle Shell, Dorsal Fin & Superhero Cape on ChestBone
+  // ==========================================================================
+  // 4. EXTERIOR CHEST/BACK/BELLY ANATOMY (Collars, Bells, Bowties, Wings,
+  //    Turtle Shells, Dorsal Fins, Kangaroo Pouch + Joey, Hedgehog Quills, Capes)
+  // ==========================================================================
+  if (isDogOrPuppy || isKittyOrCat || idLow.includes('cow') || idLow.includes('calf')) {
+    // Exterior Neck Collar (radius 0.36 wraps outside the 1.42x neck!)
+    const collarGeo = new THREE.TorusGeometry(0.35, 0.036, 16, 36);
+    const collarMat = new THREE.MeshStandardMaterial({
+      color: isKittyOrCat ? '#ec4899' : '#ef4444',
+      roughness: 0.3,
+    });
+    const collar = new THREE.Mesh(collarGeo, collarMat);
+    collar.rotation.x = Math.PI * 0.52;
+    collar.position.set(0, 0.18, 0.04);
+    chestBone.add(collar);
+
+    if (idLow.includes('tuxedo')) {
+      // Cute Red 3D Bowtie on Tuxedo Kitty!
+      const bowCone = new THREE.ConeGeometry(0.065, 0.12, 14);
+      const bowMat = new THREE.MeshStandardMaterial({ color: '#e11d48', roughness: 0.3 });
+      [-1, 1].forEach((s) => {
+        const b = new THREE.Mesh(bowCone, bowMat);
+        b.position.set(s * 0.06, 0.15, 0.39);
+        b.rotation.z = s * Math.PI * 0.5;
+        chestBone.add(b);
+      });
+    } else {
+      const bellGeo = new THREE.SphereGeometry(0.065, 18, 18);
+      const bellMat = new THREE.MeshStandardMaterial({
+        color: '#facc15',
+        metalness: 0.8,
+        roughness: 0.15,
+      });
+      const bell = new THREE.Mesh(bellGeo, bellMat);
+      bell.position.set(0, 0.13, 0.39);
+      chestBone.add(bell);
+    }
+  } else if (isPenguin) {
+    // Cozy Red 3D Winter Scarf & Snowy White Tuxedo Belly Front for Baby Penguin!
+    const scarfGeo = new THREE.TorusGeometry(0.36, 0.048, 16, 32);
+    const scarfMat = new THREE.MeshStandardMaterial({ color: '#ef4444', roughness: 0.5 });
+    const scarf = new THREE.Mesh(scarfGeo, scarfMat);
+    scarf.rotation.x = Math.PI * 0.52;
+    scarf.position.set(0, 0.16, 0.04);
+    chestBone.add(scarf);
+  }
+
+  // Kangaroo Belly Pouch + Cute Baby Joey Head Peeking Out!
+  if (idLow.includes('kangaroo')) {
+    const pouchGeo = new THREE.SphereGeometry(0.24, 20, 20);
+    pouchGeo.scale(1.1, 0.95, 0.65);
+    const pouchMat = new THREE.MeshStandardMaterial({ color: secondaryHex, roughness: 0.55 });
+    const pouch = new THREE.Mesh(pouchGeo, pouchMat);
+    pouch.position.set(0, -0.34, 0.32);
+    chestBone.add(pouch);
+
+    const joeyHead = new THREE.Mesh(
+      new THREE.SphereGeometry(0.12, 18, 18),
+      new THREE.MeshStandardMaterial({ color: primaryHex, roughness: 0.5 })
+    );
+    joeyHead.position.set(0, -0.18, 0.38);
+    chestBone.add(joeyHead);
+  }
+
+  // 20 Exterior 3D Hedgehog Back Quills!
+  if (idLow.includes('hedgehog')) {
+    const quillGeo = new THREE.ConeGeometry(0.048, 0.22, 12);
+    const quillMat = new THREE.MeshStandardMaterial({ color: '#78350f', roughness: 0.45 });
+    for (let r = 0; r < 4; r++) {
+      for (let c = -2; c <= 2; c++) {
+        const q = new THREE.Mesh(quillGeo, quillMat);
+        q.position.set(c * 0.11, 0.16 - r * 0.15, -0.36);
+        q.rotation.x = -Math.PI * 0.42;
+        q.rotation.z = c * -0.15;
+        chestBone.add(q);
+      }
+    }
+  }
+
+  // Stegosaurus Diamond Dorsal Plates!
+  if (idLow.includes('stegosaurus')) {
+    const plateGeo = new THREE.ConeGeometry(0.14, 0.26, 4);
+    plateGeo.scale(0.35, 1.0, 1.0);
+    const plateMat = new THREE.MeshStandardMaterial({ color: secondaryHex, roughness: 0.35 });
+    [0.24, 0.04, -0.16, -0.36].forEach((py) => {
+      const p = new THREE.Mesh(plateGeo, plateMat);
+      p.position.set(0, py, -0.4);
+      p.rotation.x = -Math.PI * 0.38;
+      chestBone.add(p);
+    });
+  }
+
+  // Large 1.4m-Span Exterior 3D Back Wings, Domed Turtle Shell, Dorsal Fin & Superhero Cape
   if (
     idLow.includes('dragon') ||
     idLow.includes('pegasus') ||
@@ -3995,59 +4532,78 @@ function attachPlushFacialDetailsToHeadBone(
     idLow.includes('griffin') ||
     idLow.includes('fairy')
   ) {
-    const wingGeo = new THREE.SphereGeometry(0.24, 18, 18);
-    wingGeo.scale(1.35, 0.75, 0.18);
+    const wingGeo = new THREE.SphereGeometry(0.36, 20, 20);
+    wingGeo.scale(1.45, 0.85, 0.18);
     const wingMat = new THREE.MeshPhysicalMaterial({
       color: secondaryHex,
-      roughness: 0.25,
+      roughness: 0.22,
       transmission: idLow.includes('fairy') ? 0.45 : 0.0,
       transparent: idLow.includes('fairy'),
-      opacity: idLow.includes('fairy') ? 0.88 : 1.0,
-      clearcoat: 0.8,
+      opacity: idLow.includes('fairy') ? 0.9 : 1.0,
+      clearcoat: 0.85,
     });
     [-1, 1].forEach((side) => {
       const wing = new THREE.Mesh(wingGeo, wingMat);
-      wing.position.set(side * 0.32, 0.12, -0.24);
-      wing.rotation.y = side * -0.42;
+      wing.position.set(side * 0.52, 0.1, -0.34);
+      wing.rotation.y = side * -0.38;
       wing.rotation.z = side * 0.28;
       chestBone.add(wing);
     });
   } else if (idLow.includes('turtle')) {
-    const shellGeo = new THREE.SphereGeometry(0.34, 24, 24);
-    shellGeo.scale(0.95, 1.15, 0.55);
+    // Huge Domed Emerald 3D Sea Turtle Carapace Shell + Golden Rim!
+    const shellGeo = new THREE.SphereGeometry(0.48, 24, 24);
+    shellGeo.scale(1.05, 1.22, 0.65);
     const shellMat = new THREE.MeshPhysicalMaterial({
       color: '#047857',
-      roughness: 0.3,
-      clearcoat: 0.7,
+      roughness: 0.25,
+      clearcoat: 0.8,
     });
     const shell = new THREE.Mesh(shellGeo, shellMat);
-    shell.position.set(0, -0.08, -0.22);
+    shell.position.set(0, -0.14, -0.32);
     chestBone.add(shell);
   } else if (idLow.includes('dolphin') || idLow.includes('whale') || idLow.includes('narwhal')) {
-    const finGeo = new THREE.ConeGeometry(0.11, 0.28, 16);
-    const finMat = new THREE.MeshStandardMaterial({ color: secondaryHex, roughness: 0.3 });
+    const finGeo = new THREE.ConeGeometry(0.15, 0.38, 18);
+    const finMat = new THREE.MeshStandardMaterial({ color: primaryHex, roughness: 0.3 });
     const fin = new THREE.Mesh(finGeo, finMat);
-    fin.position.set(0, 0.05, -0.32);
+    fin.position.set(0, 0.04, -0.44);
     fin.rotation.x = -Math.PI * 0.38;
     chestBone.add(fin);
   } else if (idLow.includes('superhero')) {
-    const capeGeo = new THREE.BoxGeometry(0.56, 0.68, 0.03);
-    const capeMat = new THREE.MeshStandardMaterial({ color: '#dc2626', roughness: 0.4 });
+    const capeGeo = new THREE.BoxGeometry(0.76, 0.88, 0.04);
+    const capeMat = new THREE.MeshStandardMaterial({ color: '#dc2626', roughness: 0.38 });
     const cape = new THREE.Mesh(capeGeo, capeMat);
-    cape.position.set(0, -0.14, -0.28);
-    cape.rotation.x = 0.18;
+    cape.position.set(0, -0.2, -0.38);
+    cape.rotation.x = 0.22;
     chestBone.add(cape);
+
+    const starBadge = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.13, 0.13, 0.04, 5),
+      new THREE.MeshStandardMaterial({ color: '#facc15', metalness: 0.6, roughness: 0.2 })
+    );
+    starBadge.rotation.x = Math.PI * 0.5;
+    starBadge.position.set(0, -0.04, 0.42);
+    chestBone.add(starBadge);
   }
 
-  // Expressive Mouth attached to Jaw Bone for real lip-sync
-  const mouthGeo = new THREE.SphereGeometry(0.075, 20, 20);
-  mouthGeo.scale(1.35, 0.55, 0.65);
+  // Happy Pink Puppy Tongue + Expressive Mouth attached to Jaw Bone for real lip-sync
+  if (isDogOrPuppy) {
+    const tongueGeo = new THREE.SphereGeometry(0.068, 16, 16);
+    tongueGeo.scale(1.1, 0.35, 1.55);
+    const tongueMat = new THREE.MeshStandardMaterial({ color: '#fb7185', roughness: 0.3 });
+    const tongue = new THREE.Mesh(tongueGeo, tongueMat);
+    tongue.position.set(0, -0.08, 0.36);
+    tongue.rotation.x = 0.38;
+    jawBone.add(tongue);
+  }
+
+  const mouthGeo = new THREE.SphereGeometry(0.085, 20, 20);
+  mouthGeo.scale(1.4, 0.55, 0.68);
   const mouthMat = new THREE.MeshStandardMaterial({
     color: '#be123c',
-    roughness: 0.4,
+    roughness: 0.35,
   });
   const mouth = new THREE.Mesh(mouthGeo, mouthMat);
-  mouth.position.set(0, -0.04, idLow.includes('dino') || idLow.includes('dragon') ? 0.24 : 0.18);
+  mouth.position.set(0, -0.05, idLow.includes('dino') || idLow.includes('dragon') ? 0.34 : 0.28);
   jawBone.add(mouth);
 
   return eyeGroups;
@@ -4118,6 +4674,7 @@ export function buildSmooth3DToyRig(
     bones[4],
     bones[2],
     archetype,
+    primaryHex,
     secondaryHex
   );
   innerModel.add(skinnedMesh);
@@ -4186,6 +4743,7 @@ export function buildSmooth3DToyRig(
         const maxDim = Math.max(size.x, size.y, size.z) || 1;
         let targetSpan = 2.15;
         if (archetype === 'robot_buddy') targetSpan = 2.35;
+        if (archetype === 'baby_pony_caramel') targetSpan = 1.78;
         if (isVehicleToy && archetype !== 'train_toy') targetSpan = 2.45;
         if (isFlyingToy) targetSpan = 2.05;
 
@@ -4293,7 +4851,7 @@ export function buildSmooth3DToyRig(
             mesh.receiveShadow = true;
             if (isTintedVariant && mesh.material && (mesh.material as THREE.MeshStandardMaterial).color) {
               const clonedMat = (mesh.material as THREE.MeshStandardMaterial).clone();
-              clonedMat.color.lerp(tintCol, 0.58);
+              clonedMat.color.lerp(tintCol, 0.78);
               mesh.material = clonedMat;
             }
             if (mesh.morphTargetInfluences && mesh.morphTargetInfluences.length > 0) {
@@ -4302,7 +4860,9 @@ export function buildSmooth3DToyRig(
           }
         });
 
-        // For Unicorn (`Horse.glb`), attach a magical golden spiral horn to its head area
+        const topY = scaledBox.max.y - scaledBox.min.y - 1.12;
+
+        // Distinct 3D Exterior Equipment for Studio GLB Variants!
         if (archetype === 'unicorn_plush') {
           const hornGeo = new THREE.ConeGeometry(0.11, 0.55, 24);
           const hornMat = new THREE.MeshPhysicalMaterial({
@@ -4315,19 +4875,57 @@ export function buildSmooth3DToyRig(
           horn.position.set(0, 0.95, 0.72);
           horn.rotation.x = 0.45;
           innerModel.add(horn);
-        } else if (archetype === 'police_cruiser_car' || archetype === 'fire_engine_truck') {
-          // 3D Red & Blue Emergency Rescue Light Bar on Roof!
+        } else if (archetype === 'baby_pony_caramel') {
+          // Cozy Pink & Gold 3D Pony Saddle Blanket!
+          const saddle = new THREE.Mesh(
+            new THREE.BoxGeometry(0.48, 0.14, 0.52),
+            new THREE.MeshStandardMaterial({ color: '#ec4899', roughness: 0.4 })
+          );
+          saddle.position.set(0, 0.08, -0.05);
+          innerModel.add(saddle);
+        } else if (archetype === 'police_cruiser_car') {
+          // High-Visibility Red & Blue 3D Police Roof Siren Bar + White Doors!
           const barLeft = new THREE.Mesh(
-            new THREE.BoxGeometry(0.22, 0.1, 0.12),
+            new THREE.BoxGeometry(0.34, 0.14, 0.18),
             new THREE.MeshBasicMaterial({ color: '#ef4444' })
           );
-          barLeft.position.set(-0.12, 0.35, 0);
+          barLeft.position.set(-0.18, topY + 0.04, 0);
           const barRight = new THREE.Mesh(
-            new THREE.BoxGeometry(0.22, 0.1, 0.12),
+            new THREE.BoxGeometry(0.34, 0.14, 0.18),
             new THREE.MeshBasicMaterial({ color: '#3b82f6' })
           );
-          barRight.position.set(0.12, 0.35, 0);
+          barRight.position.set(0.18, topY + 0.04, 0);
           innerModel.add(barLeft, barRight);
+        } else if (archetype === 'fire_engine_truck') {
+          // White 3D Fire Engine Extension Ladder Rack + Flashing Red Beacon + Golden Hose Reel!
+          const ladderMat = new THREE.MeshStandardMaterial({ color: '#f8fafc', roughness: 0.3 });
+          [-0.16, 0.16].forEach((lx) => {
+            const rail = new THREE.Mesh(new THREE.BoxGeometry(0.06, 0.06, 1.55), ladderMat);
+            rail.position.set(lx, topY + 0.08, -0.1);
+            rail.rotation.y = Math.PI * 0.35;
+            innerModel.add(rail);
+          });
+          const beacon = new THREE.Mesh(
+            new THREE.CylinderGeometry(0.14, 0.16, 0.18, 18),
+            new THREE.MeshBasicMaterial({ color: '#ef4444' })
+          );
+          beacon.position.set(0, topY + 0.14, 0.35);
+          innerModel.add(beacon);
+        } else if (archetype === 'sunshine_school_bus') {
+          // Yellow School Bus Roof Sign Box + Red Octagonal STOP Arm!
+          const roofSign = new THREE.Mesh(
+            new THREE.BoxGeometry(0.58, 0.18, 0.24),
+            new THREE.MeshStandardMaterial({ color: '#facc15', roughness: 0.3 })
+          );
+          roofSign.position.set(0, topY + 0.06, 0.25);
+          roofSign.rotation.y = Math.PI * 0.35;
+          const stopSign = new THREE.Mesh(
+            new THREE.CylinderGeometry(0.18, 0.18, 0.04, 8),
+            new THREE.MeshBasicMaterial({ color: '#dc2626' })
+          );
+          stopSign.position.set(0.58, -0.35, 0.25);
+          stopSign.rotation.z = Math.PI * 0.5;
+          innerModel.add(roofSign, stopSign);
         }
 
         // If user uploaded a custom toy photo onto a GLB archetype, display a floating 3D badge
